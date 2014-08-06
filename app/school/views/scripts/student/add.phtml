@@ -86,7 +86,7 @@
                         </select></td>
                       <td width="150"  style="text-align:right;"><span style="text-align:right; width:150px;">学籍状态</span>：</td>
                         <td width="300"  style="text-align:left;">
-                        <select name="teacher_type_id" size="1" id="teacher_type_id">
+                        <select name="school_status" size="1" id="school_status">
                         <option value="0">请选择</option>
                         <?php foreach($this->teacherTypeData as $k=>$p):?>
                         <option value="<?=$k?>"><?=$p?></option>
@@ -97,11 +97,11 @@
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td width="150"  style="text-align:right; width:150px;">入学日期：</td>
                         <td  style="text-align:left;">
-                        <input type="text" name="job_date" id="job_date" class="Wdate" onclick="WdatePicker()"/>
+                        <input type="text" name="entrance_date" id="entrance_date" class="Wdate" onclick="WdatePicker()"/>
                         <font color="red">*</font>
                         </td>
                    	  <td  style="text-align:right;">毕业日期：</td>
-                        <td  style="text-align:left;"><input type="text" name="job_date2" id="job_date2" class="Wdate" onclick="WdatePicker()"/></td>
+                        <td  style="text-align:left;"><input type="text" name="graduate_date" id="graduate_date" class="Wdate" onclick="WdatePicker()"/></td>
                     </tr>
                 </tbody>
             </table>
@@ -118,110 +118,124 @@
                       <td  style="text-align:left;">优先短信联系</td>
                     </tr>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
-                      <td style="text-align:left;"><input type="text" name="textfield2" id="textfield2" size="15" /></td>
                       <td style="text-align:left;">
-                      <input type="text" name="textfield2" id="textfield2" size="15"  /></td>
-                      <td style="text-align:left;">
-                      <select name="teacher_type_id3" size="1" id="teacher_type_id3">
-                        <option value="1">爸爸</option>
-                        <option value="2">妈妈</option>
-                        <option value="3">爷爷</option>
-                        <option value="4">奶奶</option>
-                        <option value="5">外公</option>
-                        <option value="6">外婆</option>
-                        <option value="7">姑姑</option>
-                        <option value="8">姑父</option>
-                      </select></td>
-                      <td style="text-align:left;"><input type="text" name="textfield2" id="textfield2" size="15"/></td>
-                      <td style="text-align:left;"><input type="text" name="textfield2" id="textfield2" size="15"/></td>
-                      <td style="text-align:left;"><input type="radio" name="radio" id="radio" value="radio" /></td>
-                    </tr>
-                    <tr class="ui-widget-content jqgrow ui-row-ltr">
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield3" size="15" /></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield3" size="15"  /></td>
-                      <td style="text-align:left;"><select name="teacher_type_id4" size="1" id="teacher_type_id4">
-                        <option value="1">爸爸</option>
-                        <option value="2">妈妈</option>
-                        <option value="3">爷爷</option>
-                        <option value="4">奶奶</option>
-                        <option value="5">外公</option>
-                        <option value="6">外婆</option>
-                        <option value="7">姑姑</option>
-                        <option value="8">姑父</option>
-                      </select></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield3" size="15"/></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield3" size="15"/></td>
-                      <td style="text-align:left;"><input type="radio" name="radio" id="radio2" value="radio" /></td>
-                    </tr>
-                    <tr class="ui-widget-content jqgrow ui-row-ltr">
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield4" size="15" /></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield4" size="15"  /></td>
-                      <td style="text-align:left;"><select name="teacher_type_id4" size="1" id="teacher_type_id5">
-                        <option value="1">爸爸</option>
-                        <option value="2">妈妈</option>
-                        <option value="3">爷爷</option>
-                        <option value="4">奶奶</option>
-                        <option value="5">外公</option>
-                        <option value="6">外婆</option>
-                        <option value="7">姑姑</option>
-                        <option value="8">姑父</option>
-                      </select></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield4" size="15"/></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield4" size="15"/></td>
-                      <td style="text-align:left;"><input type="radio" name="radio" id="radio3" value="radio" /></td>
-                    </tr>
-                    <tr class="ui-widget-content jqgrow ui-row-ltr">
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield5" size="15" /></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield5" size="15"  /></td>
-                      <td style="text-align:left;"><select name="teacher_type_id4" size="1" id="teacher_type_id6">
-                        <option value="1">爸爸</option>
-                        <option value="2">妈妈</option>
-                        <option value="3">爷爷</option>
-                        <option value="4">奶奶</option>
-                        <option value="5">外公</option>
-                        <option value="6">外婆</option>
-                        <option value="7">姑姑</option>
-                        <option value="8">姑父</option>
-                      </select></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield5" size="15"/></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield5" size="15"/></td>
-                      <td style="text-align:left;"><input type="radio" name="radio" id="radio4" value="radio" /></td>
-                    </tr>
-                    <tr class="ui-widget-content jqgrow ui-row-ltr">
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield6" size="15" /></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield6" size="15"  /></td>
-                      <td style="text-align:left;"><select name="teacher_type_id4" size="1" id="teacher_type_id7">
-                        <option value="1">爸爸</option>
-                        <option value="2">妈妈</option>
-                        <option value="3">爷爷</option>
-                        <option value="4">奶奶</option>
-                        <option value="5">外公</option>
-                        <option value="6">外婆</option>
-                        <option value="7">姑姑</option>
-                        <option value="8">姑父</option>
-                      </select></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield6" size="15"/></td>
-                      <td style="text-align:left;"><input type="text" name="textfield3" id="textfield6" size="15"/></td>
-                      <td style="text-align:left;"><input type="radio" name="radio" id="radio5" value="radio" /></td>
-                    </tr>
-                    <tr class="ui-widget-content jqgrow ui-row-ltr">
-                        <td style="text-align:left;"><input type="text" name="textfield" id="textfield" size="15" /></td>
-                        <td style="text-align:left;"><input type="text" name="textfield" id="textfield" size="15"  /></td>
-                      <td style="text-align:left;">
-                        <select name="teacher_type_id2" size="1" id="teacher_type_id2">
-                          <option value="1">爸爸</option>
-                          <option value="2">妈妈</option>
-                          <option value="3">爷爷</option>
-                          <option value="4">奶奶</option>
-                          <option value="5">外公</option>
-                          <option value="6">外婆</option>
-                          <option value="7">姑姑</option>
-                          <option value="8">姑父</option>
-                        </select>
+                      <input type="text" name="parent_en_name[1]" id="parent_en_name_1" size="15" />
                       </td>
-                        <td style="text-align:left;"><input type="text" name="textfield" id="textfield" size="15"/></td>
-                        <td style="text-align:left;"><input type="text" name="textfield" id="textfield" size="15"/></td>
-                        <td style="text-align:left;"><input type="radio" name="radio" id="radio" value="radio" /></td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_cn_name[1]" id="parent_cn_name_1" size="15"  /></td>
+                      <td style="text-align:left;">
+                      <select name="parent_named[1]" id="parent_named_1">
+                        <option value="1">爸爸</option>
+                        <option value="2">妈妈</option>
+                        <option value="3">爷爷</option>
+                        <option value="4">奶奶</option>
+                        <option value="5">外公</option>
+                        <option value="6">外婆</option>
+                        <option value="7">姑姑</option>
+                        <option value="8">姑父</option>
+                      </select></td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_phone[1]" id="parent_phone_1" size="15"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_mobile_phone[1]" id="parent_mobile_phone_1" size="15"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <select name="parent_is_message[1]" id="parent_is_message_1">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                      </select>
+                      </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_en_name[2]" id="parent_en_name_2" size="15" />
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_cn_name[2]" id="parent_cn_name_2" size="15"  /></td>
+                      <td style="text-align:left;">
+                      <select name="parent_named[2]" id="parent_named_2">
+                        <option value="1">爸爸</option>
+                        <option value="2">妈妈</option>
+                        <option value="3">爷爷</option>
+                        <option value="4">奶奶</option>
+                        <option value="5">外公</option>
+                        <option value="6">外婆</option>
+                        <option value="7">姑姑</option>
+                        <option value="8">姑父</option>
+                      </select></td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_phone[2]" id="parent_phone_2" size="15"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_mobile_phone[2]" id="parent_mobile_phone_2" size="15"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <select name="parent_is_message[2]" id="parent_is_message_2">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                      </select>
+                      </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_en_name[3]" id="parent_en_name_3" size="15" />
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_cn_name[3]" id="parent_cn_name_3" size="15"  /></td>
+                      <td style="text-align:left;">
+                      <select name="parent_named[3]" id="parent_named_3">
+                        <option value="1">爸爸</option>
+                        <option value="2">妈妈</option>
+                        <option value="3">爷爷</option>
+                        <option value="4">奶奶</option>
+                        <option value="5">外公</option>
+                        <option value="6">外婆</option>
+                        <option value="7">姑姑</option>
+                        <option value="8">姑父</option>
+                      </select></td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_phone[3]" id="parent_phone_3" size="15"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_mobile_phone[3]" id="parent_mobile_phone_3" size="15"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <select name="parent_is_message[3]" id="parent_is_message_3">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                      </select>
+                      </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_en_name[4]" id="parent_en_name_4" size="15" />
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_cn_name[4]" id="parent_cn_name_4" size="15"  /></td>
+                      <td style="text-align:left;">
+                      <select name="parent_named[4]" id="parent_named_4">
+                        <option value="1">爸爸</option>
+                        <option value="2">妈妈</option>
+                        <option value="3">爷爷</option>
+                        <option value="4">奶奶</option>
+                        <option value="5">外公</option>
+                        <option value="6">外婆</option>
+                        <option value="7">姑姑</option>
+                        <option value="8">姑父</option>
+                      </select></td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_phone[4]" id="parent_phone_4" size="15"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_mobile_phone[4]" id="parent_mobile_phone_4" size="15"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <select name="parent_is_message[4]" id="parent_is_message_4">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                      </select>
+                      </td>
                     </tr>
                 </tbody>
             </table>
