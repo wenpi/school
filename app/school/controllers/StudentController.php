@@ -74,8 +74,6 @@ class StudentController extends Ccc_Base_Controller {
     public function addAction() {
         $this->view->title = "添加学生信息";
         $this->view->classData = ClassModel::getInstance()->getClassData();
-        $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData();
-        $this->view->jobData = JobModel::getInstance()->getJobData();
     }
 
     /**
@@ -124,83 +122,71 @@ class StudentController extends Ccc_Base_Controller {
             "address" => trim($this->_getParam("address")),
             "id_type" => (int) $this->_getParam("id_type"),
             "id_number" => trim($this->_getParam("id_name")),
-            "phone" => trim($this->_getParam("phone")),
-            "mobile_phone" => trim($this->_getParam("mobile_phone")),
-            "email" => trim($this->_getParam("email")),
-            "graduate_school" => trim($this->_getParam("graduate_school")),
-            "graduate_date" => trim($this->_getParam("graduate_date")),
-            "graduate_specialty" => trim($this->_getParam("graduate_specialty")),
-            "max_education" => (int) $this->_getParam("max_education"),
         );
         $addSchoolParams = array(
-            "school_class_id" => (int) $this->_getParam("class_id"),
-            "school_teacher_type_id" => (int) $this->_getParam("teacher_type_id"),
-            "school_job_id" => (int) $this->_getParam("job_id"),
-            "job_date" => trim($this->_getParam("job_date")),
-            "bargain_start_date" => trim($this->_getParam("bargain_start_date")),
-            "bargain_end_date" => trim($this->_getParam("bargain_end_date")),
-            "bargain_count" => (int) $this->_getParam("bargain_count"),
-            "leave_date" => trim($this->_getParam("leave_date")),
-            "leave_reason" => trim($this->_getParam("leave_reason")),
+            "sch_class_id" => (int) $this->_getParam("class_id"),
+            "school_status" => (int) $this->_getParam("school_status"),
+            "entrance_date" => trim($this->_getParam("entrance_date")),
+            "graduate_date" => trim($this->_getParam("graduate_date")),
             "add_user_id" => (int)$this->_session->uid,
             "add_time_int" => time(),
         );
         $result = array_merge($addBaseParams,$addSchoolParams);
-        $add = TeacherModel::getInstance()->addData($result);
+        $add = StudentModel::getInstance()->addData($result);
+//		$add = 1;
         if($add>0) {
-            $classId = (int) $this->_getParam("class_id");
-            $classRowData = ClassModel::getInstance()->getRowData($classId);
-            $classNumber = isset($classRowData['class_number'])?$classRowData['class_number']:"000000";     // 班级编码
-            $typeNumber = (int) $this->_getParam("teacher_type_id");
-            $leaveData = trim($this->_getParam("leave_date"));
-            $maxNumber = !empty($add) ? sprintf( "%03d" , $add ) : "000";
-            $teacherNumber = $classNumber . $typeNumber . $maxNumber;
-            $updateParams = array(
-                "teacher_number" => $teacherNumber,
-                "teacher_no" => $add,
-                "status" => !empty($leaveData)?2:1,
-            );
-            $update = TeacherModel::getInstance()->updateData($add,$updateParams);
+			// 添加家长信息
+			$parentEnName = $this->_getParam( "parent_en_name" ) ;
+			$parentCnName = $this->_getParam( "parent_cn_name" ) ;
+			$parentNamed = $this->_getParam( "parent_named" ) ;
+			$parentPhone = $this->_getParam( "parent_phone" ) ;
+			$parentMobilePhone = $this->_getParam( "parent_mobile_phone" ) ;
+			$parentIsMessage = $this->_getParam( "parent_is_message" ) ;
+			$dealParams = StudentModel::getInstance()->dealParentParams( $parentEnName , $parentCnName , $parentNamed ,
+				$parentPhone , $parentMobilePhone , $parentIsMessage ) ;
+			$addParent = 0;
+			if($dealParams) {
+				foreach($dealParams as $p) {
+					$p['sch_student_id'] = $add ;
+					ParentModel::getInstance()->addData( $p );
+				}
+				$addParent = 1;
+			}
         }
 
-        if($add>0 && $update>0) {
-            Ccc_Helper_Com::alertMess("/teacher/list", "添加成功");
+        if($add>0 && $addParent>0) {
+            Ccc_Helper_Com::alertMess("/student/list", "添加成功");
         } else {
-            Ccc_Helper_Com::alertMess("/teacher/list", "添加失败");
+            Ccc_Helper_Com::alertMess("/student/list", "添加失败");
         }
     }
 
     public function editAction() {
-        $this->view->classData = ClassModel::getInstance()->getClassData();
-        $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData();
-        $this->view->jobData = JobModel::getInstance()->getJobData();
-        $this->view->title = "编辑教工信息";
-        $teacherId = (int) $this->_getParam("teacher_id");
+        $studentId = (int) $this->_getParam("student_id");
         $from = trim($this->_getParam("from"));
-        $teacherData = TeacherModel::getInstance()->getRowData($teacherId);
-        $teacherData['birthday'] = $teacherData['birthday']=="0000-00-00"?"":$teacherData['birthday'];
-        $teacherData['job_date'] = $teacherData['job_date']=="0000-00-00"?"":$teacherData['job_date'];
-        $teacherData['bargain_start_date'] = $teacherData['bargain_start_date']=="0000-00-00"?"":$teacherData['bargain_start_date'];
-        $teacherData['bargain_end_date'] = $teacherData['bargain_end_date']=="0000-00-00"?"":$teacherData['bargain_end_date'];
-        $teacherData['graduate_date'] = $teacherData['graduate_date']=="0000-00-00"?"":$teacherData['graduate_date'];
-        $teacherData['leave_date'] = $teacherData['leave_date']=="0000-00-00"?"":$teacherData['leave_date'];
-        $this->view->teacherData = $teacherData;
+        $studentData = StudentModel::getInstance()->getRowData($studentId);
+        $studentData['birthday'] = $studentData['birthday']=="0000-00-00"?"":$studentData['birthday'];
+        $studentData['entrance_date'] = $studentData['entrance_date']=="0000-00-00"?"":$studentData['entrance_date'];
+        $studentData['graduate_date'] = $studentData['graduate_date']=="0000-00-00"?"":$studentData['graduate_date'];
+        $this->view->studentData = $studentData;
         $config = new Zend_Config_Ini(PATH_ROOT . DS . $this->_conf->path->params_conf, "school");
         $swfData = array(
-            "upload_url" => isset($config->teacher->upload_url) ? $config->teacher->upload_url : "",
-            "upload_name" => isset($config->teacher->upload_name) ? $config->teacher->upload_name : "",
-            "maxsize_user_photo" => isset($config->teacher->maxsize_user_photo) ? $config->teacher->maxsize_user_photo : "",
-            "type_user_photo" => isset($config->teacher->type_user_photo) ? $config->teacher->type_user_photo : "",
-            "path_user_photo" => isset($config->teacher->path_user_photo) ? $config->teacher->path_user_photo : "",
+            "upload_url" => isset($config->student->upload_url) ? $config->student->upload_url : "",
+            "upload_name" => isset($config->student->upload_name) ? $config->student->upload_name : "",
+            "maxsize_user_photo" => isset($config->student->maxsize_user_photo) ? $config->student->maxsize_user_photo : "",
+            "type_user_photo" => isset($config->student->type_user_photo) ? $config->student->type_user_photo : "",
+            "path_user_photo" => isset($config->student->path_user_photo) ? $config->student->path_user_photo : "",
         );
         $this->view->swfData = $swfData;
         $this->view->from = $from;
+		$this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->title = "编辑学生信息";
+		$this->view->parentData = ParentModel::getInstance()->getParentDataByWhere( " and sch_student_id={$studentId}" );
     }
 
     public function updateAction() {
         $this->_helper->layout->disableLayout();
-
-        $hiddenTeacherId = (int) $this->_getParam("hidden_teacher_id");
+        $hiddenStudentId = (int) $this->_getParam("hidden_student_id");
         $from = trim($this->_getParam("from"));
         // get the params;
         $addBaseParams = array(
@@ -211,37 +197,23 @@ class StudentController extends Ccc_Base_Controller {
             "address" => trim($this->_getParam("address")),
             "id_type" => (int) $this->_getParam("id_type"),
             "id_number" => trim($this->_getParam("id_name")),
-            "phone" => trim($this->_getParam("phone")),
-            "mobile_phone" => trim($this->_getParam("mobile_phone")),
-            "email" => trim($this->_getParam("email")),
-            "graduate_school" => trim($this->_getParam("graduate_school")),
-            "graduate_date" => trim($this->_getParam("graduate_date")),
-            "graduate_specialty" => trim($this->_getParam("graduate_specialty")),
-            "max_education" => (int) $this->_getParam("max_education"),
         );
-        $leaveData = trim($this->_getParam("leave_date"));
         $addSchoolParams = array(
             "school_class_id" => (int) $this->_getParam("class_id"),
-            "school_teacher_type_id" => (int) $this->_getParam("teacher_type_id"),
-            "school_job_id" => (int) $this->_getParam("job_id"),
-            "job_date" => trim($this->_getParam("job_date")),
-            "bargain_start_date" => trim($this->_getParam("bargain_start_date")),
-            "bargain_end_date" => trim($this->_getParam("bargain_end_date")),
-            "bargain_count" => (int) $this->_getParam("bargain_count"),
-            "leave_date" => trim($this->_getParam("leave_date")),
-            "leave_reason" => trim($this->_getParam("leave_reason")),
-            "status" => !empty($leaveData)?2:1,
+            "entrance_date" => trim($this->_getParam("entrance_date")),
+            "graduate_date" => trim($this->_getParam("graduate_date")),
+            "school_status" => (int) $this->_getParam("school_status"),
             "update_user_id" => (int)$this->_session->uid,
             "update_time_int" => time(),
         );
         $result = array_merge($addBaseParams,$addSchoolParams);
-        $update = TeacherModel::getInstance()->updateData($hiddenTeacherId, $result);
+        $update = StudentModel::getInstance()->updateData($hiddenStudentId, $result);
         $where =!empty($from)?base64_decode($from):"";
-        $where = $where . "/teacher_id/{$hiddenTeacherId}";
+        $where = $where . "/student_id/{$hiddenStudentId}";
         if($update>0) {
-            Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作成功");
+            Ccc_Helper_Com::alertMess("/student/list{$where}", "操作成功");
         } else {
-            Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作失败");
+            Ccc_Helper_Com::alertMess("/student/list{$where}", "操作失败");
         }
     }
 
