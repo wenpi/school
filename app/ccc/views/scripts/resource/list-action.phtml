@@ -1,0 +1,113 @@
+<?= $this->headTitle("资源列表") ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/resource.js' type='text/javascript'></script>
+<script>Resource.showModuleByAppId(<?=$this->appId?>,<?=$this->moduleId?>);</script>
+<!--条件-->
+<form action="/resource/list.action" method="post">
+    <div style="font-size: 11px;">
+        应用名称：
+        <select name="app_id" style="width:150px" id="app_id" onchange="Resource.showModuleByAppId(this.value, 0)">
+            <option value="0">--应用--</option>
+            <?php foreach($this->appData as $p):?>
+            <option value="<?=$p['app_id']?>" <?php if($this->appId==$p['app_id']):?> selected <?php endif;?>>[<?=$p['app_string']?>]<?=$p['app_name']?></option>
+            <?php endforeach;?>
+        </select>
+        模块名称：
+        <select name="module_id" style="width:200px" id="module_id">
+            <option value="0">--模块--</option>
+        </select>
+        关键字：
+        <input type="text" name="keyword"  size="12" value="<?=$this->keyword?>"  title="支持模糊"/>
+        <button type="submit" id="submitButton" style="margin-left:30px;">
+            Search
+        </button>
+        <button type="button" onclick="window.location='/resource/add.action'">
+            添加模块/动作
+        </button>
+    </div>
+</form>
+
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?>（温馨提醒：下面表格中黄色部分为模块；非黄色部分为动作；排序列是可以修改的；）</span>
+        </div>
+        <!--body table title-->
+
+        <!--body table header-->
+        <div class="ui-state-default ui-jqgrid-hdiv" style="width: 100%;">
+            <table class="ui-jqgrid-htable" style="width:100%" cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                    <tr class="ui-jqgrid-labels">
+                        <th class="ui-state-default ui-th-column ui-th-ltr">应用</th>
+                        <th class="ui-state-default ui-th-column ui-th-ltr">模块</th>
+                        <th class="ui-state-default ui-th-column ui-th-ltr">动作</th>
+                        <th class="ui-state-default ui-th-column ui-th-ltr">名称</th>
+                        <th class="ui-state-default ui-th-column ui-th-ltr">排序↑</th>
+                        <th class="ui-state-default ui-th-column ui-th-ltr">URL</th>
+                        <th class="ui-state-default ui-th-column ui-th-ltr">状态</th>
+                        <th class="ui-state-default ui-th-column ui-th-ltr">操作</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!--body table header-->
+
+        <!--body table content-->
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+                <tbody>
+                    <?php foreach ($this->data as $v): ?>
+                        <tr class="ui-widget-content jqgrow ui-row-ltr" style="background:#FBFCE2">
+                            <td  style="text-align:center;"><?php if(!empty($v['app_string'])):?><?=$v['app_string']?><?php else:?>-<?php endif;?></td>
+                            <td  style="text-align:center;white-space:normal;word-break:break-all;word-wrap:break-word;"><?php if(!empty($v['module_string'])):?><?=$v['module_string']?><?php else:?>-<?php endif;?></td>
+                            <td  style="text-align:center;">-</td>
+                            <td  style="text-align:center;white-space:normal;word-break:break-all;word-wrap:break-word;"><?php if(!empty($v['name'])):?><?=$v['name']?><?php else:?>-<?php endif;?></td>
+                            <td  style="text-align:center;" title="点击可修改排序"><?php if($v['is_view']==1 || isset($_SESSION['ccc']['urolecheck']) &&  $_SESSION['ccc']['urolecheck'] == true ):?><div id="div_module_action_<?=$v['resource_id']?>" style="cursor:pointer" onmouseout="Resource.closeActionInput(<?=$v['resource_id']?>,<?=$v['module_sort']?>,'father','<?=$this->from?>');"><div onclick="Resource.sortActionInput(<?=$v['resource_id']?>,<?=$v['module_sort']?>,'father','<?=$this->from?>');"><?=$v['module_sort']?></div></div><?php endif;?></td>
+                            <td  style="text-align:center;white-space:normal;word-break:break-all;word-wrap:break-word;"><?php if(!empty($v['url'])):?><?=$v['url']?><?php else:?>-<?php endif;?></td>
+                            <td  style="text-align:center;"><?php if($v['is_view']==1):?>[可见]<?php endif;?><?php if($v['is_view']==1):?>[可写日志]<?php endif;?></td>
+                            <td  style="text-align:center;"><a href="/resource/view.action/resource_id/<?=$v['resource_id']?>/from/<?=$this->from?>">[查看]</a><?php if($v['is_update']==1 || isset($_SESSION['ccc']['urolecheck']) &&  $_SESSION['ccc']['urolecheck'] == true ):?> <a href="/resource/edit.action/resource_id/<?=$v['resource_id']?>/from/<?=$this->from?>">[更改]</a><?php endif;?><?php if($v['is_remove']==1 || isset($_SESSION['ccc']['urolecheck']) &&  $_SESSION['ccc']['urolecheck'] == true ):?> <a href="/resource/delete.action/resource_id/<?=$v['resource_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定要删除吗?')){ return true} else { return false }">[删除]</a><?php endif;?></td>
+                        </tr>
+                        <?php if($v['item']):?>
+                        <?php foreach($v['item'] as $vv):?>
+                        <tr class="ui-widget-content jqgrow ui-row-ltr">
+                            <td  style="text-align:center;">
+							<?php if(!empty($vv['app_string'])):?><?=$vv['app_string']?><?php else:?>-<?php endif;?>
+                            </td>
+                            <td  style="text-align:center;white-space:normal;word-break:break-all;word-wrap:break-word;">
+							<?php if(!empty($vv['module_string'])):?><?=$v['module_string']?><?php else:?>-<?php endif;?></td>
+                            <td  style="text-align:center;white-space:normal;word-break:break-all;word-wrap:break-word;"><?php if(!empty($vv['action_string'])):?><?=$vv['action_string']?><?php else:?>-<?php endif;?></td>
+                            <td  style="text-align:center;white-space:normal;word-break:break-all;word-wrap:break-word;"><?php if(!empty($vv['name'])):?><?=$vv['name']?><?php else:?>-<?php endif;?></td>
+                            <td  style="text-align:center;" title="点击可修改排序"><?php if($vv['is_view']==1 || isset($_SESSION['ccc']['urolecheck']) &&  $_SESSION['ccc']['urolecheck'] == true ):?><div id="div_module_action_<?=$vv['resource_id']?>" style="cursor:pointer" onmouseout="Resource.closeActionInput(<?=$vv['resource_id']?>,<?=$vv['sort']?>,'son','<?=$this->from?>');"><div onclick="Resource.sortActionInput(<?=$vv['resource_id']?>,<?=$vv['sort']?>,'son','<?=$this->from?>');"><?=$vv['sort']?></div></div><?php endif;?></td>
+                            <td  style="text-align:center;white-space:normal;word-break:break-all;word-wrap:break-word;" title="<?php if(!empty($vv['url'])):?><?=$vv['url']?><?php else:?>-<?php endif;?>"><?php if(!empty($vv['url'])):?><?=$vv['url']?><?php else:?>-<?php endif;?></td>
+                            <td  style="text-align:center;"><?php if($vv['is_view']==1):?>[可见]<?php endif;?><?php if($vv['is_view']==1):?>[可写日志]<?php endif;?></td>
+                            <td  style="text-align:center;"><a href="/resource/view.action/resource_id/<?=$vv['resource_id']?>">[查看]</a><?php if($vv['is_update']==1 || isset($_SESSION['ccc']['urolecheck']) &&  $_SESSION['ccc']['urolecheck'] == true ):?> <a href="/resource/edit.action/resource_id/<?=$vv['resource_id']?>/from/<?=$this->from?>">[更改]</a><?php endif;?><?php if($vv['is_remove']==1 || isset($_SESSION['ccc']['urolecheck']) &&  $_SESSION['ccc']['urolecheck'] == true ):?> <a href="/resource/delete.action/resource_id/<?=$vv['resource_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定要删除吗?')){ return true} else { return false }">[删除]</a><?php endif;?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php endif;?>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <!--body table content-->
+
+    </div>
+
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+        <div class="ui-pager-control">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-pg-table" style="width:100%;table-layout:fixed;height:100%;">
+                <tbody>
+                    <tr>
+                        <td id="pager1_left" align="left"></td>
+                        <td id="pager1_center" align="center"
+                            style="white-space: pre;
+                            width: 228px;"><?= $this->render('page.phtml') ?></td>
+                        <td id="pager1_right" align="right"></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,9 @@
+<table width="100%" border="1">
+  <?php if($this->data):?>
+  <?php foreach($this->data as $p):?>
+  <tr>
+    <td><?=$p['app_string']?>-<?=$p['module_string']?>-<?=$p['action_string']?></td>
+  </tr>
+  <?php endforeach;?>
+  <?php endif;?>
+</table>

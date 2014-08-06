@@ -1,0 +1,5 @@
+线上代码备份工作
+
+1。备份代码 /home/cron_ccc_code.sh  # 临时放在这个home目录下。切换新环境后统一下目录位置。
+2。crontab -e
+ 0 3 * * 0 /home/cron_ccc_code.sh   # 每周日凌晨3点执行备份代码。

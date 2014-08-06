@@ -1,0 +1,56 @@
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 35%;float: left">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table content-->
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+                <tbody>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td width="100"  style="text-align:right;">级别：</td>
+                        <td  style="text-align:left;">
+                            <select name="input_job_level" id="input_job_level" style="width:120px;">
+                                <option value="0" <?php echo $this->jobData['job_level']==0?"selected":"";?>>无</option>
+                                <option value="1" <?php echo $this->jobData['job_level']==1?"selected":"";?>>初级</option>
+                                <option value="2" <?php echo $this->jobData['job_level']==2?"selected":"";?>>中级</option>
+                                <option value="3" <?php echo $this->jobData['job_level']==3?"selected":"";?>>高级</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td style="text-align:right;">岗位名称：</td>
+                        <td  style="text-align:left;">
+                            <input type="text" name="input_job_name" id="input_job_name" value="<?=$this->jobData['job_name']?>" />
+                            <font color="red">*</font>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right;">描述：</td>
+                        <td  style="text-align:left;">
+                            <textarea name="input_comments" id="input_comments" cols="30" rows="3"><?=$this->jobData['job_name']?></textarea>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td colspan="2"  style="text-align:center;">
+                         <input type="hidden" id="hidden_input_job_name" value="<?=$this->jobData['job_name']?>" />
+                         <input type="button" name="button" id="button" value="确定提交" onclick="Job.update(<?=$this->jobData['job_id']?>);"/>                   </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <!--body table content-->
+
+    </div>
+
+
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+    </div>
+
+</div>

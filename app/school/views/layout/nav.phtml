@@ -1,0 +1,16 @@
+<?php $nav_list = RoleModel::getUserRoleMenu();?>
+
+<?php if (!empty($nav_list)):?>
+<?php foreach ($nav_list as $menu_id => $mv):?>
+<div><h2 class="first"><?=$mv['menu_name']?></h2></div>
+	<ul>
+	<?php foreach ($mv['sub'] as $k => $v):?>
+        <li class=""">
+        	<a href="<?=$v['menu_action']?>"><?=$v['menu_name']?></a>
+        </li>
+    <?php endforeach;?>
+    </ul>
+<?php endforeach;?>
+<?php else:?>
+	<p>暂无菜单列表</p>
+<?php endif;?>

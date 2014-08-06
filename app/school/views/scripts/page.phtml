@@ -1,0 +1,27 @@
+<table cellspacing="0" cellpadding="0" border="0" style="table-layout:auto;" class="ui-pg-table">
+	<tbody>
+		<tr>
+			<?php if( $this->pageData[ 'page_count' ] <= 1 || $this->pageData[ 'page' ] <= 1 ):
+				?>
+				<td class="ui-pg-button ui-corner-all ui-state-disabled" style="cursor: default;"><span class="ui-icon ui-icon-seek-first" title="首页"></span></td>
+				<td class="ui-pg-button ui-corner-all ui-state-disabled" style="cursor: default;"><span class="ui-icon ui-icon-seek-prev" title="上一页"></span></td>
+			<?php else: ?>
+				<td class="ui-pg-button ui-corner-all" style="cursor: default;"><a href="<?= $this->pageData[ 'url' ] ?>/page/1"><span class="ui-icon ui-icon-seek-first" title="首页"></span></a></td>
+				<td class="ui-pg-button ui-corner-all" style="cursor: default;"><a href="<?= $this->pageData[ 'url' ] ?>/page/<?php echo $this->pageData[ 'page' ] - 1 ; ?>"><span class="ui-icon ui-icon-seek-prev" title="上一页"></span></td>
+			<?php endif ; ?>
+			<td class="ui-pg-button ui-state-disabled" style="width: 4px; cursor: default;"><span class="ui-separator"></span></td>
+			<td><input class="ui-pg-input" type="text" size="2" maxlength="7"
+					   value="<?= $this->pageData[ 'page' ] ?>" /> 共 <?= $this->pageData[ 'page_count' ] ?> 页</td>
+			<td class="ui-pg-button ui-state-disabled" style="width:4px;"><span class="ui-separator"></span></td>
+			<?php if( $this->pageData[ 'page' ] == $this->pageData[ 'page_count' ] ): ?>
+				<td class="ui-pg-button ui-corner-all ui-state-disabled"
+					style="cursor: default;"><span class="ui-icon ui-icon-seek-next" title="下一页"></span></td>
+				<td class="ui-pg-button ui-corner-all ui-state-disabled" style="cursor: default;"><span class="ui-icon ui-icon-seek-end" title="尾页"></span></td>
+			<?php else: ?>
+				<td class="ui-pg-button ui-corner-all"
+					style="cursor: default;"><a href="<?= $this->pageData[ 'url' ] ?>/page/<?php echo $this->pageData[ 'page' ] + 1 ; ?>"><span class="ui-icon ui-icon-seek-next" title="下一页"></span></td>
+				<td class="ui-pg-button ui-corner-all" style="cursor: default;"><a href="<?= $this->pageData[ 'url' ] ?>/page/<?= $this->pageData[ 'page_count' ] ?>"><span class="ui-icon ui-icon-seek-end" title="尾页"></span></td>
+			<?php endif ; ?>
+		</tr>
+	</tbody>
+</table>

@@ -1,0 +1,99 @@
+@CHARSET "UTF-8";
+
+.w30{ width:30px;}
+.w40{ width:40px;}
+.w50{ width:50px; }
+.w60{ width:60px; }
+.w70{ width:70px; }
+.w80{ width:80px; }
+.w90{ width:90px; }
+.w100{ width:100px; }
+.w110{ width:110px; }
+.w120{ width:120px; }
+.w130{ width:130px; }
+.w140{ width:140px; }
+.w150{ width:150px; }
+.w160{ width:160px; }
+.w170{ width:170px; }
+.w180{ width:180px; }
+.w190{ width:190px; }
+.w200 { width:200px;}
+.w210{ width:210px; }
+.w220{ width:220px; }
+.w230{ width:230px; }
+.w240{ width:240px; }
+.w250 { width:250px;}
+.w260{ width:260px; }
+.w270{ width:270px; }
+.w280 { width:280px;}
+.w290{ width:290px; }
+.w300{ width:300px; }
+.w310{ width:310px; }
+.w320{ width:320px; }
+.w450{ width:450px; }
+.w460{ width:460px; }
+.w1500 { width:1500px; }
+.w2500 { width:2500px; }
+    
+.h500{height:500px;}
+
+.mainContain {
+    float:left;
+    padding:0;
+    margin-left:20px;
+    margin-top:20px;
+    border:0;
+    overflow:hidden;
+    text-align:center;
+    font-size:15px;
+}
+
+.leftTop
+{
+    height:24px;
+    margin:0;
+    padding:3px 0px 3px 0px;
+    overflow:hidden;
+    float:left;
+    border:1px solid #cccccc;
+}
+
+.rightTop
+{
+    height:24px;
+    margin:0;
+    padding:3px 0px 3px 0px;
+    overflow:hidden;
+    float:left;
+    border:solid #cccccc;
+    border-width: 1px 1px 1px 0;
+}
+
+.leftSide {
+    height:24px;
+    margin:0;
+    padding:3px 0px 3px 0px;
+    overflow:hidden;
+    float:left;
+    border:solid #ccc;
+    border-width: 0px 1px 1px 1px;
+}
+
+.rightSide {
+    height:24px;
+    margin:0;
+    padding:3px 0px 3px 0px;
+    overflow:hidden;
+    float:left;
+    border:solid #ccc;
+    border-width: 0px 1px 1px 0px;
+}
+
+.deepColor{
+    background:#f4f4f4;
+}
+
+.clearCss
+{
+    clear:both;
+}

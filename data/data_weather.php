@@ -1,0 +1,1 @@
+<?php $WEATHERS='{"weatherinfo":{"city":"北京","cityid":"101010100","temp1":"26℃","temp2":"13℃","weather":"晴","img1":"d0.gif","img2":"n0.gif","ptime":"11:00"}}';?>

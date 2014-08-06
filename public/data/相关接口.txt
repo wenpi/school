@@ -1,0 +1,10 @@
+相关接口说明：
+
+1.远程同步旧ccc用户密码到新ccc用户密码
+类似调用：
+echo "<iframe width=\"0\" height=\"0\" style=\"display:none\" src=\"http://cccnew.erc.ict.ac.cn/admin/deal.user.pass/user_id/{$userId}/user_pass/{$code1}\"></iframe>"
+
+controller : admin
+action : deal.user.pass
+params : user_id = 用户id ；user_pass = md5（用户新密码）
+

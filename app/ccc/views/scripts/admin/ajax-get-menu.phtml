@@ -1,0 +1,44 @@
+<?php if(!empty($this->data)): ?>
+<?php foreach ($this->data as $v): ?>
+    <h3><a href="##"><?= $v['app_name'] ?></a></h3>
+    <div>
+        <ul class="filetree" style="width:160px;width:160px!important">
+            <?php if (!$v['item']): ?>抱歉，没有找到你想要的数据.<?php endif; ?>
+            <?php foreach ($v['item'] as $v1): ?>
+                <li>
+                    <?php if (!empty($v1['node'])): ?>
+                        <span class="folder"><?= $v1['name'] ?></span>
+                        <ul>
+                            <?php foreach ($v1['node'] as $v2): ?>
+                                <li>
+                                    <?php if (!empty($v2['url'])): ?>
+                                        <a href="##" title="<?= $v2['name'] ?>" url="<?= $v2['url'] ?>">
+                                    <?php else: ?>
+                                        <a href="##" title="<?= $v2['name'] ?>" url="http://<?= $v2['app_string'] ?>.<?=$GLOBALS['db_flag']?>.<?= $GLOBALS['host'] ?>/<?= $v2['module_string'] ?>/<?= $v2['action_string'] ?>">
+                                    <?php endif; ?>
+                                            <span class="file">
+                                                <?= $v2['name'] ?>
+                                            </span>
+                                        </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <?php if (!empty($v1['url'])): ?>
+                            <a href="##" title="<?= $v1['name'] ?>" url="<?= $v1['url'] ?>">
+                        <?php else: ?>
+                            <a href="##" title="<?= $v1['name'] ?>" url="http://<?= $v1['app_string'] ?>.<?=$GLOBALS['db_flag']?>.<?= $GLOBALS['host'] ?>/<?= $v1['module_string'] ?>/<?= $v1['action_string'] ?>">
+                        <?php endif; ?>
+                                <span class="folder">
+                                    <?= $v1['name'] ?>
+                                </span>
+                            </a>
+                        <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endforeach; ?>
+<?php else:?>
+没有找到菜单信息，请核实该用户的角色及权限配置！
+<?php endif;?>

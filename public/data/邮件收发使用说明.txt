@@ -1,0 +1,8 @@
+php收发邮件调用使用
+1.发邮件  ext/email/class.phpmailer.php | class.smtp.php
+参考：Ccc_Helper_Com::sendMail( $mailConfigArray , $mailToArray ,
+		$mailSubject , $mailContent )；
+说明：查看文件里面有相关说明；
+2.收邮件  ext/email/class.receivemail.php
+参考：/public/daemon/do4.php
+说明：收邮件可以查看未读邮件数以及邮件列表内容并支持分页形式

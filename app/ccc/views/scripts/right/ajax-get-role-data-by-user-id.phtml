@@ -1,0 +1,15 @@
+<ul id="ul_role_id" class="treeview">
+<input type="hidden" id="hidden_role_count" value="<?=$this->roleCount?>" />
+<?php if( $this->roleData ):?>
+	<?php foreach ($this->roleData as $k=>$p): ?>
+    <li class="collapsable">
+    <div class="hitarea collapsable-hitarea"></div>
+    <span style="cursor:pointer" id="span_role_id_<?=$k?>" onclick="Right.getRightDataByRoleId(<?=$k?>,<?=$p['role_id']?>)">
+	<?=$p['role_name']?>
+    </span>
+    </li>
+    <?php endforeach; ?>
+<?php else:?>
+	抱歉，没有找到您匹配到的角色。
+<?php endif;?>
+</ul>

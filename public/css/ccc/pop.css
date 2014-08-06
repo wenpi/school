@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+/*-- common --*/
+
+body {
+    background: none repeat scroll 0 0 #FFFFFF;
+    padding: 10px;
+}
+
+body,table,input,textarea,select{FONT-FAMILY:MS Sans Serif,Arial;font-size: 12px; }
+
+table, td { border: 1px solid #000; border-collapse:collapse;}

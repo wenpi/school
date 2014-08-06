@@ -1,0 +1,72 @@
+<?= $this->headTitle( $this->title ) ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/resource.js' type='text/javascript'></script>
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table content-->
+        <form action="/resource/add.action.ok" method="post">
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+                <tbody>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">应用名称：</td>
+                        <td  style="text-align:left;"><?=$this->actionData['app_name']?>（如果为空则为公共应用或公共菜单）</td>
+                    </tr>
+					<tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">模块标识符：</td>
+                        <td  style="text-align:left;"><?=$this->actionData['module_string']?></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">模块名称：</td>
+                        <td  style="text-align:left;"><?=$this->actionData['module_name']?></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">动作标识符：</td>
+                        <td  style="text-align:left;"><?=$this->actionData['action_string']?></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">动作名称：</td>
+                        <td  style="text-align:left;"><?=$this->actionData['action_name']?></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">URL：</td>
+                        <td  style="text-align:left;"><?=$this->actionData['url']?></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">状态：</td>
+                        <td  style="text-align:left;"><?php echo $this->actionData['is_view']==1?"可见":"不可见"?>；<?php echo $this->actionData['is_update']==1?"可改":"不可改"?>；<?php echo $this->actionData['is_log']==1?"需记录日志":"不记录日志"?>；<?php echo $this->_actionData['is_remove']==1?"可删":"不可删"?><hr />“可见”：该动作在菜单可见；<br />“可改”：该动作可以进行修改；一般系统动作不可更改；<br />“记录日志”：访问需记录该动作行为日志；相应会增加压力；一般默认不选中；<br />“可删”：该动作可删除；系统动作不可删除；<br /></td>
+                    </tr>
+
+                    <tr class="ui-widget-content jqgrow ui-row-ltr" id="tr_action_sort" style="display:none">
+                        <td  style="text-align:right; width:150px;">排序：</td>
+                        <td  style="text-align:left;"><?=$this->actionData['sort']?></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">是否开启数据权限：</td>
+                        <td  style="text-align:left;"><?php echo $this->actionData['is_right_data']==1?"是":"否"?><?php if($this->actionData['is_right_data']==1):?><table cellspacing="0" cellpadding="0" border="1" class="ui-jqgrid-btable" style="width:350px;postion:absolute;" id="table_add_right_data"><tbody><tr class="ui-widget-content jqgrow ui-row-ltr"><td  style="text-align:right; width:100px;">类名：</td><td  style="text-align:left;"><?=$this->actionData['right_class_name']?></td></tr><tr class="ui-widget-content jqgrow ui-row-ltr"><td  style="text-align:right; width:100px;">动作名：</td><td  style="text-align:left;"><?=$this->actionData['right_action_name']?></td></tr></tbody></table><?php endif;?></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">说明：</td>
+                        <td  style="text-align:left;"><?=$this->actionDasta['comment']?></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;"></td>
+                        <td  style="text-align:left;"><input type="button" name="fanhui" value="返回资源列表" onclick="window.location='/resource/list.action<?=$this->from?>'" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </form>
+        <!--body table content-->
+
+
+    </div>
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+    </div>
+</div>

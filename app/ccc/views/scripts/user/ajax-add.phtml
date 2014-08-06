@@ -1,0 +1,198 @@
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 55%;float: left">
+<div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title1 ?></span>
+		</div>
+		<!--body table title-->
+
+		<!--body table header-->
+
+		<!--body table header-->
+
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+			<table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+				<tbody>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td width="12%"  style="text-align:center;">基本信息</td>
+                       <td colspan="2"  style="text-align:center;">&nbsp;</td>
+                       <td width="13%"  style="text-align:center;">密码信息</td>
+                       <td colspan="2"  style="text-align:center;">&nbsp;</td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td width="15%"  style="text-align:left;">用户名</td>
+                       <td width="20%"  style="text-align:left;">
+                       <input name="input_username" type="text" id="input_username" size="10" />
+                       <font color="red">*</font>
+                       </td>
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td width="18%"  style="text-align:left;">新密码</td>
+                       <td width="22%"  style="text-align:left;">
+                       <input name="input_newpass" type="text" id="input_newpass" size="12" />
+                       <font color="red">*</font>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td  style="text-align:left;">用户名称</td>
+                       <td  style="text-align:left;">
+                       <input name="input_realname" type="text" id="input_realname" size="12" />
+                       <font color="red">*</font>
+                       </td>
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td  style="text-align:left;">再输入新密码</td>
+                       <td  style="text-align:left;">
+                       <input name="input_renewpass" type="text" id="input_renewpass" size="12" />
+                       <font color="red">*</font>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:center;">&nbsp;</td>
+						<td  style="text-align:left;">IP</td>
+						<td colspan="4"  style="text-align:left;"><input name="input_ip" type="text" id="input_ip" size="12" title="*为任意IP，如果选定具体IP则登录会校验IP" value="*"/>
+						  （*为任意IP，多个IP请以“,”逗号隔开）</td>
+					</tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td  style="text-align:left;">状态</td>
+                       <td  style="text-align:left;">
+                       <select name="input_status" size="1" id="input_status">
+                         <option value="1">已激活</option>
+                         <option value="2">未激活</option>
+                         <option value="3">已冻结</option>
+                         <option value="4">已删除</option>
+                       </select>
+                       <font color="red">*</font>
+                       </td>
+                       <td colspan="3"  style="text-align:center;">&nbsp;</td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td colspan="6"  style="text-align:center;">
+                       <input type="button" name="button" id="button" value="添加用户信息" onclick="User.saveUserInfo();"/>			
+                       </td>
+                     </tr>
+                </tbody>
+			</table>
+	</div>
+		<!--body table content-->
+        
+  </div>
+  
+  <div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title2 ?></span>
+		</div>
+		<!--body table title-->
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+			<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
+                <tbody>
+                    <tr>
+                      <td style="text-align:right">人员类别：</td>
+                      <td colspan="2" style="text-align:left">
+                      <select name="user_type_id" id="user_type_id" onchange="User.showData(this.value);">
+                      <option value="0">-请选择-</option>
+                      <?php foreach($this->userTypeData as $p):?>
+                      <option value="<?=$p['user_type_id']?>"><?=$p['type_name']?></option>
+                      <?php endforeach;?>
+                      </select>
+                      <font color="red">*</font>
+                      (转至用户首次密码为<font color="red"><?=$this->defaultPasswd?></font>,请牢记！)；
+                      </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center"><strong>已为用户</strong></td>
+                        <td style="text-align:center"><strong>操作</strong></td>
+                        <td style="text-align:center"><strong>余下人员</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">
+                        <select name="left_select" style="height:260px;width:220px;" multiple="true" id="left_select">
+                        </select>
+                        </td>
+                        <td style="text-align:center">
+                        <p><input type="button" value=">>" onclick="rightMoveAll();" title="将左侧全部移至右侧"></p>
+                        <p><input type="button" value=">" onclick="rightMove();" title="将左侧选中项移至右侧"></p>
+                        <p><input type="button" value="<" onclick="leftMove();" title="将右侧选中项移至左侧"></p>
+                        <p><input type="button" value="<<" onclick="leftMoveAll();" title="将右侧全部移至左侧"></p>
+                        </td>
+                        <td style="text-align:center">
+                        <select name="right_select" style="height:260px;width:220px;" multiple="true" id="right_select">
+                        </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+		</div>
+		<!--body table content-->
+        <div style=" text-align:center">
+            <input type="button" value="确定保存" class="button" onclick="saveUserSet();" />
+        </div>
+        
+  </div>
+    
+
+	<!--带分页-->
+	<div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+	</div>
+
+</div>
+<script type="text/javascript">
+var leftSelect = document.getElementById("left_select");
+var rightSelect = document.getElementById("right_select");
+// 将左侧select移动至右侧select
+function rightMove() {
+	ListUtil.LeftMoveSelected(leftSelect,rightSelect);
+}
+
+// 将左侧所有移动至右侧select
+function rightMoveAll() {
+	ListUtil.LeftMoveAll(leftSelect,rightSelect);
+}
+
+// 将右侧移动至左侧selcet
+function leftMove() {
+	ListUtil.RightMoveSelected(rightSelect,leftSelect);
+}
+
+// 将右侧所有移动至左侧select
+function leftMoveAll() {
+	ListUtil.RightMoveAll(rightSelect,leftSelect);
+}
+
+// 检查并提交
+function saveUserSet( ) {
+	var user_type_id = $("#user_type_id").val();
+	if(user_type_id ==0) { 
+		alert("请选择人员类别");
+		return false;
+	}
+	var len = leftSelect.length;
+	var str = "";
+	for(var i=0; i<len;i++) {
+		 str += "|" + leftSelect.options[i].value;
+	}
+	// 更新且提交
+	$.ajax({
+		url:"/user/ajax.save.user.set",
+		type:"POST",
+		dataType:"json",
+		data:{
+			user_type_id:user_type_id,
+			user_id_str:str,
+			j:1,
+			tt:Math.random()
+		},
+		success:function(resp){
+			if(resp==1) { 
+				alert("操作成功！");
+				window.location = "/user/list";
+			}
+		}
+	});
+}
+</script>

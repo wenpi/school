@@ -1,0 +1,139 @@
+<style>
+#banner_text{color:#FFFFFF;WIDTH:100%;FONT-WEIGHT:bold;FONT-SIZE:18pt;}#time{text-align:right;padding-top:5px;}#weather{position:absolute;text-align:right;padding-top:8px;padding-right:10px;right:3px;}#today{position:absolute;top:30px;right:0px;padding-right:5px;}.city{font-weight:bold;cursor:pointer;}.wind,.weather{padding-right:3px;}.temperature{padding-right:3px;}#area_select{width:310px;text-align:right;position:absolute;top:25px;right:0px;display:none;}
+</style>
+<table class="topbar" height="60" width="100%" border="0" cellspacing="0"
+cellpadding="0">
+    <tbody>
+        <tr height="45">
+            <td width="180">
+                <img src="/images/logo.gif" align="absmiddle"  height="45" />
+            </td>
+            <td valign="top" nowrap="">
+                <div id="time">
+                    <span class="time_left">
+                        <span class="time_right">
+                            <span id="date" title="<?=date("Y-m-d")?>">
+                                <?=date("Y-m-d")?>
+                            </span>
+                            <b>
+								<?php if( date( "w" ) == 0 ): ?>
+                                    星期天
+                                <?php elseif( date( "w" ) == 1 ): ?>
+                                    星期一
+                                <?php elseif( date( "w" ) == 2 ): ?>
+                                    星期二
+                                <?php elseif( date( "w" ) == 3 ): ?>
+                                    星期三
+                                <?php elseif( date( "w" ) == 4 ): ?>
+                                    星期四
+                                <?php elseif( date( "w" ) == 5 ): ?>
+                                    星期五
+                                <?php elseif( date( "w" ) == 6 ): ?>
+                                    星期六
+                                <?php endif ; ?>
+                            </b>
+                            <!--<span id="mdate" title="农历 七月廿二">
+                                农历七月廿二
+                            </span>-->
+                            <img src="/images/time.gif" align="absmiddle">
+                            <span id="time_area">
+                                <?=date("H:i:s")?>
+                            </span>
+                            &nbsp;
+                        </span>
+                    </span>
+                </div>
+                <div id="weather" style="display: block;">loading</div>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+      <tr height="15">
+        <td colspan="3" align="left">
+        <table width="100%" border="0">
+          <tr>
+            <td width="200" align="left">
+			<?php echo date("H") < 12 ? "上午好" : "下午好" ?>！
+            <span id="span_header_postion">
+			<?php if( isset($_SESSION['ccc']['isccc']) && $_SESSION['ccc']['isccc'] >0 ):?>
+				<font title="该用户为授权过来的不能修改其资料信息" style="font-weight:bold">
+				<?=$_SESSION['ccc']['uname']?>(<?=$_SESSION['ccc']['unickname']?>)
+				</font>
+			<?php else:?>
+				<a href="##" style="font-weight:bold" title="<?=$_SESSION['ccc']['unickname']?>'s个人资料" url="/my/myspace">
+				<?=$_SESSION['ccc']['uname']?>(<?=$_SESSION['ccc']['unickname']?>)
+				</a>
+			<?php endif;?>
+			</span></td>
+            <td align="left">
+            <img src='/images/menu_left.png' id="btnCloseWest" title="显示/隐藏左侧面板"  alt="显示/隐藏左侧面板" desc="1" onclick="showHideLeftMenu();" style="cursor:pointer" /></span>
+            &nbsp;
+            <span id="span_header_tool"></span>
+            </td>
+            <td align="right">桌面 | 控制面板 | <a href="##" id="btOnclickLogout">注销</a> &nbsp;</td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+    </tbody>
+</table>
+<!--注销-->
+<div id="dialog-message-logout" title="注销" style="display:none">
+	<p>
+		<span class="ui-icon ui-icon-circle-check" style="float: left; margin: 0 7px 50px 0;"></span>
+		确定要注销吗?
+	</p>
+</div>
+<script>
+    var time = "<?= time() ?>";
+    var objTime, timeStr, timeSecond, timeMinute, timeHour;
+    time = parseInt(time);
+	// 刷新时间
+    function refreshTime() {
+        time++;
+        objTime = new Date( time * 1000 );
+        timeHour = objTime.getHours();
+        timeMinute = objTime.getMinutes();
+        timeSecond = objTime.getSeconds();
+        timeHour = timeHour < 10 ? "0" + timeHour : timeHour;
+        timeMinute = timeMinute < 10 ? "0" + timeMinute : timeMinute ;
+        timeSecond = timeSecond < 10 ? "0" + timeSecond : timeSecond ;
+        timeStr = timeHour + ":" + timeMinute + ":" + timeSecond ;
+        $("#time_area").html(timeStr);
+    }
+    setInterval("refreshTime()", 1000);
+	// 显示/隐藏
+	function showHideLeftMenu() {
+		var desc = $("#btnCloseWest").attr("desc");
+		if(desc==1) {
+			$("#btnCloseWest").attr("src","/images/menu_right.png");
+			$("#btnCloseWest").attr("desc",2);
+		} else {
+			$("#btnCloseWest").attr("src","/images/menu_left.png");
+			$("#btnCloseWest").attr("desc",1);
+		}
+	}
+	// 初始化天气
+	function initWeather(city_id) {
+		jQuery.ajax({
+            type: "POST",
+            url: "/admin/ajax.get.weather.data",
+            data: {
+				city_id:city_id,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+				resp = '(' + resp + ')';
+          		var info = eval(resp)["weatherinfo"];
+				var data = "<span class=\"city\"> "+info['city']+" </span> ";
+				data += " <img src='/images/weather/" + info["img1"] + "'/>" + " <img src='/images/weather/" + info["img2"] + "'/>" ;
+				data += " <span class=\"weather\">"+info['weather']+"</span>";
+				data += " <span class=\"temperature\">" + info['temp1'] + "~" + info['temp2'] + "</span>";
+				$("#weather").html( data );
+            }
+        });
+	}
+
+	initWeather("101010100");
+</script>

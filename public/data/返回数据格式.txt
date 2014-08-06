@@ -1,0 +1,4 @@
+++返回数据格式说明++
+1、PHP-JSON格式
+$result = array("error_code"=>0,"msg"=>"","data"=>array());
+echo Ccc_Third_Json::getInstance()->encode( $result ) ;

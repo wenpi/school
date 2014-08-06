@@ -1,0 +1,4 @@
+<option value="0">--模块--</option>
+<?php foreach($this->moduleData as $v):?>
+<option value="<?=$v['module_id']?>" <?php if($this->moduleId==$v['module_id']):?> selected <?php endif;?>>[<?=$v['module_string']?>]<?=$v['name']?></option>
+<?php endforeach;?>

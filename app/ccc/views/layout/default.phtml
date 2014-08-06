@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" media="screen" href="/js/jquery.ui/jquery-ui-1.8.24.css" />
+        <script src="/js/jquery-1.8.2.min.js" type="text/javascript"></script>
+        <script src="/js/jquery.extend.js" type="text/javascript"></script>
+        <script src="/js/jquery.ui/jquery-ui-1.8.24.min.js" type="text/javascript"></script>
+        <script src="/js/jquery.layout-latest.min.js" type="text/javascript"></script>
+        <script src="/js/jquery.contextMenu.js" type="text/javascript"></script>
+        <script src="/js/jquery.cleverTabs.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="/js/jquery.treeview/jquery.treeview.css" />
+        <script src="/js/jquery.treeview/jquery.treeview.js" type="text/javascript"></script>
+        <style>
+            html, body{height: 100%; width: 100%; margin: 0;padding: 0; font-size:12px;}
+        </style>
+        <?= $this->headTitle(" - 后台管理系统 - 明日东方科技 ") ?>
+        <?= $this->headLink() ?>
+        <?= $this->headScript() ?>
+        <script type="text/javascript">
+            var tabs, layout;
+            $(function() {
+                layout = $('body').layout({
+                    west: {
+                        size: 200,
+                        togglerTip_open: "关闭", 
+                        togglerTip_closed: "打开", 
+                        togglerContent_open: "<<", 
+                        togglerContent_closed: ">>",
+                        spacing_open: 12,
+                        spacing_closed: 12,
+                        resizable: false,
+                        closeable: false
+                    },
+                    north: {
+                        resizable: false,
+                        closeable: false
+                    },
+                    south: {
+                        resizable: false,
+                        closeable: false
+                    }
+                }).bindButton('#btnCloseWest', 'toggle', 'west');
+                // tabs
+                tabs = $('#tabs').cleverTabs();
+                $("#tabs").bind('resize', function() {
+                    tabs.resizePanelContainer();
+                });
+                // 默认首页
+                tabs.add({url: "/admin/home.index", label: "首页"});
+                var tab = tabs.getTabByUrl('/admin/home.index');
+                tab.setLock(true);
+                // logout
+                $("#btOnclickLogout").click(function() {
+                    $("#dialog-message-logout").dialog({
+                        modal: true,
+                        buttons: {
+                            "确定": function() {
+                                window.location.href = "/admin/logout";
+                            },
+                            "取消": function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                });
+                // 初始化
+                function initData() {
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "/admin/ajax.get.menu",
+                        data: {j: 1, tt: Math.random()},
+                        success: function(resp) {
+                            $.validRight(resp);
+                            $("#accordion").html(resp);
+                            // tree view
+                            $("#accordion ul.filetree").treeview();
+                            // 面板
+                            $("#accordion").accordion({fillSpace: true, collapsible: false});
+                            // add tab
+                            $("#accordion ul.filetree a").live("click" ,function(e) {
+                                var title = $(this).closest("a").attr("title");
+                                var url = $(this).closest("a").attr("url");
+                                var tab = tabs.getTabByUrl(url);
+                                if (tab != null) {
+                                    tab.refresh();
+                                }
+                                tabs.add({url: url, label: title});
+                            });
+                        }
+                    });
+                    
+                    jQuery.ajax({
+                        type: "POST",
+                        url: "/admin/ajax.get.header",
+                        data: {j: 1, tt: Math.random()},
+                        success: function(resp) {
+                            $.validRight(resp);
+                            var obj =  $("#span_header_tool").html(resp);
+                            $("#span_header_tool a").live("click",function(e){
+                                var title = $(this).closest("a").attr("title");
+                                var url = $(this).closest("a").attr("url");
+                                var tab = tabs.getTabByUrl(url);
+                                if (tab != null) {
+                                    tab.refresh();
+                                }
+                                tabs.add({url: url, label: title});
+                            });
+                        }
+                    });
+					
+					$("#span_header_postion a").live("click",function(e){
+						var title = $(this).closest("a").attr("title");
+						var url = $(this).closest("a").attr("url");
+						var tab = tabs.getTabByUrl(url);
+						if (tab != null) {
+							tab.refresh();
+						}
+						tabs.add({url: url, label: title});
+					});
+                    
+                }
+                // 执行初始化数据
+                initData();
+            });
+        </script>
+    <body>
+        <div class="ui-layout-north"><?= $this->partial('header.phtml') ?></div>
+        <div class="ui-layout-west" style="height:100%;"><?= $this->partial('left.phtml') ?></div>
+        <div class="ui-layout-center"><?= $this->partial('right.phtml') ?></div>
+        <!--<div class="ui-layout-south" style="text-align: center;height:30px;"><?= $this->partial('footer.phtml') ?></div>-->
+        <!--<div class="ui-layout-east">East</div>-->
+    </body>
+</html>

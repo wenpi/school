@@ -1,0 +1,80 @@
+<?= $this->headTitle("修改模块/动作") ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/resource.js' type='text/javascript'></script>
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table content-->
+        <form action="/resource/edit.action.ok" method="post">
+        <input type="hidden" name="from" value="<?=base64_encode($this->from)?>"  />
+        <input type="hidden" name="hidden_resource_id" value="<?=$this->actionData['resource_id']?>"  />
+        <input type="hidden" name="hidden_app_id" value="<?=$this->actionData['app_id']?>"  />
+        <input type="hidden" name="hidden_module_id" value="<?=$this->actionData['module_id']?>"  />
+        <input type="hidden" name="hidden_action_string" value="<?=$this->actionData['action_string']?>"  />
+        <input type="hidden" name="hidden_module_sort" value="<?=$this->actionData['action_string']?>"  />
+        <input type="hidden" name="hidden_action_sort" value="<?=$this->actionData['action_string']?>"  />
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+                <tbody>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">应用名称：</td>
+                        <td  style="text-align:left;"><select name="app_id" style="width:150px" id="app_id" onchange="Resource.showModuleByAppId(this.value, 0);Resource.showActionSort(<?php echo $this->actionData['module_id']==0?$this->actionData['module_sort']:$this->actionData['sort']?>);"><option value="0">--应用--</option><?php foreach ($this->appData as $p): ?><option value="<?= $p['app_id'] ?>" <?php if ($this->actionData['app_id'] == $p['app_id']): ?> selected <?php endif; ?>>[<?= $p['app_string'] ?>]<?= $p['app_name'] ?></option><?php endforeach; ?></select>（如果为空则为公共应用或公共菜单）</td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">模块名称：</td>
+                        <td  style="text-align:left;"><select name="module_id" style="width:150px" id="module_id" onchange="Resource.showActionSort(<?php echo $this->actionData['module_id']==0?$this->actionData['module_sort']:$this->actionData['sort']?>);"><option value="0">--模块--</option><?php foreach ($this->moduleData as $m): ?><option value="<?= $m['module_id'] ?>" <?php if ($this->actionData['module_id'] == $m['module_id']): ?> selected <?php endif; ?>>[<?= $m['module_string'] ?>]<?= $m['name'] ?></option><?php endforeach; ?></select></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">动作标识符：</td>
+                        <td  style="text-align:left;"><input type="text"  name="action_string" id="action_string" value="<?=$this->actionData['action_string']?>" style="width:200px;" /><span style="color:red">*</span>（模块如未选择则此标示符为模块标示符）</td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">动作名称：</td>
+                        <td  style="text-align:left;"><input type="text" name="action_name" id="action_name" value="<?=$this->actionData['name']?>" style="width:200px;" /><span style="color:red">*</span>（模块如未选择则此名称为模块名称）</td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">URL：</td>
+                        <td  style="text-align:left;"><input type="text" name="url" id="url" style="width:350px;" value="<?=$this->actionData['url']?>"/>（不为空则以此为优先作为访问URL）</td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">状态：</td>
+                        <td  style="text-align:left;"><input type="checkbox" name="is_view" id="is_view" <?php echo $this->actionData['is_view']==1?"checked":""?> onclick="Resource.showActionView(this.checked);" />可见 <input name="is_update" type="checkbox" id="is_update" <?php echo $this->actionData['is_update']==1?"checked":""?> />可改 <input type="checkbox" name="is_log" id="is_log" <?php echo $this->actionData['is_log']==1?"checked":""?> />记录日志 <input name="is_remove" type="checkbox" id="is_remove" <?php echo $this->actionData['is_remove']==1?"checked":""?> />可删<br /><hr />“可见”：该动作在菜单可见；<br />“可改”：该动作可以进行修改；一般系统动作不可更改；<br />“记录日志”：访问需记录该动作行为日志；相应会增加压力；一般默认不选中；<br />“可删”：该动作可删除；系统动作不可删除；<br /></td>
+                    </tr>
+
+                    <tr class="ui-widget-content jqgrow ui-row-ltr" 
+                    	id="tr_action_sort" style="<?php echo $this->actionData['is_view']==1?"":"display:none"?>">
+                        <td  style="text-align:right; width:150px;">排序：</td>
+                        <td  style="text-align:left;"><select name="sort" style="width:150px" id="sort"><option value="0">--排序--</option></select>之后</td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">是否开启数据权限：</td>
+                        <td  style="text-align:left;"><input type="checkbox" name="is_right_data" id="is_right_data" onclick="Resource.checkRightData(this.checked);" <?php echo $this->actionData['is_right_data']==1?"checked":""?>/><font color="red">（主要用于业务逻辑权限）</font><table cellspacing="0" cellpadding="0" border="1" class="ui-jqgrid-btable" style="width:350px;postion:absolute;<?php echo $this->actionData['is_right_data']==1?"":"display:none"?>" id="table_add_right_data"><tbody><tr class="ui-widget-content jqgrow ui-row-ltr"><td  style="text-align:right; width:100px;">类名：</td><td  style="text-align:left;"><input type="text" name="right_class_name" id="right_class_name" style="width:200px;" value="<?=$this->actionData['right_class_name']?>" /></td></tr><tr class="ui-widget-content jqgrow ui-row-ltr"><td  style="text-align:right; width:100px;">动作名：</td><td  style="text-align:left;"><input type="text" name="right_action_name" id="right_action_name" style="width:200px;" value="<?=$this->actionData['right_action_name']?>" /></td></tr></tbody></table></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">说明：</td>
+                        <td  style="text-align:left;"><textarea name="comment" id="comment" cols="45" rows="5"><?=$this->actionData['comment']?></textarea></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;"></td>
+                        <td  style="text-align:left;"><input type="submit" name="save" value="确定修改" />&nbsp;&nbsp;<input type="button" name="fanhui" value="返回资源列表" onclick="window.location='/resource/list.action<?=$this->from?>'" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </form>
+        <!--body table content-->
+
+
+    </div>
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+    </div>
+</div>
+<script type="text/javascript">
+Resource.showModuleByAppId(<?=$this->actionData['app_id']?>, <?=$this->actionData['module_id']?>);
+Resource.showActionSort(<?php echo $this->actionData['module_id']==0?$this->actionData['module_sort']:$this->actionData['sort']?>);
+</script>

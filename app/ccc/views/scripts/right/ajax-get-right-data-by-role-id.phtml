@@ -1,0 +1,30 @@
+<input type="button" id="button_all" value="全选" onclick="Right.checkAllRight(1,<?=$this->count?>)" />
+<input type="button" id="button_allnot" value="反选" onclick="Right.checkAllRight(0,<?=$this->count?>)" />
+（选中则包含此权限，不选或取消选中则不包含此权限）
+<hr />
+<table width="100%" border="1" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="30%">
+    <ul id="ul_app_module_action" class="treeview">
+            <input type="hidden" id="hidden_role_id" value="<?=$this->roleId?>" />
+            <?php if($this->rightData):?>
+            
+            <?php foreach ($this->rightData as $k=>$p): ?>
+            <li class="collapsable">
+                <div class="hitarea collapsable-hitarea"></div>
+                    <input type="checkbox" id="input_right_<?=$k?>" value="<?=$p['right_id']?>" 
+                    onclick="Right.checkThisRight(this.checked,<?=$k?>)" 
+                    <?php echo $p['selected'] == 1 && $p['current_selected'] ==1 ? "checked" : "" ?> 
+                    <?php echo $p['current_selected'] == 0 ? "disabled" : "";?>/>
+                    <a href="##" onclick="Right.getResourceDataByRightId(<?=$p['right_id']?>)" title="查看该权限对应的资源信息"><?= $p['right_name'] ?></a>
+            </li>
+            <?php endforeach; ?>
+            <?php else:?>
+            抱歉，没有找到该角色匹配到的权限。
+            <?php endif;?>
+    </ul>
+    </td>
+    <td valign="top" id="td_resource" width="70%"></td>
+  </tr>
+</table>
+

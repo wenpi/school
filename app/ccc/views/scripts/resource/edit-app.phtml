@@ -1,0 +1,61 @@
+<?= $this->headTitle( $this->title ) ?>
+<script src='/js/<?=$GLOBALS['module']?>/resource.js' type='text/javascript'></script>
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 50%;float: left">
+	<div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title ?></span>
+		</div>
+		<!--body table title-->
+
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+        	<form action="/resource/edit.app.ok" method="post" onsubmit="return Resource.addApp();">
+            <input type="hidden" name="hidden_app_id" value="<?=$this->appData['app_id']?>" />
+            <input type="hidden" name="hidden_app_string" value="<?=$this->appData['app_string']?>" />
+			<table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+				<tbody>
+					<tr class="ui-widget-content jqgrow ui-row-ltr">
+						<td  style="text-align:right; width:150px;">应用名称：</td>
+						<td  style="text-align:left;"><input type="text" name="app_name" id="app_name" value="<?=$this->appData['app_name']?>" /><span style="color:red">*</span></td>
+					</tr>
+					<tr class="ui-widget-content jqgrow ui-row-ltr">
+						<td  style="text-align:right; width:150px;">应用字符串：</td>
+						<td  style="text-align:left;"><input type="text"  name="app_string"  id="app_string" value="<?=$this->appData['app_string']?>" style="width:200px;"/><span style="color:red">*</span></td>
+					</tr>
+					<tr class="ui-widget-content jqgrow ui-row-ltr">
+						<td  style="text-align:right; width:150px;">排序：</td>
+						<td  style="text-align:left;">
+                        <select name="sort" id="sort">
+                        <?php if($this->appSort):?>
+						<?php foreach($this->appSort as $s):?>
+                        <option value="<?=$s['sort']?>" <?php echo ($this->appData['sort']-1)==$s['sort'] ? "selected" : "" ?>>
+						<?=$s['app_name']?>
+                        </option>
+						<?php endforeach;?>
+                        <?php else:?>
+                        <option value="0">无</option>
+                        <?php endif;?>
+                        </select>之后
+                        </td>
+					</tr>
+					<tr class="ui-widget-content jqgrow ui-row-ltr">
+						<td  style="text-align:right; width:150px;">描述：</td>
+						<td  style="text-align:left;"><textarea name="comments" cols="40" rows="5" id="comments"><?=$this->appData['comments']?></textarea></td>
+					</tr>
+					<tr class="ui-widget-content jqgrow ui-row-ltr">
+						<td  style="text-align:right; width:150px;"></td>
+						<td  style="text-align:left;"><input type="submit" name="save" value="保存" /><input type="button" name="fan" value="返回" onclick="window.location='/resource/list.app'" /></td>
+					</tr>
+				</tbody>
+			</table>
+            </form>
+		</div>
+		<!--body table content-->
+
+
+	</div>
+	<!--带分页-->
+	<div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+	</div>
+</div>

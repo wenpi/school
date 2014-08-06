@@ -1,0 +1,40 @@
+#全局常量
+PATH_ROOT  => 根目录
+PATH_LIB  => lib目录
+PATH_APP => app目录
+PATH_CONF => conf目录
+PATH_PEAR => php pear include 目录
+PATH_MOD => 模块目录
+PATH_MOD_CTRL => 模块controllers目录
+PATH_MOD_MODEL => 模块models目录
+PATH_MOD_VIEW => 模块views目录
+PATH_MOD_LAYOUT => 模块layout目录
+
+#全局变量
+domain_name  => 网站名
+module => 应用
+host => conf.ini 域名后缀
+base_url => conf.ini 基础路径
+
+Zend_Registry::get("conf") => 获取conf.ini
+Zend_Registry::get("logger") => 获取日志
+Zend_Registry::get("frontCtrl") => 获取前端控制器
+Zend_Registry::get("adapter") => 获取db适配器{db_r/db_w/db_testsystem}
+Zend_Registry::get("session") => 获取session
+Zend_Registry::get("cache") => 获取cache
+
+#以下使用参考 /lib/ccc/base/controller.php
+
+$this->_db 调用db实例
+$this->_session 调用session实例
+$this->_conf 调用conf实例
+$this->_cache 调用cache实例
+
+
+#全局session
+
+用户Id：$this->_session->uid => return int    等同 $_SESSION['ccc']['uid']
+用户名：$this->_session->uname => return 字符串  等同 $_SESSION['ccc']['uname']
+用户名称：$this->_session->unickname => return 字符串 等同 $_SESSION['ccc']['unickname']
+用户角色：$this->_session->urole => return 数组 等同 $_SESSION['ccc']['urole']
+是否为系统管理员：$this->_session->urolecheck => return true | false 等同 $_SESSION['ccc']['urolecheck']

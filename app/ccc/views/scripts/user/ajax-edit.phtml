@@ -1,0 +1,173 @@
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 55%;float: left">
+<div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title1 ?></span>
+		</div>
+		<!--body table title-->
+
+		<!--body table header-->
+
+		<!--body table header-->
+
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+			<table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+				<tbody>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td width="12%"  style="text-align:center;">基本信息</td>
+                       <td colspan="2"  style="text-align:center;">&nbsp;</td>
+                       <td width="13%"  style="text-align:center;">修改密码</td>
+                       <td colspan="2"  style="text-align:center;">&nbsp;</td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td width="15%"  style="text-align:left;">用户名</td>
+                       <td width="20%"  style="text-align:left;"><input name="input_username" type="text" id="input_username" size="10" value="<?=$this->userInfo['user_name']?>" disabled /></td>
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td width="18%"  style="text-align:left;">新密码</td>
+                       <td width="22%"  style="text-align:left;"><input name="input_newpass" type="text" id="input_newpass" size="12" /></td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td  style="text-align:left;">用户名称</td>
+                       <td  style="text-align:left;"><input name="input_realname" type="text" id="input_realname" size="12" value="<?=$this->userInfo['real_name']?>"/></td>
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td  style="text-align:left;">再输入新密码</td>
+                       <td  style="text-align:left;"><input name="input_renewpass" type="text" id="input_renewpass" size="12" /></td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:center;">&nbsp;</td>
+						<td  style="text-align:left;">IP</td>
+						<td colspan="4"  style="text-align:left;"><input name="input_ip" type="text" id="input_ip" size="12" value="<?=$this->userInfo['ip']?>" title="*为任意IP，如果选定具体IP则登录会校验IP"/>
+						  （*为任意IP，多个IP请以“,”逗号隔开）</td>
+					</tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:center;">&nbsp;</td>
+                       <td  style="text-align:left;">状态</td>
+                       <td  style="text-align:left;">
+                       <select name="input_status" size="1" id="input_status">
+                         <option value="1" <?php echo $this->userInfo['status']==1?"selected":"";?>>已激活</option>
+                         <option value="2" <?php echo $this->userInfo['status']==2?"selected":"";?>>未激活</option>
+                         <option value="3" <?php echo $this->userInfo['status']==3?"selected":"";?>>已冻结</option>
+                         <option value="4" <?php echo $this->userInfo['status']==4?"selected":"";?>>已删除</option>
+                       </select>
+                       </td>
+                       <td colspan="3"  style="text-align:center;">&nbsp;</td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td colspan="3"  style="text-align:center;">
+                       <input type="button" name="button" id="button" value="修改基本信息" onclick="User.updateUserInfo(<?=$this->userInfo['user_id']?>);"/>
+                       </td>
+                       <td colspan="3"  style="text-align:center;">
+                       <input type="button" name="button2" id="button2" value="修改密码" onclick="User.updateUserPass(<?=$this->userInfo['user_id']?>);"/>
+                       </td>
+                     </tr>
+                </tbody>
+			</table>
+	  </div>
+		<!--body table content-->
+        
+  	</div>
+    
+    <div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title2 ?></span>
+		</div>
+		<!--body table title-->
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+			<table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="text-align:center"><strong>已有角色</strong></td>
+                        <td style="text-align:center"><strong>操作</strong></td>
+                        <td style="text-align:center"><strong>余下角色</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center">
+                        <select name="left_select" style="height:260px;width:220px;" multiple="true" id="left_select">
+						<?php foreach($this->userRole as $ur):?>
+                        <option value="<?=$ur['role_id']?>"><?=$ur['role_name']?></option>
+						<?php endforeach;?>
+                        </select>
+                        </td>
+                        <td style="text-align:center">
+                        <p><input type="button" value=">>" onclick="rightMoveAll();" title="将左侧全部移至右侧"></p>
+                        <p><input type="button" value=">" onclick="rightMove();" title="将左侧选中项移至右侧"></p>
+                        <p><input type="button" value="<" onclick="leftMove();" title="将右侧选中项移至左侧"></p>
+                        <p><input type="button" value="<<" onclick="leftMoveAll();" title="将右侧全部移至左侧"></p>
+                        </td>
+                        <td style="text-align:center">
+                        <select name="right_select" style="height:260px;width:220px;" multiple="true" id="right_select">
+						<?php foreach($this->allRole as $r):?>
+                        <option value="<?=$r['role_id']?>"><?=$r['role_name']?></option>
+						<?php endforeach;?>
+                        </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+		</div>
+		<!--body table content-->
+        <div style=" text-align:center">
+            <input type="button" value="确定保存" class="button" onclick="saveUserRole(<?=$this->userInfo['user_id']?>);" />
+        </div>
+        
+	</div>
+
+	<!--带分页-->
+	<div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+	</div>
+
+</div>
+<script type="text/javascript">
+var leftSelect = document.getElementById("left_select");
+var rightSelect = document.getElementById("right_select");
+// 将左侧select移动至右侧select
+function rightMove() {
+	ListUtil.LeftMoveSelected(leftSelect,rightSelect);
+}
+
+// 将左侧所有移动至右侧select
+function rightMoveAll() {
+	ListUtil.LeftMoveAll(leftSelect,rightSelect);
+}
+
+// 将右侧移动至左侧selcet
+function leftMove() {
+	ListUtil.RightMoveSelected(rightSelect,leftSelect);
+}
+
+// 将右侧所有移动至左侧select
+function leftMoveAll() {
+	ListUtil.RightMoveAll(rightSelect,leftSelect);
+}
+
+// 检查并提交
+function saveUserRole( user_id ) {
+	var len = leftSelect.length;
+	var str = "";
+	for(var i=0; i<len;i++) {
+		 str += "|" + leftSelect.options[i].value;
+	}
+	// 更新且提交
+	$.ajax({
+		url:"/user/ajax.save.user.role",
+		type:"POST",
+		dataType:"json",
+		data:{user_id:user_id,role_ids:str,j:1,tt:Math.random()},
+		success:function(resp){
+			if(resp==-1) {
+				alert("用户名不能为空");
+				return false;
+			} else { 
+				alert("保存成功");
+				return false;
+			}
+		}
+	});
+}
+</script>

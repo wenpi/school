@@ -1,0 +1,107 @@
+<?= $this->headTitle($this->title) ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/sms.js' type='text/javascript'></script>
+<script type="text/javascript" src="/js/my97datepicker/WdatePicker.js" ></script>
+<script type="text/javascript" src="/editor/xheditor/xheditor-1.1.14-zh-cn.min.js"></script>
+
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table content-->
+        <form action="/sms/send.ok" method="post">
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
+                <tbody>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">接收类型：</td>
+                        <td  style="text-align:left;">
+                            <select name="receive_type" size="1" id="receive_type" onchange="Sms.showReceiveType(this.value);" style="width:100px;">
+                             <option value="0">单体</option>
+                             <option value="1">班级</option>
+                            </select>
+                            <span id="span_receive_type" style="display:none">
+                            <select name="receive_class_id" size="1" id="receive_class_id" style="width:100px;">
+                              <option value="0">-请选择班级-</option>
+                              <?php if($this->classData):?>
+                              <?php foreach($this->classData as $p):?>
+                              <option value="<?=$p['class_id']?>"><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
+                              <?php endforeach?>
+                              <?php endif;?>
+                            </select>
+                            <font color="red">*</font>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td style="text-align:right; width:150px;">用户类型：</td>
+                      <td style="text-align:left;">
+                      <select name="type" size="1" id="type" onchange="Sms.showUserData(this.value)">
+                          <option value="0">系统</option>
+                          <option value="1">学生(家长)</option>
+                          <option value="2">教工</option>
+                      </select>
+                      </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">接收人：</td>
+                        <td  style="text-align:left;">
+                        <div id="div_receive_user_ids" style="height:80px; width:550px; border:1px dashed #111;">
+                        <span id="sdfsdf">sss(*)</span><span id="sdfsdf">sss(*)</span><span id="sdfsdf">sss(*)</span>
+                        </div>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">发送时间类型：</td>
+                        <td  style="text-align:left;">
+                        <select name="send_time_type" size="1" id="send_time_type" onchange="Sms.showSendTimeType(this.value)">
+                          <option value="0">立即发送</option>
+                          <option value="1">定时发送</option>
+                        </select>
+                        <span id="span_send_time_type" style="display:none">
+                        <input type="text" name="send_time" id="send_time" size="30" class="Wdate" 
+                       		onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  title="请输入定时时间"/>
+                        <font color="red">*</font>
+                        </span>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td  style="text-align:right; width:150px;">标题：</td>
+                        <td  style="text-align:left;">
+                        <input name="title" type="text" id="title" size="50" />
+                        <font color="red">*</font>
+                        </td>
+                    </tr>
+                    
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td  style="text-align:right; width:150px;">内容：</td>
+                      <td  style="text-align:left;">
+                      <textarea name="content" id="content" style="height:150px; width:550px; "></textarea>
+                      <font color="red">*</font>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            
+            
+       	    <div align="center">
+            <input type="submit" name="save" value="确定提交" />
+            &nbsp;&nbsp;
+            <input type="button" name="fanhui" value="返回教工列表" onclick="window.location='/teacher/list'" />
+            </div>
+        </div>
+        </form>
+        <!--body table content-->
+
+
+    </div>
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+    </div>
+</div>
+<div id="div_show_user_data"></div>
+<script type="text/javascript">var editor=$('#content').xheditor({tools:'simple',skin:'default'});</script>

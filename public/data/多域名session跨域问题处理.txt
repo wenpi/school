@@ -1,0 +1,34 @@
+关于oa.***.com  erp.***.com ccc.***.com
+和线上ip以及ccc.erc.ict.ac.cn erp.erc.ict.ac.cn oa.erc.ict.ac.cn ccc.bwstor.com.cn "session" 跨域问题的处理。。
+我已经在120上跑通。
+
+---------------------------
+1.各位只需要在你要登录入口成功或登出口添加 类似如下：
+
+<?php
+echo "<iframe width=\"0\" height=\"0\" style=\"display:none\" src=\"http://ccc.***.cn/admin/deal.logina/act/{$act}/user_name/{$userName}/user_pass/{$userPass}\"></iframe>" ;
+//echo "<meta http-equiv=\"refresh\" content=\"0;url=/mainPage.php\" />";
+//exit;
+?>
+
+简单说明：
+（1）ccc.***.com 一般为新框架下对应的域名
+（2）act 参数只能 login =登录 ;logout = 登出（如果是登出则其他参数一般不需要）
+（3）user_name / user_pass 在act为login生效。
+（4）其他参数暂未定义，后期会在优化。
+
+2.conf/params_conf.ini
+
+auth_token = 验证串
+auth_url = 要添加或处理session 的url
+
+3.中转处理
+http://ccc.***.com/sso.php
+
+简单说明：
+// 针对IE
+header("P3P: CP=CURa ADMa DEVa PSAo PSDo OUR BUS UNI PUR INT DEM STA PRE COM NAV OTC NOI DSP COR");
+（1）ccc.***.com 一般为新框架下对应的域名
+（2）action参数 login=登录；logout=登出
+（3）t=当前毫秒数；token=验证串；sid= base64_encode ( sessionID )；tt= md5( t+验证串 )
+

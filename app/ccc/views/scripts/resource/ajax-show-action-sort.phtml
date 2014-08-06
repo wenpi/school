@@ -1,0 +1,4 @@
+<option value="0">--排序--</option>
+<?php foreach($this->actionSortData as $v):?>
+<option value="<?=$v['sort']?>" <?php echo $this->selectOne==$v['sort']?"selected":""?>><?=$v['name']?></option>
+<?php endforeach;?>
