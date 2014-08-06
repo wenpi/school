@@ -9,10 +9,10 @@ $(function(){
         // Backend Settings
         // // Relative to the SWF file (or you can use absolute paths)
         upload_url: "http://<?=$_SERVER['HTTP_HOST']?><?=$this->swfData['upload_url']?>",
-		//upload_url: "http://school.a2.example.com/teacher/ajax.upload.photo",
+	//upload_url: "http://school.a2.example.com/teacher/ajax.upload.photo",
         post_params:{"PHPSESSID":"<?=Zend_Session::getId()?>","student_id":"<?=$this->studentData['student_id']?>"},
         // File Upload Settings
-		file_post_name: '<?=$this->swfData['upload_name']?>',	// input name.
+	file_post_name: '<?=$this->swfData['upload_name']?>',	// input name.
         file_size_limit : "<?=$this->swfData['maxsize_user_photo']?>", // 500kb
         file_types : "<?=$this->swfData['type_user_photo']?>",
         file_types_description : "Image files",
@@ -39,19 +39,19 @@ $(function(){
             // start the upload (if more queued) once an upload is complete
             $(this).swfupload('startUpload');
         })
-		.bind('uploadSuccess', function(event, file, serverData){
-			if( serverData == -1 ) {
-				alert("Session Lost");
-				return false;
-			}
-			if( serverData ==0 ) {
-				alert("上传文件不存在");
-				return false;
-			}
-			$("#div_swfupload_message").html("<font color='red'>上传成功！再次上传覆盖上一次图像</font>");
-			$("#img_student_photo").attr("src","/images/student_photo/_thumb_"+serverData+"?tt="+Math.random());
-			$("#href_student_photo").attr("href","/images/student_photo/"+serverData+"?tt="+Math.random());
-		})
+        .bind('uploadSuccess', function(event, file, serverData){
+                if( serverData == -1 ) {
+                        alert("Session Lost");
+                        return false;
+                }
+                if( serverData ==0 ) {
+                        alert("上传文件不存在");
+                        return false;
+                }
+                $("#div_swfupload_message").html("<font color='red'>上传成功！再次上传覆盖上一次图像</font>");
+                $("#img_student_photo").attr("src","/images/student_photo/_thumb_"+serverData+"?tt="+Math.random());
+                $("#href_student_photo").attr("href","/images/student_photo/"+serverData+"?tt="+Math.random());
+        })
 });
 </script>
 <div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
@@ -200,12 +200,12 @@ $(function(){
                     <?php foreach($this->parentData as $k=>$p):?>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td style="text-align:left;">
-                      <input type="text" name="parent_en_name[<?=$k+1?>]" id="parent_en_name_<?=$k+1?>" size="15"  value="<?=$p['en_name']?>"/>
+                      <input type="text" name="parent_en_name[<?=$p['parent_id']?>]" id="parent_en_name_<?=$p['parent_id']?>" size="15"  value="<?=$p['en_name']?>"/>
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_cn_name[<?=$k+1?>]" id="parent_cn_name_<?=$k+1?>" size="15"  value="<?=$p['cn_name']?>"/></td>
+                      <input type="text" name="parent_cn_name[<?=$p['parent_id']?>]" id="parent_cn_name_<?=$p['parent_id']?>" size="15"  value="<?=$p['cn_name']?>"/></td>
                       <td style="text-align:left;">
-                      <select name="parent_named[<?=$k+1?>]" id="parent_named_<?=$k+1?>">
+                      <select name="parent_named[<?=$p['parent_id']?>]" id="parent_named_<?=$p['parent_id']?>">
                         <option value="1" <?php echo $p['parent_named']==1?"selected":"";?>>爸爸</option>
                         <option value="2" <?php echo $p['parent_named']==2?"selected":"";?>>妈妈</option>
                         <option value="3" <?php echo $p['parent_named']==3?"selected":"";?>>爷爷</option>
@@ -216,13 +216,13 @@ $(function(){
                         <option value="8" <?php echo $p['parent_named']==8?"selected":"";?>>姑父</option>
                       </select></td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_phone[<?=$k+1?>]" id="parent_phone_<?=$k+1?>" size="15" value="<?=$p['phone']?>"/>
+                      <input type="text" name="parent_phone[<?=$p['parent_id']?>]" id="parent_phone_<?=$p['parent_id']?>" size="15" value="<?=$p['phone']?>"/>
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_mobile_phone[<?=$k+1?>]" id="parent_mobile_phone_<?=$k+1?>" size="15" value="<?=$p['mobile_phone']?>"/>
+                      <input type="text" name="parent_mobile_phone[<?=$p['parent_id']?>]" id="parent_mobile_phone_<?=$p['parent_id']?>" size="15" value="<?=$p['mobile_phone']?>"/>
                       </td>
                       <td style="text-align:left;">
-                      <select name="parent_is_message[<?=$k+1?>]" id="parent_is_message_<?=$k+1?>">
+                      <select name="parent_is_message[<?=$p['parent_id']?>]" id="parent_is_message_<?=$p['parent_id']?>">
                         <option value="0" <?php echo $p['is_message']==0?"selected":"";?>>否</option>
                         <option value="1" <?php echo $p['is_message']==1?"selected":"";?>>是</option>
                       </select>

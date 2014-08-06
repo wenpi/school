@@ -15,7 +15,7 @@ class StudentController extends Ccc_Base_Controller {
      */
     function init() {
         parent::init();
-//        $this->checkAuth() ;
+        $this->checkAuth() ;
         $this->checkLog() ;
         $this->_helper->layout()->setLayout("ccc");
     }
@@ -37,7 +37,6 @@ class StudentController extends Ccc_Base_Controller {
         $pageSize = isset($this->_conf->page_size) ? $this->_conf->page_size : 20;
         $where = "";
         $condition = "";
-
 
         $where .=!empty($enName) ? " and en_name like '{$enName}%' " : "";
         $condition .=!empty($enName) ? "/en_name/{$enName}" : "";
@@ -82,22 +81,22 @@ class StudentController extends Ccc_Base_Controller {
     public function ajaxUploadPhotoAction() {
         $this->_helper->layout->disableLayout();
         $config = new Zend_Config_Ini(PATH_ROOT . DS . $this->_conf->path->params_conf, "school");
-        if (!isset($_FILES["user_photo"])
-                || !is_uploaded_file($_FILES["user_photo"]["tmp_name"])
-                || $_FILES["user_photo"]["error"] != 0) {
+        if (!isset($_FILES[$config->student->upload_name])
+                || !is_uploaded_file($_FILES[$config->student->upload_name]["tmp_name"])
+                || $_FILES[$config->student->upload_name]["error"] != 0) {
             die(0);
         }
         // get the paramter.
-        $teacherId = (int) $this->_getParam("teacher_id");
+        $studentId = (int) $this->_getParam("student_id");
         // get the config.
-        $photoPath = isset($config->teacher->path_user_photo) ? PATH_ROOT . $config->teacher->path_user_photo : "";
-        $photoType = isset($config->teacher->type_user_photo) ? $config->teacher->type_user_photo : "";
-        $photoMaxsize = isset($config->teacher->maxsize_user_photo) ? $config->teacher->maxsize_user_photo : 2048;
+        $photoPath = isset($config->student->path_user_photo) ? PATH_ROOT . $config->student->path_user_photo : "";
+        $photoType = isset($config->student->type_user_photo) ? $config->student->type_user_photo : "";
+        $photoMaxsize = isset($config->student->maxsize_user_photo) ? $config->student->maxsize_user_photo : 2048;
         $photoType = str_replace("*.", "", $photoType);
         $photoType = !empty($photoType) ? @explode(";", $photoType) : array();
         $userPhoto = "";
         $classUpload = Ccc_Third_Upload::getInstance($photoPath, $photoType, $photoMaxsize);
-        $upload = $classUpload->run("user_photo");
+        $upload = $classUpload->run($config->student->upload_name,1,$studentId);
         if ($upload) {
             $result = $classUpload->getInfo();
             // 更新数据表
@@ -105,7 +104,7 @@ class StudentController extends Ccc_Base_Controller {
             $params = array(
                 "photo_name" => $userPhoto,
             );
-            TeacherModel::getInstance()->updateData($teacherId, $params);
+            StudentModel::getInstance()->updateData($studentId, $params);
         }
         echo $userPhoto;
         exit;
@@ -133,25 +132,25 @@ class StudentController extends Ccc_Base_Controller {
         );
         $result = array_merge($addBaseParams,$addSchoolParams);
         $add = StudentModel::getInstance()->addData($result);
-//		$add = 1;
+//	$add = 1;
         if($add>0) {
-			// 添加家长信息
-			$parentEnName = $this->_getParam( "parent_en_name" ) ;
-			$parentCnName = $this->_getParam( "parent_cn_name" ) ;
-			$parentNamed = $this->_getParam( "parent_named" ) ;
-			$parentPhone = $this->_getParam( "parent_phone" ) ;
-			$parentMobilePhone = $this->_getParam( "parent_mobile_phone" ) ;
-			$parentIsMessage = $this->_getParam( "parent_is_message" ) ;
-			$dealParams = StudentModel::getInstance()->dealParentParams( $parentEnName , $parentCnName , $parentNamed ,
-				$parentPhone , $parentMobilePhone , $parentIsMessage ) ;
-			$addParent = 0;
-			if($dealParams) {
-				foreach($dealParams as $p) {
-					$p['sch_student_id'] = $add ;
-					ParentModel::getInstance()->addData( $p );
-				}
-				$addParent = 1;
-			}
+	    // 添加家长信息
+            $parentEnName = $this->_getParam("parent_en_name");
+            $parentCnName = $this->_getParam("parent_cn_name");
+            $parentNamed = $this->_getParam("parent_named");
+            $parentPhone = $this->_getParam("parent_phone");
+            $parentMobilePhone = $this->_getParam("parent_mobile_phone");
+            $parentIsMessage = $this->_getParam("parent_is_message");
+            $dealParams = StudentModel::getInstance()->dealParentParams($parentEnName, $parentCnName, $parentNamed, 
+                    $parentPhone, $parentMobilePhone, $parentIsMessage);
+            $addParent = 0;
+            if ($dealParams) {
+                foreach ($dealParams as $p) {
+                    $p['sch_student_id'] = $add;
+                    ParentModel::getInstance()->addData($p);
+                }
+                $addParent = 1;
+            }
         }
 
         if($add>0 && $addParent>0) {
@@ -199,7 +198,7 @@ class StudentController extends Ccc_Base_Controller {
             "id_number" => trim($this->_getParam("id_name")),
         );
         $addSchoolParams = array(
-            "school_class_id" => (int) $this->_getParam("class_id"),
+            "sch_class_id" => (int) $this->_getParam("class_id"),
             "entrance_date" => trim($this->_getParam("entrance_date")),
             "graduate_date" => trim($this->_getParam("graduate_date")),
             "school_status" => (int) $this->_getParam("school_status"),
@@ -211,6 +210,25 @@ class StudentController extends Ccc_Base_Controller {
         $where =!empty($from)?base64_decode($from):"";
         $where = $where . "/student_id/{$hiddenStudentId}";
         if($update>0) {
+            // 更新家长信息
+            $parentEnName = $this->_getParam("parent_en_name");
+            $parentCnName = $this->_getParam("parent_cn_name");
+            $parentNamed = $this->_getParam("parent_named");
+            $parentPhone = $this->_getParam("parent_phone");
+            $parentMobilePhone = $this->_getParam("parent_mobile_phone");
+            $parentIsMessage = $this->_getParam("parent_is_message");
+            $dealParams = StudentModel::getInstance()->dealParentParams($parentEnName, $parentCnName, $parentNamed, 
+                    $parentPhone, $parentMobilePhone, $parentIsMessage);
+            $addParent = 0;
+            if ($dealParams) {
+                foreach ($dealParams as $k=> $p) {
+                    ParentModel::getInstance()->updateData($k, $p);
+                }
+                $addParent = 1;
+            }
+        }
+        
+        if( $update>0 && $addParent >0 ) { 
             Ccc_Helper_Com::alertMess("/student/list{$where}", "操作成功");
         } else {
             Ccc_Helper_Com::alertMess("/student/list{$where}", "操作失败");
@@ -219,8 +237,8 @@ class StudentController extends Ccc_Base_Controller {
 
     public function deleteAction() {
         $this->_helper->layout->disableLayout();
-        $teacherId = (int) $this->_getParam("teacher_id");
-        $delete = TeacherModel::getInstance()->deleteData($teacherId);
+        $studentId = (int) $this->_getParam("student_id");
+        $delete = StudentModel::getInstance()->deleteData($studentId);
         $from = trim($this->_getParam("from"));
         $where =!empty($from)?base64_decode($from):"";
         if($delete>0) {
@@ -229,8 +247,5 @@ class StudentController extends Ccc_Base_Controller {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作失败");
         }
     }
-
-
-
 
 }

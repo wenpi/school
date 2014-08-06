@@ -72,7 +72,7 @@ class Ccc_Third_Upload {
     // 上传
     // @param $fileInput 网页Form(表单)中input的名称
     // @param $changeName 是否更改文件名
-    function run($fileInput, $isChangeName = 1) {
+    function run($fileInput, $isChangeName = 1 , $newFileName = "" ) {
         if (isset($_FILES[$fileInput])) {
             $fileArr = $_FILES[$fileInput];
             if (is_array($fileArr['name'])) {//上传同文件域名称多个文件
@@ -83,7 +83,9 @@ class Ccc_Third_Upload {
                     $ar['size'] = $fileArr['size'][$i];
                     $ar['error'] = $fileArr['error'][$i];
                     $this->getExt($ar['name']); //取得扩展名，赋给$this->ext，下次循环会更新
-                    $this->setSavename($isChangeName == 1 ? '' : $ar['name'] ); //设置保存文件名
+                    $newFileName = $isChangeName == 1 && !empty($newFileName) ? $i . "_" . $newFileName . "." . $this->ext : "";
+                    $newFileName = $isChangeName == 0 ? $ar['name'] : $newFileName;
+                    $this->setSavename( $newFileName ); //设置保存文件名
                     if ($this->copyfile($ar)) {
                         $this->returnArray[] = $this->returninfo;
                     } else {
@@ -94,7 +96,9 @@ class Ccc_Third_Upload {
                 return $this->errno ? false : true;
             } else {//上传单个文件
                 $this->getExt($fileArr['name']); //取得扩展名
-                $this->setSavename($isChangeName == 1 ? '' : $fileArr['name'] ); //设置保存文件名
+                $newFileName = $isChangeName == 1 && !empty($newFileName) ? $newFileName . "." . $this->ext : "";
+                $newFileName = $isChangeName == 0 ? $fileArr['name'] : $newFileName;
+                $this->setSavename( $newFileName ); //设置保存文件名
                 if ($this->copyfile($fileArr)) {
                     $this->returnArray[] = $this->returninfo;
                 } else {
