@@ -103,4 +103,11 @@ class StudentModel
 		return $this->_student->getStudentDataByWhere( $where ) ;
 	}
 
+	public function checkData( $studentId , $typeId , $dealDate )
+	{
+		return $this->_student->checkData( $studentId , $typeId , $dealDate ) ;
+	}
+
+	
+
 }

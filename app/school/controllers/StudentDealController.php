@@ -29,7 +29,7 @@ class StudentDealController extends Ccc_Base_Controller {
 
     public function listAction() {
         // get the paramter.
-        $teacherId = (int) $this->_getParam("teacher_id");
+        $studentId = (int) $this->_getParam("student_id");
         $startDate = trim($this->_getParam("start_date"));
         $endDate = trim($this->_getParam("end_date"));
 
@@ -39,9 +39,9 @@ class StudentDealController extends Ccc_Base_Controller {
         $where = "";
         $condition = "";
 
-        if ($teacherId > 0) {
-            $where .= " and teacher_id = {$teacherId} ";
-            $condition .= "/teacher_id/{$teacherId}";
+        if ($studentId > 0) {
+            $where .= " and sch_student_id = {$studentId} ";
+            $condition .= "/student_id/{$studentId}";
         }
         if (!empty($startDate)) {
             $where .= " and deal_date>='{$startDate}' ";
@@ -53,20 +53,20 @@ class StudentDealController extends Ccc_Base_Controller {
         }
 
         // count.
-        $dataCount = TeacherDealModel::getInstance()->getDataCount($where);
+        $dataCount = StudentDealModel::getInstance()->getDataCount($where);
 //        echo $dataCount;exit;
         $pageCount = ceil($dataCount / $pageSize);
         $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
         $page = $page < 1 ? 1 : $page;
         // data.
         $this->view->title = "教工奖惩管理";
-        $this->view->data = TeacherDealModel::getInstance()->getPageData($page, $pageSize, $where);
+        $this->view->data = StudentDealModel::getInstance()->getPageData($page, $pageSize, $where);
         $this->view->pageData = array("page" => $page, "url" => "/teacherdeal/list{$condition}","page_count" => $pageCount);
-        $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere(  );
-        $this->view->teacherId = $teacherId;
+        $this->view->studentData = StudentModel::getInstance()->getStudentDataByWhere(  );
+        $this->view->studentId = $studentId;
         $this->view->startDate = $startDate;
         $this->view->endDate = $endDate;
-        $this->view->from = base64_encode("/page/{$page}" . $condition);
+        $this->view->from = base64_encode(urlencode("/page/{$page}" . $condition));
     }
 
     public function ajaxAddAction() {
@@ -77,22 +77,22 @@ class StudentDealController extends Ccc_Base_Controller {
 
     public function ajaxSaveAction() {
         $this->_helper->layout->disableLayout();
-        $teacherId = (int) $this->_getParam("input_teacher_id");
+        $studentId = (int) $this->_getParam("input_student_id");
         $typeId = (int) $this->_getParam("input_type_id");
         $dealName = trim($this->_getParam("input_deal_name"));
         $dealDate = trim($this->_getParam("input_deal_date"));
         $dealReason = trim($this->_getParam("input_deal_reason"));
 
-        $isHas = TeacherDealModel::getInstance()->checkData($teacherId, $typeId, $dealDate);
+        $isHas = StudentDealModel::getInstance()->checkData($studentId, $typeId, $dealDate);
         if($isHas>0) {
             echo "-2";
             exit;
         }
-        $teacherData = TeacherModel::getInstance()->getRowData( $teacherId );
+        $studentData = StudentModel::getInstance()->getRowData( $studentId );
         $params = array(
-            "teacher_id" => $teacherId,
-            "teacher_no" => isset($teacherData['teacher_no'])?$teacherData['teacher_no']:"",
-            "teacher_name" => isset($teacherData['cn_name'])?$teacherData['cn_name']:"",
+            "sch_student_id" => $studentId,
+            "sch_student_no" => isset($studentData['student_no'])?$studentData['student_no']:"",
+            "sch_student_name" => isset($studentData['cn_name'])?$studentData['cn_name']:"",
             "deal_date" =>$dealDate,
             "type_id" => $typeId,
             "deal_name" => $dealName,
@@ -100,7 +100,7 @@ class StudentDealController extends Ccc_Base_Controller {
             "deal_user_id" => $this->_session->uid,
             "deal_real_name" => $this->_session->unickname,
         );
-        $add = TeacherDealModel::getInstance()->addData($params);
+        $add = StudentDealModel::getInstance()->addData($params);
         echo $add;
         exit;
     }

@@ -54,5 +54,8 @@ class Data_Student extends Ccc_Base_Model {
 		return !empty($data) ? $data : array();
 	}
 
+	public function checkData( $studentId , $typeId , $dealDate ) {
+		$sql = "select count(*) from ";
+	}
 
 }

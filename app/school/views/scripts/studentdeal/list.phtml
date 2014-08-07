@@ -1,6 +1,6 @@
 <?= $this->headTitle( $this->title ) ?>
 <script src="/js/my97datepicker/WdatePicker.js" type="text/javascript"></script>
-<script src='/js/<?=$GLOBALS['module']?>/teacherdeal.js' type='text/javascript'></script>
+<script src='/js/<?=$GLOBALS['module']?>/studentdeal.js' type='text/javascript'></script>
 <!--条件-->
 <form action="/teacherdeal/list" method="post">
 <div style="font-size: 11px;">
@@ -20,8 +20,8 @@
     <button type="submit" id="submitButton" style="margin-left:10px;">
 		Search
 	</button>
-    <button type="button" id="addButton" style="margin-left:5px;" onclick="TeacherDeal.add(1);">
-		添加教工奖惩信息
+    <button type="button" id="addButton" style="margin-left:5px;" onclick="StudentDeal.add();">
+		添加学生奖惩信息
 	</button>
 </div>
 </form>
@@ -74,7 +74,7 @@
                         <td  style="text-align:center; width:20%;"><?=$v['deal_name']?></td>
                         <td  style="text-align:center; width:10%;"><?=$v['deal_real_name']?></td>
                         <td  style="text-align:center; width:10%;">
-                        <a href="/studentdeal/delete/deal_id/<?=$v['student_deal_data_id']?>/from/<?=$this->from?>" 
+                        <a href="/studentdeal/delete/deal_id/<?=$v['student_deal_data_id']?>/from/<?=$this->from?>"
                         	onclick="if(window.confirm('确定删除吗?')){return true;}else{return false;}">删除</a>
                         </td>
                     </tr>
