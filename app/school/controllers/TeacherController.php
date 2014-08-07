@@ -28,7 +28,7 @@ class TeacherController extends Ccc_Base_Controller {
     }
 
     public function listAction() {
-        
+
         $teacherId = (int) $this->_getParam("teacher_id");
         $enName = trim($this->_getParam("en_name"));
         $cnName = trim($this->_getParam("cn_name"));
@@ -37,14 +37,14 @@ class TeacherController extends Ccc_Base_Controller {
         $pageSize = isset($this->_conf->page_size) ? $this->_conf->page_size : 20;
         $where = "";
         $condition = "";
-        
-        
+
+
         $where .=!empty($enName) ? " and en_name like '{$enName}%' " : "";
         $condition .=!empty($enName) ? "/en_name/{$enName}" : "";
         $where .=!empty($cnName) ? " and cn_name like '{$cnName}%' " : "";
         $condition .=!empty($cnName) ? "/cn_name/{$cnName}" : "";
-        
-        
+
+
         $dataCount = TeacherModel::getInstance()->getDataCount($where);
         $pageCount = ceil($dataCount / $pageSize);
         $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
@@ -62,13 +62,13 @@ class TeacherController extends Ccc_Base_Controller {
         $this->view->title = "教工管理";
         $this->view->data = $data;
         // view page
-        $this->view->pageData = array("page" => $page, "url" => "/resource/list.action{$condition}",
+        $this->view->pageData = array("page" => $page, "url" => "/teacher/list.action{$condition}",
             "page_count" => $pageCount);
         $this->view->enName = $enName;
         $this->view->cnName = $cnName;
         $this->view->teacherId = $teacherId;
         $this->view->from = base64_encode("/page/{$page}" . $condition);
-        
+
     }
 
     public function addAction() {
@@ -84,8 +84,8 @@ class TeacherController extends Ccc_Base_Controller {
     public function ajaxUploadPhotoAction() {
         $this->_helper->layout->disableLayout();
         $config = new Zend_Config_Ini(PATH_ROOT . DS . $this->_conf->path->params_conf, "school");
-        if (!isset($_FILES["user_photo"]) 
-                || !is_uploaded_file($_FILES["user_photo"]["tmp_name"]) 
+        if (!isset($_FILES["user_photo"])
+                || !is_uploaded_file($_FILES["user_photo"]["tmp_name"])
                 || $_FILES["user_photo"]["error"] != 0) {
             die(0);
         }
@@ -162,14 +162,14 @@ class TeacherController extends Ccc_Base_Controller {
             );
             $update = TeacherModel::getInstance()->updateData($add,$updateParams);
         }
-        
+
         if($add>0 && $update>0) {
             Ccc_Helper_Com::alertMess("/teacher/list", "添加成功");
         } else {
             Ccc_Helper_Com::alertMess("/teacher/list", "添加失败");
         }
     }
-    
+
     public function editAction() {
         $this->view->classData = ClassModel::getInstance()->getClassData();
         $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData();
@@ -196,10 +196,10 @@ class TeacherController extends Ccc_Base_Controller {
         $this->view->swfData = $swfData;
         $this->view->from = $from;
     }
-    
+
     public function updateAction() {
         $this->_helper->layout->disableLayout();
-        
+
         $hiddenTeacherId = (int) $this->_getParam("hidden_teacher_id");
         $from = trim($this->_getParam("from"));
         // get the params;
@@ -244,7 +244,7 @@ class TeacherController extends Ccc_Base_Controller {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作失败");
         }
     }
-    
+
     public function deleteAction() {
         $this->_helper->layout->disableLayout();
         $teacherId = (int) $this->_getParam("teacher_id");
@@ -257,8 +257,8 @@ class TeacherController extends Ccc_Base_Controller {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作失败");
         }
     }
-    
-    
- 
+
+
+
 
 }

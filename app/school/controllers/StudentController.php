@@ -29,7 +29,7 @@ class StudentController extends Ccc_Base_Controller {
 
     public function listAction() {
 
-        $teacherId = (int) $this->_getParam("teacher_id");
+        $studentId = (int) $this->_getParam("student_id");
         $enName = trim($this->_getParam("en_name"));
         $cnName = trim($this->_getParam("cn_name"));
 
@@ -44,29 +44,20 @@ class StudentController extends Ccc_Base_Controller {
         $condition .=!empty($cnName) ? "/cn_name/{$cnName}" : "";
 
 
-        $dataCount = TeacherModel::getInstance()->getDataCount($where);
+        $dataCount = StudentModel::getInstance()->getDataCount($where);
         $pageCount = ceil($dataCount / $pageSize);
         $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
         $page = $page < 1 ? 1 : $page;
-        $data = TeacherModel::getInstance()->getPageData($page, $pageSize, $where);
-        // teacher type data
-        $teahcerTypeData = TeacherModel::getInstance()->getTypeData();
-        $schoolJobData = SchoolModel::getInstance()->getJobData();
-        if ($data) {
-            foreach ($data as & $p) {
-                $p['teacher_type_name'] = $p['school_teacher_type_id'] > 0 ? $teahcerTypeData[$p['school_teacher_type_id']] : "-";
-                $p['job_name'] = $p['school_job_id'] > 0 ? $schoolJobData[$p['school_job_id']] : "-";
-            }
-        }
+        $data = StudentModel::getInstance()->getPageData($page, $pageSize, $where);
         $this->view->title = "学生管理";
         $this->view->data = $data;
         // view page
-        $this->view->pageData = array("page" => $page, "url" => "/resource/list.action{$condition}",
+        $this->view->pageData = array("page" => $page, "url" => "/student/list.action{$condition}",
             "page_count" => $pageCount);
         $this->view->enName = $enName;
         $this->view->cnName = $cnName;
-        $this->view->teacherId = $teacherId;
-        $this->view->from = base64_encode("/page/{$page}" . $condition);
+        $this->view->studentId = $studentId;
+        $this->view->from = base64_encode( urlencode("/page/{$page}" . $condition) );
 
     }
 
@@ -141,7 +132,7 @@ class StudentController extends Ccc_Base_Controller {
             $parentPhone = $this->_getParam("parent_phone");
             $parentMobilePhone = $this->_getParam("parent_mobile_phone");
             $parentIsMessage = $this->_getParam("parent_is_message");
-            $dealParams = StudentModel::getInstance()->dealParentParams($parentEnName, $parentCnName, $parentNamed, 
+            $dealParams = StudentModel::getInstance()->dealParentParams($parentEnName, $parentCnName, $parentNamed,
                     $parentPhone, $parentMobilePhone, $parentIsMessage);
             $addParent = 0;
             if ($dealParams) {
@@ -207,7 +198,7 @@ class StudentController extends Ccc_Base_Controller {
         );
         $result = array_merge($addBaseParams,$addSchoolParams);
         $update = StudentModel::getInstance()->updateData($hiddenStudentId, $result);
-        $where =!empty($from)?base64_decode($from):"";
+        $where = !empty($from) ? urldecode( base64_decode($from) ) : "";
         $where = $where . "/student_id/{$hiddenStudentId}";
         if($update>0) {
             // 更新家长信息
@@ -217,7 +208,7 @@ class StudentController extends Ccc_Base_Controller {
             $parentPhone = $this->_getParam("parent_phone");
             $parentMobilePhone = $this->_getParam("parent_mobile_phone");
             $parentIsMessage = $this->_getParam("parent_is_message");
-            $dealParams = StudentModel::getInstance()->dealParentParams($parentEnName, $parentCnName, $parentNamed, 
+            $dealParams = StudentModel::getInstance()->dealParentParams($parentEnName, $parentCnName, $parentNamed,
                     $parentPhone, $parentMobilePhone, $parentIsMessage);
             $addParent = 0;
             if ($dealParams) {
@@ -227,8 +218,8 @@ class StudentController extends Ccc_Base_Controller {
                 $addParent = 1;
             }
         }
-        
-        if( $update>0 && $addParent >0 ) { 
+
+        if( $update>0 && $addParent >0 ) {
             Ccc_Helper_Com::alertMess("/student/list{$where}", "操作成功");
         } else {
             Ccc_Helper_Com::alertMess("/student/list{$where}", "操作失败");
@@ -240,7 +231,7 @@ class StudentController extends Ccc_Base_Controller {
         $studentId = (int) $this->_getParam("student_id");
         $delete = StudentModel::getInstance()->deleteData($studentId);
         $from = trim($this->_getParam("from"));
-        $where =!empty($from)?base64_decode($from):"";
+        $where = !empty($from) ? urldecode( base64_decode($from) ) : "";
         if($delete>0) {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作成功");
         } else {

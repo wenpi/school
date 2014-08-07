@@ -12,8 +12,9 @@ $(function(){
 	//upload_url: "http://school.a2.example.com/teacher/ajax.upload.photo",
         post_params:{"PHPSESSID":"<?=Zend_Session::getId()?>","student_id":"<?=$this->studentData['student_id']?>"},
         // File Upload Settings
-	file_post_name: '<?=$this->swfData['upload_name']?>',	// input name.
+		file_post_name: '<?=$this->swfData['upload_name']?>',	// input name.
         file_size_limit : "<?=$this->swfData['maxsize_user_photo']?>", // 500kb
+		file_upload_limit: "<?=$this->swfData['maxsize_user_photo']?>",
         file_types : "<?=$this->swfData['type_user_photo']?>",
         file_types_description : "Image files",
 
@@ -48,9 +49,10 @@ $(function(){
                         alert("上传文件不存在");
                         return false;
                 }
-                $("#div_swfupload_message").html("<font color='red'>上传成功！再次上传覆盖上一次图像</font>");
+                $("#div_swfupload_message").html("<font color='red'>上传成功！再次上传覆盖上一次图像；如果看不到照片请尝试刷新。</font>");
                 $("#img_student_photo").attr("src","/images/student_photo/_thumb_"+serverData+"?tt="+Math.random());
                 $("#href_student_photo").attr("href","/images/student_photo/"+serverData+"?tt="+Math.random());
+				//window.location.reload();
         })
 });
 </script>
@@ -130,17 +132,13 @@ $(function(){
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td colspan="4"  style="text-align:center; height:150px;">
                           <div align="center">
-			    			<?php if(empty($this->studentData['photo_name'])):?>
-                            <img src="/images/no_user.jpg" id="img_user_photo"  width="130" height="150"/>
-                            <?php else:?>
-                            <a href="/images/<?php echo !empty($this->studentData['photo_name'])?"student_photo/".$this->studentData['photo_name']:"no_user.jpg"?>" target="_blank" id="href_student_photo" title="点击查看大图">
+			    			<a href="/images/<?php echo !empty($this->studentData['photo_name'])?"student_photo/".$this->studentData['photo_name']:"no_user.jpg"?>" target="_blank" id="href_student_photo" title="点击查看大图">
                             <img src="/images/<?php echo !empty($this->studentData['photo_name'])?"student_photo/_thumb_".$this->studentData['photo_name']:"no_user.jpg"?>" id="img_student_photo"  alt="点击查看大图" width="130" height="150"/>
                             </a>
-                            <?php endif;?>
                             <div class="swfupload-control">
                                 <span id="spanButtonPlaceholder"></span>
                                 <div id="div_swfupload_message" style="display:block"></div>
-                                （限500KB图片大小）
+                                （限2MB图片大小）
                             </div>
                           </div>
                       </td>
@@ -236,7 +234,7 @@ $(function(){
             <div align="center">
             <input type="submit" name="save" value="确定提交" />
             &nbsp;&nbsp;
-            <input type="button" name="fanhui" value="返回学生列表" onclick="window.location='/student/list'" />
+            <input type="button" name="fanhui" value="返回学生列表" onclick="window.location='/student/list<?=urldecode(base64_decode($this->from))?>'" />
           </div>
         </div>
         </form>

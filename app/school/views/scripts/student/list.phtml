@@ -1,7 +1,7 @@
 <?= $this->headTitle($this->title) ?>
 <script src='/js/<?= $GLOBALS['module'] ?>/teacher.js' type='text/javascript'></script>
 <!--条件-->
-<form action="/teacher/list" method="post">
+<form action="/student/list" method="post">
     <div style="font-size: 11px;">
         教工英文名：
         <input type="text" name="en_name"  size="12" value="<?=$this->enName?>"  title="支持模糊"/>
@@ -31,14 +31,13 @@
                 <thead>
                     <tr class="ui-jqgrid-labels">
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">编号</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">类别</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">岗位</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">教工编码</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">工号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">学号</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">英文名</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">中文名</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">手机</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">状态</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">性别</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">出生日期</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">入学日期</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">学籍状态</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">操作</th>
                     </tr>
                 </thead>
@@ -51,7 +50,7 @@
             <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
                 <tbody>
                     <?php foreach ($this->data as $k=>$v): ?>
-                    	<?php if($v['teacher_id']==$this->teacherId):?>
+                    	<?php if($v['student_id']==$this->studentId):?>
                         <tr class="ui-widget-content jqgrow ui-row-ltr" style="background:#FCE5E2">
                         <?php else:?>
                     	<?php if($k%2==0):?>
@@ -60,28 +59,17 @@
                         <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <?php endif;?>
                         <?php endif;?>
-                            <td  style="text-align:center; width:60px;"><?=$v['teacher_id']?></td>
-                            <td  style="text-align:center; width:60px;"><?=$v['teacher_type_name']?></td>
-                            <td  style="text-align:center;"><?=$v['job_name']?></td>
-                            <td  style="text-align:center;"><?=$v['teacher_number']?></td>
-                            <td  style="text-align:center;"><?=$v['teacher_no']?></td>
+                            <td  style="text-align:center; width:60px;"><?=$v['student_id']?></td>
+                            <td  style="text-align:center;"><?=$v['student_no']?></td>
                             <td  style="text-align:center;"><?php echo !empty($v['en_name'])?$v['en_name']:"-"?></td>
                             <td  style="text-align:center;"><?=$v['cn_name']?></td>
-                            <td  style="text-align:center;"><?=$v['mobile_phone']?></td>
-                            <td  style="text-align:center; width:60px;">
-                            	<?php 
-                                        if($v['status']==0) { 
-                                                echo "<font color='gray'>未激活</font>";
-                                        } elseif($v['status']==1) { 
-                                                echo "<font color='green'>激活</font>";
-                                        } elseif($v['status']==2) { 
-                                                echo "<font color='red'>离职</font>";
-                                        }
-                                ?>
-                            </td>
+                            <td  style="text-align:center;"><?php echo $v['sex']==0?"无":($v['sex']==1?"男":"女")?></td>
+                            <td  style="text-align:center;"><?php echo $v['birthday']=="0000-00-00"?"-":$v['birthday']?></td>
+                            <td  style="text-align:center;"><?php echo $v['entrance_date']=="0000-00-00"?"-":$v['entrance_date']?></td>
+                            <td  style="text-align:center; width:60px;"><?php echo $v['school_status']==0?"在读":"毕业"?></td>
                             <td  style="text-align:center; width:80px;">
-                            <a href="/teacher/edit/teacher_id/<?=$v['teacher_id']?>/from/<?=$this->from?>">修改</a> | 
-                            <a href="/teacher/delete/teacher_id/<?=$v['teacher_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗?')){return true;}else{return false;}">删除</a>
+                            <a href="/student/edit/student_id/<?=$v['student_id']?>/from/<?=$this->from?>">修改</a> | 
+                            <a href="/student/delete/student_id/<?=$v['student_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗？，则会删除其所有家长信息！')){return true;}else{return false;}">删除</a>
                             </td>
                         </tr>
                     <?php endforeach;?>

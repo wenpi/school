@@ -179,17 +179,13 @@ $(function(){
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td colspan="4"  style="text-align:center; height:150px;">
                           <div align="center">
-			    <?php if(empty($this->teacherData['photo_name'])):?>
-                            <img src="/images/no_user.jpg" id="img_user_photo"  width="130" height="150"/>
-                            <?php else:?>
-                            <a href="/images/<?php echo !empty($this->teacherData['photo_name'])?"teacher_photo/".$this->teacherData['photo_name']:"no_user.jpg"?>" target="_blank" id="href_teacher_photo" title="点击查看大图">
+			    			<a href="/images/<?php echo !empty($this->teacherData['photo_name'])?"teacher_photo/".$this->teacherData['photo_name']:"no_user.jpg"?>" target="_blank" id="href_teacher_photo" title="点击查看大图">
                             <img src="/images/<?php echo !empty($this->teacherData['photo_name'])?"teacher_photo/_thumb_".$this->teacherData['photo_name']:"no_user.jpg"?>" id="img_teacher_photo"  alt="点击查看大图" width="130" height="150"/>
                             </a>
-                            <?php endif;?>
                             <div class="swfupload-control">
                                 <span id="spanButtonPlaceholder"></span>
                                 <div id="div_swfupload_message" style="display:block"></div>
-                                （限500KB图片大小）
+                                （限2MB图片大小）
                             </div>
                           </div>
                       </td>

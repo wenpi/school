@@ -11,24 +11,20 @@
 		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
 		  <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
 		    <tbody>
-            		<?php if($this->showTeacher==1):?>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
-                       <td width="100px;"  style="text-align:right;">选择教工：</td>
+                       <td width="100px;"  style="text-align:right;">选择学生：</td>
                        <td  style="text-align:left;">
-                       <select name="input_teacher_id" id="input_teacher_id" style="width:120px;">
+                       <select name="input_student_id" id="input_student_id" style="width:120px;">
                        <option value="0">-请选择-</option>
-                       <?php if($this->teacherData):?>
-                       <?php foreach($this->teacherData as $p):?>
-                       <option value="<?=$p['teacher_id']?>"><?=$p['cn_name']?>[<?=$p['teacher_no']?>]</option>
+                       <?php if($this->studentData):?>
+                       <?php foreach($this->studentData as $p):?>
+                       <option value="<?=$p['student_id']?>"><?=$p['cn_name']?>[<?=$p['student_no']?>]</option>
                        <?php endforeach;?>
                        <?php endif;?>
                        </select>
                        <font color="red">*</font>
                        </td>
                      </tr>
-                     <?php else:?>
-                     <input type="hidden" name="input_teacher_id" id="input_teacher_id" value="<?=$this->teacherId?>" />
-                     <?php endif;?>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;" width="100px;">处理类型：</td>
                        <td  style="text-align:left;">

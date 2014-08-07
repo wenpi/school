@@ -32,5 +32,27 @@ class Data_Student extends Ccc_Base_Model {
 		return !empty($studentData) ? $studentData : array();
 	}
 
+	public function getDataCount( $where ) {
+		$sql = "select count(*) from sch_students where student_id>0 {$where} and is_delete=0";
+		$count = $this->_db->fetchOne($sql);
+
+		return $count;
+	}
+
+	public function getPageData ($page, $pageSize , $where) {
+		$startIndex = (int) ($page-1) * $pageSize;
+		$sql = "select * from sch_students where student_id>0 {$where} order by student_id desc limit {$startIndex},{$pageSize}";
+		$data = $this->_db->fetchAll($sql);
+
+		return !empty($data) ? $data : array();
+	}
+
+	public function getStudentDataByWhere( $where ) {
+		$sql = "select student_id,student_no,en_name,cn_name from sch_students where student_id>0 {$where} and is_delete=0";
+		$data = $this->_db->fetchAll($sql);
+
+		return !empty($data) ? $data : array();
+	}
+
 
 }

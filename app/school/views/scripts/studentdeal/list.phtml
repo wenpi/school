@@ -4,11 +4,11 @@
 <!--条件-->
 <form action="/teacherdeal/list" method="post">
 <div style="font-size: 11px;">
-	选择教工：
+	选择学生：
     <select name="teacher_id" id="teacher_id" style="width:80px;">
        <option value="0">-请选择-</option>
-       <?php if($this->teacherData):?>
-       <?php foreach($this->teacherData as $p):?>
+       <?php if($this->studentData):?>
+       <?php foreach($this->studentData as $p):?>
        <option value="<?=$p['teacher_id']?>" <?php echo $p['teacher_id']==$this->teacherId?"selected":"";?>><?=$p['cn_name']?>[<?=$p['teacher_no']?>]</option>
        <?php endforeach;?>
        <?php endif;?>
@@ -42,11 +42,11 @@
 			<tr class="ui-jqgrid-labels">
 			<th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">编号</th>
 			<th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">教工</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">处理日期</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">处理类型</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:20%;">处理名称</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">处理人</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">操作</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">处理日期</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">处理类型</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:20%;">处理名称</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">处理人</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">操作</th>
 			</tr>
 			</thead>
 			</table>
@@ -60,9 +60,9 @@
 					<?php foreach( $this->data as $v ): ?>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td  style="text-align:center; width:10%;">
-                        <a href="##" onclick="TeacherDeal.edit(<?=$v['teacher_deal_data_id']?>,1)"><?=$v['teacher_deal_data_id']?></a>
+                        <a href="##" onclick="StudentDeal.edit(<?=$v['student_deal_data_id']?>,1)"><?=$v['student_deal_data_id']?></a>
                         </td>
-			<td  style="text-align:center; width:15%;"><?=$v['teacher_name']?>[<?=$v['teacher_no']?>]</td>
+			<td  style="text-align:center; width:15%;"><?=$v['student_name']?>[<?=$v['student_no']?>]</td>
                         <td  style="text-align:center; width:15%;">
                             <?php echo !empty($v['deal_date'])?$v['deal_date']:"-";?>
                         </td>
@@ -74,7 +74,7 @@
                         <td  style="text-align:center; width:20%;"><?=$v['deal_name']?></td>
                         <td  style="text-align:center; width:10%;"><?=$v['deal_real_name']?></td>
                         <td  style="text-align:center; width:10%;">
-                        <a href="/teacherdeal/delete/deal_id/<?=$v['teacher_deal_data_id']?>/show_teacher/1/from/<?=$this->from?>" 
+                        <a href="/studentdeal/delete/deal_id/<?=$v['student_deal_data_id']?>/from/<?=$this->from?>" 
                         	onclick="if(window.confirm('确定删除吗?')){return true;}else{return false;}">删除</a>
                         </td>
                     </tr>
@@ -102,4 +102,4 @@
         </div>
 	</div>
 </div>
-<div id="div_teacherdeal"></div>
+<div id="div_studentdeal"></div>
