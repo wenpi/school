@@ -1,5 +1,5 @@
 <?php
-
+defined('PATH_ROOT') or die('Access Denied.');
 
 class SchoolModel {
 
@@ -27,7 +27,7 @@ class SchoolModel {
 
         return self::$_singletonObject [$className];
     }
-    
+
     public function addSchoolData( $params ) {
         return $this->_school->addSchoolData( $params );
     }
@@ -40,7 +40,7 @@ class SchoolModel {
                 $arr[$p['job_id']] = $p['job_name'];
             }
         }
-        
+
         return $arr;
     }
 }

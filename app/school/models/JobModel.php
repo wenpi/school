@@ -1,4 +1,5 @@
 <?php
+defined('PATH_ROOT') or die('Access Denied.');
 
 class JobModel {
 
@@ -46,15 +47,15 @@ class JobModel {
     public function deleteData($jobId) {
         return $this->_job->deleteData($jobId);
     }
-    
+
     public function getRowData($jobId) {
         return $this->_job->getRowData( $jobId );
     }
-    
+
     public function updateData($jobId, $params ) {
         return $this->_job->updateData($jobId, $params);
     }
-    
+
     public function getJobData( $where = "" ) {
         return $this->_job->getJobData( $where );
     }

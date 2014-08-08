@@ -2,8 +2,8 @@
 
 /**
  * 接口数据处理
- * @author sln
- * @date 2013/11/27
+ * @author taozywu
+ * @date 2014/08/08
  */
 class Data_Parent extends Ccc_Base_Model {
 
@@ -24,23 +24,23 @@ class Data_Parent extends Ccc_Base_Model {
 
         return !empty($parentData) ? $parentData : array();
     }
-    
+
     public function updateData( $parentId , $params) {
         $this->_db->update("sch_parents", $params, "parent_id=" . $parentId);
-       
+
         return 1;
     }
-    
+
     public function getParentDataCountByWhere($where) {
         $sql = "select count(*) from sch_parents where parent_id>0 {$where} and is_delete=0";
         $count = $this->_db->fetchOne($sql);
-        
+
         return $count;
     }
-    
+
     public function deleteDataByWhere( $where , $params ) {
         $this->_db->update("sch_parents", $params, $where );
-       
+
         return 1;
     }
 

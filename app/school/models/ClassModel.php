@@ -1,5 +1,5 @@
 <?php
-
+defined('PATH_ROOT') or die('Access Denied.');
 
 class ClassModel {
 
@@ -27,11 +27,11 @@ class ClassModel {
 
         return self::$_singletonObject [$className];
     }
-    
+
     public function getClassData( $where = "" ) {
         return $this->_class->getClassData($where);
     }
-    
+
     public function getRowData( $classId ) {
         return $this->_class->getRowData( $classId );
     }

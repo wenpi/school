@@ -59,7 +59,7 @@ class StudentDealController extends Ccc_Base_Controller {
         $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
         $page = $page < 1 ? 1 : $page;
         // data.
-        $this->view->title = "教工奖惩管理";
+        $this->view->title = "学生奖惩管理";
         $this->view->data = StudentDealModel::getInstance()->getPageData($page, $pageSize, $where);
         $this->view->pageData = array("page" => $page, "url" => "/teacherdeal/list{$condition}","page_count" => $pageCount);
         $this->view->studentData = StudentModel::getInstance()->getStudentDataByWhere(  );
@@ -108,10 +108,9 @@ class StudentDealController extends Ccc_Base_Controller {
     public function ajaxEditAction() {
         $this->_helper->layout->disableLayout();
         $dealId = (int) $this->_getParam("deal_id");
-        $this->view->data = TeacherDealModel::getInstance()->getRowData( $dealId );
-        $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere();
-        $this->view->title = "编辑教工奖惩信息";
-        $this->view->showTeacher = (int) $this->_getParam("show_teacher");
+        $this->view->data = StudentDealModel::getInstance()->getRowData( $dealId );
+        $this->view->studentData = StudentModel::getInstance()->getStudentDataByWhere();
+        $this->view->title = "编辑学生奖惩信息";
     }
 
     public function ajaxUpdateAction() {
@@ -123,68 +122,70 @@ class StudentDealController extends Ccc_Base_Controller {
             "deal_name" => $dealName,
             "deal_reason" => $dealReason,
         );
-        $update = TeacherDealModel::getInstance()->updateData( $dealId , $params );
+        $update = StudentDealModel::getInstance()->updateData( $dealId , $params );
         echo $update;
         exit;
     }
 
-    public function myListAction() {
-        // get the paramter.
-        $teacherId = (int) $this->_getParam("teacher_id");
-        $startDate = trim($this->_getParam("start_date"));
-        $endDate = trim($this->_getParam("end_date"));
-
-        $page = (int) $this->_getParam("page");
-        $page = $page < 1 ? 1 : $page;
-        $pageSize = isset($this->_conf->page_size) ? $this->_conf->page_size : 20;
-        $where = "";
-        $condition = "";
-
-        if ($teacherId > 0) {
-            $where .= " and teacher_id = {$teacherId} ";
-            $condition .= "/teacher_id/{$teacherId}";
-        }
-        if (!empty($startDate)) {
-            $where .= " and deal_date>='{$startDate}' ";
-            $condition .= "/start_date/{$startDate}";
-        }
-        if (!empty($endDate)) {
-            $where .= " and deal_date<='{$endDate}'";
-            $condition .= "/end_date/{$endDate}";
-        }
-
-        $where .= " and teacher_no = '{$this->_session->uname}' ";
-        // count.
-        $dataCount = TeacherDealModel::getInstance()->getDataCount($where);
-//        echo $dataCount;exit;
-        $pageCount = ceil($dataCount / $pageSize);
-        $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
-        $page = $page < 1 ? 1 : $page;
-        // data.
-        $this->view->title = "我的教工奖惩管理";
-        $this->view->data = TeacherDealModel::getInstance()->getPageData($page, $pageSize, $where);
-        $this->view->pageData = array("page" => $page, "url" => "/teacherdeal/my.list{$condition}","page_count" => $pageCount);
-//        $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere(  );
-        $this->view->teacherId = $teacherId;
-        $this->view->startDate = $startDate;
-        $this->view->endDate = $endDate;
-        $this->view->from = base64_encode("/page/{$page}" . $condition);
-    }
 
     public function deleteAction() {
         $this->_helper->layout->disableLayout();
         $dealId = (int) $this->_getParam("deal_id");
-        $showTeacher = (int) $this->_getParam("show_teacher");
         $from = trim($this->_getParam("from"));
-        $from = !empty($from) ? base64_decode($from) : "";
-        $delete = TeacherDealModel::getInstance()->deleteData($dealId);
-        $url = $showTeacher == 0 ? "/teacherdeal/my.list{$from}" : "/teacherdeal/list{$from}";
+        $from = !empty($from) ? urldecode( base64_decode($from) ) : "";
+        $delete = StudentDealModel::getInstance()->deleteData($dealId);
+        $url = "/studentdeal/list{$from}";
         if($delete>0) {
             Ccc_Helper_Com::alertMess($url, "操作成功");
         } else {
             Ccc_Helper_Com::alertMess($url, "操作失败" );
         }
     }
+
+	public function myListAction() {
+        // get the paramter.
+        $startDate = trim($this->_getParam("start_date"));
+        $endDate = trim($this->_getParam("end_date"));
+
+        $page = (int) $this->_getParam("page");
+        $page = $page < 1 ? 1 : $page;
+        $pageSize = isset($this->_conf->page_size) ? $this->_conf->page_size : 20;
+        $where = " and sch_student_no = '{$this->_session->uname}' ";
+//		$where = "";
+        $condition = "";
+
+        if (!empty($startDate)) {
+            $where .= " and deal_date>='{$startDate} 00:00:00' ";
+            $condition .= "/start_date/{$startDate}";
+        }
+        if (!empty($endDate)) {
+            $where .= " and deal_date<='{$endDate} 23:59:59'";
+            $condition .= "/end_date/{$endDate}";
+        }
+
+        // count.
+        $dataCount = StudentDealModel::getInstance()->getDataCount($where);
+//        echo $dataCount;exit;
+        $pageCount = ceil($dataCount / $pageSize);
+        $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
+        $page = $page < 1 ? 1 : $page;
+        // data.
+        $this->view->title = "我的奖惩列表";
+        $this->view->data = StudentDealModel::getInstance()->getPageData($page, $pageSize, $where);
+        $this->view->pageData = array("page" => $page, "url" => "/teacherdeal/my.list{$condition}","page_count" => $pageCount);
+        $this->view->startDate = $startDate;
+        $this->view->endDate = $endDate;
+        $this->view->from = base64_encode(urlencode("/page/{$page}" . $condition));
+    }
+
+	public function ajaxViewAction() {
+		$this->_helper->layout->disableLayout();
+		$dealId = (int) $this->_getParam("deal_id");
+		$dealRowData = StudentDealModel::getInstance()->getRowData( $dealId );
+		$this->view->dealRowData = $dealRowData;
+		$this->view->from = trim( $this->_getParam( "from" ) );
+		$this->view->title = "查看我的奖惩信息";
+	}
 
 
 }
