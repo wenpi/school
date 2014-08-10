@@ -59,7 +59,7 @@ class StudentDealController extends Ccc_Base_Controller {
         $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
         $page = $page < 1 ? 1 : $page;
         // data.
-        $this->view->title = "教工奖惩管理";
+        $this->view->title = "学生奖惩管理";
         $this->view->data = StudentDealModel::getInstance()->getPageData($page, $pageSize, $where);
         $this->view->pageData = array("page" => $page, "url" => "/teacherdeal/list{$condition}","page_count" => $pageCount);
         $this->view->studentData = StudentModel::getInstance()->getStudentDataByWhere(  );
