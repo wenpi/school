@@ -1,5 +1,5 @@
 <?php
-
+defined('PATH_ROOT') or die('Access Denied.');
 /**
  * 教工奖惩
  */
