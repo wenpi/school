@@ -1,5 +1,4 @@
 <?php
-defined('PATH_ROOT') or die('Access Denied.');
 
 class ParentModel {
     /**
@@ -55,7 +54,7 @@ class ParentModel {
         return $this->_parent->deleteDataByWhere( $where , $params );
     }
 
-
+	
 
 
 

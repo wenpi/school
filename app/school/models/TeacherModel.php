@@ -1,5 +1,4 @@
 <?php
-defined('PATH_ROOT') or die('Access Denied.');
 
 class TeacherModel {
 
@@ -75,13 +74,13 @@ class TeacherModel {
     public function updateData($teacherId, $params) {
         return $this->_teacher->updateData($teacherId, $params);
     }
-
+    
     public function deleteData($teacherId) {
         $params = array("is_delete"=>1);
-
+               
         return $this->updateData($teacherId, $params);
     }
-
+    
     public function getTeacherData( $leftData ) {
         $where = "";
         if($leftData) {

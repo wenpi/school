@@ -1,5 +1,5 @@
 <?php
-defined('PATH_ROOT') or die('Access Denied.');
+
 /**
  * 学生奖惩
  */
@@ -48,15 +48,15 @@ class StudentDealModel {
     }
 
     public function getRowData($dealId) {
-        return $this->_studentDeal->getRowData($dealId);
+        return $this->_teacherDeal->getRowData($dealId);
     }
 
     public function updateData($dealId, $params) {
-        return $this->_studentDeal->updateData($dealId, $params);
+        return $this->_teacherDeal->updateData($dealId, $params);
     }
 
     public function deleteData($dealId) {
-        return $this->_studentDeal->updateData($dealId, array("is_delete" => 1));
+        return $this->_teacherDeal->updateData($dealId, array("is_delete" => 1));
     }
 
 }

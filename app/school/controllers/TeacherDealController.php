@@ -26,7 +26,7 @@ class TeacherDealController extends Ccc_Base_Controller {
     public function indexAction() {
         die;
     }
-
+    
     public function listAction() {
         // get the paramter.
         $teacherId = (int) $this->_getParam("teacher_id");
@@ -51,7 +51,7 @@ class TeacherDealController extends Ccc_Base_Controller {
             $where .= " and deal_date<='{$endDate}'";
             $condition .= "/end_date/{$endDate}";
         }
-
+        
         // count.
         $dataCount = TeacherDealModel::getInstance()->getDataCount($where);
 //        echo $dataCount;exit;
@@ -68,7 +68,7 @@ class TeacherDealController extends Ccc_Base_Controller {
         $this->view->endDate = $endDate;
         $this->view->from = base64_encode("/page/{$page}" . $condition);
     }
-
+    
     public function ajaxAddAction() {
         $this->view->showTeacher = (int) $this->_getParam("show_teacher");
         $this->view->title = "添加教工奖惩信息";
@@ -76,8 +76,8 @@ class TeacherDealController extends Ccc_Base_Controller {
         // 通过工号找到teacher表中的teacher_id.
         $this->view->teacherId = TeacherModel::getInstance()->getTeacherIdByJobNumber($this->_session->uname);
     }
-
-
+    
+    
     public function ajaxSaveAction() {
         $this->_helper->layout->disableLayout();
         $teacherId = (int) $this->_getParam("input_teacher_id");
@@ -85,7 +85,7 @@ class TeacherDealController extends Ccc_Base_Controller {
         $dealName = trim($this->_getParam("input_deal_name"));
         $dealDate = trim($this->_getParam("input_deal_date"));
         $dealReason = trim($this->_getParam("input_deal_reason"));
-
+        
         $isHas = TeacherDealModel::getInstance()->checkData($teacherId, $typeId, $dealDate);
         if($isHas>0) {
             echo "-2";
@@ -107,7 +107,7 @@ class TeacherDealController extends Ccc_Base_Controller {
         echo $add;
         exit;
     }
-
+    
     public function ajaxEditAction() {
         $this->_helper->layout->disableLayout();
         $dealId = (int) $this->_getParam("deal_id");
@@ -130,7 +130,7 @@ class TeacherDealController extends Ccc_Base_Controller {
         echo $update;
         exit;
     }
-
+    
     public function myListAction() {
         // get the paramter.
         $teacherId = (int) $this->_getParam("teacher_id");
@@ -140,7 +140,7 @@ class TeacherDealController extends Ccc_Base_Controller {
         $page = (int) $this->_getParam("page");
         $page = $page < 1 ? 1 : $page;
         $pageSize = isset($this->_conf->page_size) ? $this->_conf->page_size : 20;
-        $where = " and teacher_no = '{$this->_session->uname} ";
+        $where = "";
         $condition = "";
 
         if ($teacherId > 0) {
@@ -155,7 +155,8 @@ class TeacherDealController extends Ccc_Base_Controller {
             $where .= " and deal_date<='{$endDate}'";
             $condition .= "/end_date/{$endDate}";
         }
-
+        
+        $where .= " and teacher_no = '{$this->_session->uname}' ";
         // count.
         $dataCount = TeacherDealModel::getInstance()->getDataCount($where);
 //        echo $dataCount;exit;
@@ -172,7 +173,7 @@ class TeacherDealController extends Ccc_Base_Controller {
         $this->view->endDate = $endDate;
         $this->view->from = base64_encode("/page/{$page}" . $condition);
     }
-
+    
     public function deleteAction() {
         $this->_helper->layout->disableLayout();
         $dealId = (int) $this->_getParam("deal_id");
@@ -187,6 +188,6 @@ class TeacherDealController extends Ccc_Base_Controller {
             Ccc_Helper_Com::alertMess($url, "操作失败" );
         }
     }
-
+    
 
 }

@@ -2,8 +2,8 @@
 
 /**
  * 接口数据处理
- * @author taozywu
- * @date 2014/08/08
+ * @author sln
+ * @date 2013/11/27
  */
 class Data_Job extends Ccc_Base_Model {
 
@@ -50,19 +50,19 @@ class Data_Job extends Ccc_Base_Model {
         return 1;
     }
 
-
+    
     public function getRowData( $jobId ) {
         $sql = "select * from sch_job where job_id = {$jobId} and is_delete=0";
         $data = $this->_db->fetchRow( $sql );
-
+        
         return !empty($data) ? $data : array();
     }
-
+    
     public function getJobData($where) {
         $sql = "select job_id,job_name from sch_job where job_id>0 {$where} and is_delete = 0" ;
         $data = $this->_db->fetchAll($sql);
 
         return !empty($data) ? $data : array();
     }
-
+    
 }

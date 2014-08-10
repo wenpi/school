@@ -1,7 +1,5 @@
 <?php
 
-defined('PATH_ROOT') or die('Access Denied.');
-
 class ApiModel {
 
     /**
@@ -28,12 +26,12 @@ class ApiModel {
 
         return self::$_singletonObject [$className];
     }
-
+    
     public function addSchoolData( $params ) {
         return SchoolModel::getInstance()->addSchoolData($params);
     }
-
-
+    
+    
     public function getUserData($where = "" ) {
         return $this->_api->getUserData( $where );
     }

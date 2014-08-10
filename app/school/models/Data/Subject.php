@@ -2,8 +2,8 @@
 
 /**
  * 接口数据处理
- * @author taozywu
- * @date 2014/08/08
+ * @author sln
+ * @date 2013/11/27
  */
 class Data_Subject extends Ccc_Base_Model {
 
@@ -51,6 +51,6 @@ class Data_Subject extends Ccc_Base_Model {
         $this->_db->update("sch_subjects", $params, "subject_id=" . $subjectId);
         return 1;
     }
-
+    
 
 }

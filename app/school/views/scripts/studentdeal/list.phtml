@@ -2,16 +2,14 @@
 <script src="/js/my97datepicker/WdatePicker.js" type="text/javascript"></script>
 <script src='/js/<?=$GLOBALS['module']?>/studentdeal.js' type='text/javascript'></script>
 <!--条件-->
-<form action="/studentdeal/list" method="post">
+<form action="/teacherdeal/list" method="post">
 <div style="font-size: 11px;">
 	选择学生：
-    <select name="student_id" id="student_id" style="width:80px;">
+    <select name="teacher_id" id="teacher_id" style="width:80px;">
        <option value="0">-请选择-</option>
        <?php if($this->studentData):?>
        <?php foreach($this->studentData as $p):?>
-       <option value="<?=$p['student_id']?>" <?php echo $p['student_id']==$this->studentId?"selected":"";?>>
-	   <?=$p['cn_name']?>[<?=$p['student_no']?>]
-       </option>
+       <option value="<?=$p['teacher_id']?>" <?php echo $p['teacher_id']==$this->teacherId?"selected":"";?>><?=$p['cn_name']?>[<?=$p['teacher_no']?>]</option>
        <?php endforeach;?>
        <?php endif;?>
    </select>
@@ -63,6 +61,7 @@
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td  style="text-align:center; width:10%;">
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <a href="##" onclick="StudentDeal.edit(<?=$v['student_deal_data_id']?>,1)">
 							<?=$v['student_deal_data_id']?>
                         </a>
@@ -77,6 +76,11 @@
                         </td>
 						<td  style="text-align:center; width:15%;"><?=$v['sch_student_name']?>[<?=$v['sch_student_no']?>]</td>
 >>>>>>> origin/master
+=======
+                        <a href="##" onclick="StudentDeal.edit(<?=$v['student_deal_data_id']?>,1)"><?=$v['student_deal_data_id']?></a>
+                        </td>
+			<td  style="text-align:center; width:15%;"><?=$v['student_name']?>[<?=$v['student_no']?>]</td>
+>>>>>>> parent of 2b02b42... [Modify Feature] 学生考勤、学生奖惩、学生列表等
                         <td  style="text-align:center; width:15%;">
                             <?php echo !empty($v['deal_date'])?$v['deal_date']:"-";?>
                         </td>

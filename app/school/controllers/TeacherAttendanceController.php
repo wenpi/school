@@ -7,7 +7,7 @@ defined('PATH_ROOT') or die('Access Denied.');
  * @author taozywu <taozywu@gmail.com>
  * @date 2014/07/05
  */
-class TeacherAttendanceController extends Ccc_Base_Controller {
+class TeacherattendanceController extends Ccc_Base_Controller {
 
     /**
      * 初始化
@@ -54,7 +54,7 @@ class TeacherAttendanceController extends Ccc_Base_Controller {
             $where .= " and leave_time<='{$endDate}'";
             $condition .= "/end_date/{$endDate}";
         }
-
+        
         // count.
         $dataCount = TeacherAttendanceModel::getInstance()->getDataCount($where);
         $pageCount = ceil($dataCount / $pageSize);
@@ -110,7 +110,7 @@ class TeacherAttendanceController extends Ccc_Base_Controller {
         echo $add;
         exit;
     }
-
+    
     public function ajaxEditAction() {
          $this->_helper->layout->disableLayout();
          $attendanceId = (int) $this->_getParam("attendance_id");
@@ -121,7 +121,7 @@ class TeacherAttendanceController extends Ccc_Base_Controller {
          $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere();
          $this->view->title = "编辑教工考勤信息";
     }
-
+    
     public function ajaxUpdateAction() {
         $this->_helper->layout->disableLayout();
         $attendanceId = (int) $this->_getParam("attendance_id");
@@ -140,7 +140,7 @@ class TeacherAttendanceController extends Ccc_Base_Controller {
         echo $update;
         exit;
     }
-
+    
     /**
      * 删除考勤信息
      */

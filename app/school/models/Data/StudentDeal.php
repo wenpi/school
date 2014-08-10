@@ -2,8 +2,8 @@
 
 /**
  * 接口数据处理
- * @author taozywu
- * @date 2014/08/08
+ * @author sln
+ * @date 2013/11/27
  */
 class Data_StudentDeal extends Ccc_Base_Model {
 
@@ -46,14 +46,14 @@ class Data_StudentDeal extends Ccc_Base_Model {
     }
 
     public function getRowData($dealId) {
-        $sql = "select * from sch_student_deal_data where student_deal_data_id={$dealId} and is_delete=0";
+        $sql = "select * from sch_teacher_deal_data where teacher_deal_data_id={$dealId} and is_delete=0";
         $data = $this->_db->fetchRow($sql);
 
         return !empty($data) ? $data : array();
     }
 
     public function updateData($dealId, $params) {
-        $this->_db->update("sch_student_deal_data", $params, "student_deal_data_id=" . $dealId);
+        $this->_db->update("sch_teacher_deal_data", $params, "teacher_deal_data_id=" . $dealId);
         return 1;
     }
 

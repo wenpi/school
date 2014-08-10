@@ -1,5 +1,4 @@
 <?php
-defined('PATH_ROOT') or die('Access Denied.');
 
 class StudentModel
 {
@@ -109,6 +108,6 @@ class StudentModel
 		return $this->_student->checkData( $studentId , $typeId , $dealDate ) ;
 	}
 
-
+	
 
 }
