@@ -239,4 +239,15 @@ class StudentController extends Ccc_Base_Controller {
         }
     }
 
+	public function viewAction() {
+		$studentId = (int) $this->_getParam("student_id");
+		$from = trim($this->_getParam( "from" ) );
+		$studentRowData = StudentModel::getInstance()->getRowData($studentId);
+		if( $studentId<1 || !$studentRowData ) {
+			Ccc_Helper_Com::alertMess("/student/list" . urldecode( base64_decode( $from ) ), "学生信息不存在");
+		}
+		$this->view->studentRowData = $studentRowData ;
+		$this->view->title = "查看学生信息";
+	}
+
 }

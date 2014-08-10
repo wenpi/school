@@ -62,6 +62,7 @@
 					<?php foreach( $this->data as $v ): ?>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td  style="text-align:center; width:10%;">
+<<<<<<< HEAD
                         <a href="##" onclick="StudentDeal.edit(<?=$v['student_deal_data_id']?>,1)">
 							<?=$v['student_deal_data_id']?>
                         </a>
@@ -69,6 +70,13 @@
 						<td  style="text-align:center; width:15%;">
 							<?=$v['sch_student_name']?>[<?=$v['sch_student_no']?>]
                         </td>
+=======
+                        <a href="##" onclick="StudentDeal.edit(<?=$v['student_deal_data_id']?>)">
+							<?=$v['student_deal_data_id']?>
+                        </a>
+                        </td>
+						<td  style="text-align:center; width:15%;"><?=$v['sch_student_name']?>[<?=$v['sch_student_no']?>]</td>
+>>>>>>> origin/master
                         <td  style="text-align:center; width:15%;">
                             <?php echo !empty($v['deal_date'])?$v['deal_date']:"-";?>
                         </td>

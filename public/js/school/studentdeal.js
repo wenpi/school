@@ -5,6 +5,24 @@
  */
 
 var StudentDeal = {
+	// 查看
+	view:function(deal_id,from) { 
+		jQuery.ajax({
+            type: "POST",
+            dataType: "html",
+            url: "/studentdeal/ajax.view",
+            data: {
+				deal_id: deal_id,
+				from:from,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+                $("#div_studentdeal").html(resp);
+            }
+        });
+	},
     // 添加
     add:function() {
 		jQuery.ajax({
@@ -63,31 +81,30 @@ var StudentDeal = {
         });
 	},
 	// 编辑
-	edit:function(deal_id,show) {
+	edit:function(deal_id) {
 		jQuery.ajax({
             type: "POST",
             dataType: "html",
-            url: "/teacherdeal/ajax.edit",
+            url: "/studentdeal/ajax.edit",
             data: {
 				deal_id: deal_id,
-				show_teacher:show,
                 j: 1,
                 tt: Math.random()
             },
             success: function(resp) {
                 $.validRight(resp);
-                $("#div_teacherdeal").html(resp);
+                $("#div_studentdeal").html(resp);
             }
         });
 	},
 
-	update:function(deal_id,show) {
+	update:function(deal_id) {
 		var input_deal_name = $("#input_deal_name").val();
 		var input_deal_reason = $("#input_deal_reason").val();
 		jQuery.ajax({
             type: "POST",
             dataType: "json",
-            url: "/teacherdeal/ajax.update",
+            url: "/studentdeal/ajax.update",
             data: {
 				deal_id: deal_id,
 				input_deal_name: input_deal_name,
@@ -99,7 +116,7 @@ var StudentDeal = {
                 $.validRight(resp);
                 if(resp == 1) {
 					alert("操作成功");
-					window.location = show==1? "/teacherdeal/list" : "/teacherdeal/my.list";
+					window.location = "/studentdeal/list";
 				}
             }
         });

@@ -2,19 +2,19 @@
 
 /**
  * 接口数据处理
- * @author sln
- * @date 2013/11/27
+ * @author taozywu
+ * @date 2014/08/08
  */
 class Data_Teacher extends Ccc_Base_Model {
 
     public function init() {
         parent::init();
     }
-    
+
     public function getDataCount($where) {
         $sql = "select count(*) from sch_teachers where teacher_id >0 {$where} and is_delete=0";
         $count = $this->_db->fetchOne($sql);
-        
+
         return $count;
     }
 
@@ -60,7 +60,7 @@ class Data_Teacher extends Ccc_Base_Model {
     }
 
     public function getMaxTeacherNo($classId, $typeNumber) {
-        $sql = "select teacher_no from sch_teachers where class_id={$classId} 
+        $sql = "select teacher_no from sch_teachers where class_id={$classId}
             and type_number={$typeNumber} and is_delete=0 order by teacher_no desc limit 1";
         $teacherNo = (int) $this->_db->fetchOne($sql);
 
@@ -73,11 +73,11 @@ class Data_Teacher extends Ccc_Base_Model {
 
         return $count;
     }
-    
+
     public function addData($params ) {
         $this->_db->insert("sch_teachers",$params);
         $add = $this->_db->lastInsertId();
-        
+
         return $add;
     }
 
@@ -85,7 +85,7 @@ class Data_Teacher extends Ccc_Base_Model {
         $this->_db->update("sch_teachers", $params, "teacher_id=" . $teacherId);
         return 1;
     }
-    
+
     public function getTeacherData($where) {
         $sql = "select teacher_id,teacher_no,cn_name from sch_teachers where teacher_id>0 {$where} and is_delete=0";
 //        echo $sql;
