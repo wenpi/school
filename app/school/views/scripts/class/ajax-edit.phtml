@@ -1,0 +1,69 @@
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 35%;float: left">
+<div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title ?></span>
+		</div>
+		<!--body table title-->
+
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+		  <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+		    <tbody>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;" width="100">类别：</td>
+                       <td  style="text-align:left;">
+                       <select name="input_type_id" id="input_type_id" style="width:120px;">
+                         <option value="0" <?php echo $this->subjectData['type_id']==0?"selected":"";?>>无</option>
+                         <option value="1" <?php echo $this->subjectData['type_id']==1?"selected":"";?>>文科</option>
+                         <option value="2" <?php echo $this->subjectData['type_id']==2?"selected":"";?>>理科</option>
+                         <option value="3" <?php echo $this->subjectData['type_id']==3?"selected":"";?>>兴趣科</option>
+                       </select>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">班级：</td>
+                       <td  style="text-align:left;">
+                       <select name="input_class_id" id="input_class_id" style="width:120px;" disabled>
+                       <option value="0" <?php echo $this->subjectData['class_id']==0?"selected":"";?>>请选择</option>
+                       <?php foreach($this->classData as  $p):?>
+                       <option value="<?=$p['class_id']?>"  <?php echo $this->subjectData['class_id']==$p['class_id']?"selected":"";?>><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
+                       <?php endforeach;?>
+                       </select>
+                       <font color="red">*</font>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">科目名称：</td>
+                       <td  style="text-align:left;">
+                         <input type="text" name="input_subject_name" id="input_subject_name" value="<?=$this->subjectData['subject_name']?>"/>
+                         <font color="red">*</font>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;">描述：</td>
+                       <td  style="text-align:left;">
+                       <textarea name="input_comments" id="input_comments" cols="30" rows="3"><?=$this->subjectData['comments']?></textarea>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td colspan="2"  style="text-align:center;">
+                       <input type="hidden" id="hidden_class_id" value="<?=$this->subjectData['class_id']?>" />
+                       <input type="hidden" id="hidden_subject_name" value="<?=$this->subjectData['subject_name']?>" />
+                       <input type="button" name="button" id="button" value="确定提交" onclick="Subject.update(<?=$this->subjectData['subject_id']?>);"/>			
+                       </td>
+                     </tr>
+              </tbody>
+		  </table>
+            
+		</div>
+		<!--body table content-->
+  	</div>
+    
+
+	<!--带分页-->
+	<div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+	</div>
+
+</div>

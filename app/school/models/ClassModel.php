@@ -1,4 +1,5 @@
 <?php
+
 defined('PATH_ROOT') or die('Access Denied.');
 
 class ClassModel {
@@ -28,11 +29,32 @@ class ClassModel {
         return self::$_singletonObject [$className];
     }
 
-    public function getClassData( $where = "" ) {
+    public function getClassData($where = "") {
         return $this->_class->getClassData($where);
     }
 
-    public function getRowData( $classId ) {
-        return $this->_class->getRowData( $classId );
+    public function getRowData($classId) {
+        return $this->_class->getRowData($classId);
     }
+
+    public function checkData($className) {
+        return $this->_class->checkData($className);
+    }
+
+    public function addData($params) {
+        return $this->_class->addData($params);
+    }
+
+    public function updateData($classId, $params) {
+        return $this->_class->updateData($classId, $params);
+    }
+
+    public function getDataCount($where = "") {
+        return $this->_class->getDataCount($where);
+    }
+
+    public function getPageData($page = 1, $pageSize = 20, $where = "") {
+        return $this->_class->getPageData( $page , $pageSize , $where );
+    }
+
 }
