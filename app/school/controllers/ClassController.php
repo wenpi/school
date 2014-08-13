@@ -56,8 +56,9 @@ class ClassController extends Ccc_Base_Controller {
         // view page
         $this->view->pageData = array("page" => $page, "url" => "/class/list{$condition}",
             "page_count" => $pageCount);
-
         $this->view->title = "班级列表";
+        $this->view->className = $className;
+        $this->view->from = base64_encode( urlencode("/page/{$page}" . $condition) );
     }
 
     // 添加
@@ -120,40 +121,77 @@ class ClassController extends Ccc_Base_Controller {
         }
         exit;
     }
+    
+    public function ajaxViewAction() {
+        $this->_helper->layout->disableLayout();
+        $classId = (int) $this->_getParam("class_id");
+        $this->view->classData  = ClassModel::getInstance()->getRowData($classId);
+        $this->view->title = "查看班级信息";
+        $this->view->from = trim($this->_getParam("from"));
+    }
 
     // 编辑
     public function ajaxEditAction() {
-        $subjectId = (int) $this->_getParam("subject_id");
-        $this->view->classData = ClassModel::getInstance()->getClassData();
-        $this->view->subjectData = SubjectModel::getInstance()->getRowData($subjectId);
+        $this->_helper->layout->disableLayout();
+        $classId = (int) $this->_getParam("class_id");
+        $this->view->classData = ClassModel::getInstance()->getRowData($classId);
+        $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere();
         $this->view->title = "编辑班级信息";
+        $this->view->from = trim($this->_getParam("from"));
     }
 
     // 保存编辑
     public function ajaxUpdateAction() {
         $this->_helper->layout->disableLayout();
-        $subjectId = (int) $this->_getParam("subject_id");
-        $typeId = (int) $this->_getParam("input_type_id");
-        $subjectName = trim($this->_getParam("input_subject_name"));
+        
+        $property = (int) $this->_getParam("input_property");
+        $teacherId = (int) $this->_getParam("input_teacher_id");
+        $className = trim($this->_getParam("input_class_name"));
+        $amount = (int) $this->_getParam("input_amount");
+        $classMinute = (int) $this->_getParam("input_class_minute");
+        $classAddress = trim($this->_getParam("input_class_address"));
+        $classTime = trim($this->_getParam("input_class_time"));
+        $openDate = trim($this->_getParam("input_open_date"));
         $comments = trim($this->_getParam("input_comments"));
-        $hiddenClassId = (int) $this->_getParam("hidden_class_id");
-        $hiddenSubjectName = trim($this->_getParam("hidden_subject_name"));
+        
+        $hiddenClassId = (int) $this->_getParam("class_id");
+        $hiddenClassName = trim($this->_getParam("hidden_input_class_name"));
+        $hiddenFrom = trim($this->_getParam("hidden_from"));
 
-        if ($hiddenSubjectName != $subjectName) {
-            $isHas = SubjectModel::getInstance()->checkData($hiddenClassId, $subjectName);
+        if ($hiddenClassName != $className) {
+            $isHas = ClassModel::getInstance()->checkData($className);
             if ($isHas > 0) {
-                echo "-2";
+                $result = array(
+                    "error_code"=>0,
+                    "msg"=>"",
+                    "data"=>array("update"=>"-2" ) );
+                echo Ccc_Third_Json::getInstance()->encode($result);
                 exit;
             }
         }
 
+        $teacherData = TeacherModel::getInstance()->getRowData($teacherId);
         $params = array(
-            "type_id" => $typeId,
-            "subject_name" => $subjectName,
+            "sch_teacher_id" => $teacherId,
+            "sch_teacher_no" => isset($teacherData['teacher_no'])?$teacherData['teacher_no']:"",
+            "sch_teacher_name" => isset($teacherData['cn_name'])?$teacherData['cn_name']:"",
+            "property" => $property,
+            "class_name" => $className,
+            "amount" => $amount,
+            "class_minute" => $classMinute,
+            "class_address" => $classAddress,
+            "class_time" => $classTime,
+            "open_date" => $openDate,
+            "update_user_id" => $this->_session->uid,
+            "update_time_int" => time(),
             "comments" => $comments,
         );
-        $update = SubjectModel::getInstance()->updateData($subjectId, $params);
-        echo $update;
+        $update = ClassModel::getInstance()->updateData($hiddenClassId, $params);
+        $result = array(
+            "error_code"=>0,
+            "msg"=>"",
+            "data"=>array("update"=>$update,"from"=> urldecode( base64_decode($hiddenFrom) ) ) );
+        echo Ccc_Third_Json::getInstance()->encode($result);
         exit;
     }
 
@@ -168,5 +206,5 @@ class ClassController extends Ccc_Base_Controller {
             Ccc_Helper_Com::alertMess("/subject/list", "操作失败");
         }
     }
-
+    
 }

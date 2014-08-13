@@ -6,6 +6,24 @@
 
 
 var Class = {
+	view:function(class_id,from) { 
+		jQuery.ajax({
+            type: "POST",
+            dataType: "html",
+            url: "/class/ajax.view",
+            data: {
+				class_id:class_id,
+				from:from,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+                $("#div_class").html(resp);
+            }
+        });
+	},
+	
 	showSpecial:function(val) { 
 		$("#td_special").html("班主任：");
 		if(val==1) $("#td_special").html("授课教师：");
@@ -72,57 +90,72 @@ var Class = {
         });
     },
     // 编辑
-    edit: function(subject_id) {
+    edit: function(class_id,from) {
         jQuery.ajax({
             type: "POST",
             dataType: "html",
-            url: "/subject/ajax.edit",
+            url: "/class/ajax.edit",
             data: {
-                subject_id: subject_id,
+                class_id: class_id,
+				from:from,
                 j: 1,
                 tt: Math.random()
             },
             success: function(resp) {
                 $.validRight(resp);
-                $("#div_subject").html(resp);
+                $("#div_class").html(resp);
             }
         });
     },
     // 更新
-    update:function(subject_id) {
-        var input_type_id = $("#input_type_id").val();
-        var input_class_id = $("#input_class_id").val();
-        var input_subject_name = $("#input_subject_name").val();
-        var input_comments = $("#input_comments").val();
-        
-        var hidden_class_id = $("#hidden_class_id").val();
-        var hidden_subject_name = $("hidden_subject_name").val();
-        if( jQuery.trim(input_subject_name) == "" ) {
-            alert("科目名称不能为空");
+    update:function(class_id) {
+        var input_property = $("#input_property").val();
+        var input_teacher_id = $("#input_teacher_id").val();
+        var input_class_name = $("#input_class_name").val();
+        var input_amount = $("#input_amount").val();
+		var input_class_minute = $("#input_class_minute").val();
+		var input_class_address = $("#input_class_address").val();
+		var input_class_time = $("#input_class_time").val();
+		var input_open_date = $("#input_open_date").val();
+		var input_comments = $("#input_comments").val();
+		
+		var hidden_class_name = $("#hidden_class_name").val();
+		var hidden_from = $("#hidden_from").val();
+		if( jQuery.trim(input_class_name) == "" ) {
+            alert("班级名称不能为空");
             return false;
         }
+		
         jQuery.ajax({
             type: "POST",
             dataType: "json",
-            url: "/subject/ajax.update",
+            url: "/class/ajax.update",
             data: {
-                subject_id: subject_id,
-                input_type_id: input_type_id,
-                input_subject_name: input_subject_name,
-                input_comments: input_comments,
-                hidden_class_id: hidden_class_id,
-                hidden_subject_name: hidden_subject_name,
+                input_property: input_property,
+                input_teacher_id: input_teacher_id,
+                input_class_name: input_class_name,
+                input_amount: input_amount,
+				input_class_minute: input_class_minute,
+				input_class_address: input_class_address,
+				input_class_time: input_class_time,
+				input_open_date: input_open_date,
+				input_comments: input_comments,
+				class_id:class_id,
+				hidden_input_class_name:hidden_class_name,
+				hidden_from:hidden_from,
                 j: 1,
                 tt: Math.random()
             },
             success: function(resp) {
                 $.validRight(resp);
-                if( resp>0 ) {
+				var data = resp.data;
+                if( data.update ==1 ) {
                     alert("保存成功");
-                    window.location = "/subject/list";
+                    window.location = "/class/list" + data.from;
                 }
-                if( resp == -2 ) {
-                    alert("该班已有该科目名称，请重试");
+                if( data.update == -2 ) {
+                    alert("已有该班级名称，请重试");
+					$("#input_class_name").val(hidden_class_name);
                     return false;
                 }
             }

@@ -1,0 +1,248 @@
+<?= $this->headTitle($this->title) ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/student.js' type='text/javascript'></script>
+<script type="text/javascript" src="/js/my97datepicker/WdatePicker.js" ></script>
+<script type="text/javascript" src="/js/swfupload/swfupload.js"></script>
+<script type="text/javascript" src="/js/swfupload/jquery.swfupload.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('.swfupload-control').swfupload({
+        // Backend Settings
+        // // Relative to the SWF file (or you can use absolute paths)
+        upload_url: "http://<?=$_SERVER['HTTP_HOST']?><?=$this->swfData['upload_url']?>",
+	//upload_url: "http://school.a2.example.com/teacher/ajax.upload.photo",
+        post_params:{"PHPSESSID":"<?=Zend_Session::getId()?>","student_id":"<?=$this->studentData['student_id']?>"},
+        // File Upload Settings
+		file_post_name: '<?=$this->swfData['upload_name']?>',	// input name.
+        file_size_limit : "<?=$this->swfData['maxsize_user_photo']?>", // 500kb
+		file_upload_limit: "<?=$this->swfData['maxsize_user_photo']?>",
+        file_types : "<?=$this->swfData['type_user_photo']?>",
+        file_types_description : "Image files",
+
+        // Button Settings
+        button_image_url : "/js/swfupload/XPButtonUploadText_61x22.png", // Relative to the SWF file
+        button_placeholder_id : "spanButtonPlaceholder",
+        button_width: 61,
+        button_height: 22,
+
+        // Flash Settings
+        flash_url : "/js/swfupload/swfupload.swf",
+
+    });
+
+
+    // assign our event handlers
+    $('.swfupload-control')
+        .bind('fileQueued', function(event, file){
+            // start the upload once a file is queued
+            $(this).swfupload('startUpload');
+        })
+        .bind('uploadComplete', function(event, file){
+            // start the upload (if more queued) once an upload is complete
+            $(this).swfupload('startUpload');
+        })
+        .bind('uploadSuccess', function(event, file, serverData){
+                if( serverData == -1 ) {
+                        alert("Session Lost");
+                        return false;
+                }
+                if( serverData ==0 ) {
+                        alert("上传文件不存在");
+                        return false;
+                }
+                $("#div_swfupload_message").html("<font color='red'>上传成功！再次上传覆盖上一次图像；如果看不到照片请尝试刷新。</font>");
+                $("#img_student_photo").attr("src","/images/student_photo/_thumb_"+serverData+"?tt="+Math.random());
+                $("#href_student_photo").attr("href","/images/student_photo/"+serverData+"?tt="+Math.random());
+				//window.location.reload();
+        })
+});
+</script>
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table content-->
+        <form action="/student/update" method="post" onsubmit="return Student.check();"  enctype="multipart/form-data">
+        <input type="hidden" name="hidden_student_id" id="hidden_student_id" value="<?=$this->studentData['student_id']?>" />
+        <input type="hidden" name="from" id="from" value="<?=$this->from?>" />
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+   	  	  <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">基本信息  <span style="cursor:pointer;" id="span_base" onclick="Teacher.showhideByAdd('base','table_teacher_base');" value="1" title="显示或隐藏">↑</span></div>
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
+                <tbody>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td width="150"  style="text-align:right; width:150px;">英文名：</td>
+                        <td width="300"  style="text-align:left;"><input type="text" name="en_name" id="en_name" value="<?=$this->studentData['en_name']?>" /></td>
+                      <td width="150"  style="text-align:right;">中文名：</td>
+                        <td width="300"  style="text-align:left;">
+                            <input type="text" name="cn_name" id="cn_name" value="<?=$this->studentData['cn_name']?>" />
+                            <font color="red">*</font>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">性别：</td>
+                        <td  style="text-align:left;">
+                        <select name="sex" id="sex">
+                          <option value="0" <?php echo $this->studentData['sex']==0?"selected":"";?>>无</option>
+                          <option value="1" <?php echo $this->studentData['sex']==1?"selected":"";?>>男</option>
+                          <option value="2" <?php echo $this->studentData['sex']==2?"selected":"";?>>女</option>
+                        </select>
+                        <font color="red">*</font>
+                        </td>
+                      <td  style="text-align:right;">出生日期：</td>
+                        <td  style="text-align:left;">
+                            <input type="text" name="birthday" id="birthday" class="Wdate" onclick="WdatePicker()" value="<?=$this->studentData['birthday']?>"/>
+                            <font color="red">*</font>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">住址：</td>
+                        <td colspan="3"  style="text-align:left;">
+                            <input name="address" type="text" id="address" size="50" value="<?=$this->studentData['address']?>"/>
+                            <font color="red">*</font>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">证件类型：</td>
+                        <td  style="text-align:left;">
+                        <select name="id_type" id="id_type">
+                          <option value="0" <?php echo $this->studentData['id_type']==0?"selected":"";?>>其他</option>
+                          <option value="1" <?php echo $this->studentData['id_type']==1?"selected":"";?>>身份证</option>
+                          <option value="2" <?php echo $this->studentData['id_type']==2?"selected":"";?>>临时身份证</option>
+                          <option value="3" <?php echo $this->studentData['id_type']==3?"selected":"";?>>护照</option>
+                          <option value="4" <?php echo $this->studentData['id_type']==4?"selected":"";?>>军人证</option>
+                          <option value="5" <?php echo $this->studentData['id_type']==5?"selected":"";?>>驾驶证</option>
+                        </select>
+                        <font color="red">*</font>
+                      </td>
+                      <td  style="text-align:right;">证件号码：</td>
+                        <td  style="text-align:left;">
+                            <input type="text" name="id_name" id="id_name" value="<?=$this->studentData['id_number']?>"/>
+                            <font color="red">*</font>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="font-weight:bold; border: 1px solid #dddddd; line-height:22px;">照片信息  <span id="span_photo" onclick="Teacher.showhideByAdd('photo','table_teacher_photo');" value="1" style="cursor:pointer;" title="显示或隐藏">↑</span></div>
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_photo">
+                <tbody>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td colspan="4"  style="text-align:center; height:150px;">
+                          <div align="center">
+			    			<a href="/images/<?php echo !empty($this->studentData['photo_name'])?"student_photo/".$this->studentData['photo_name']:"no_user.jpg"?>" target="_blank" id="href_student_photo" title="点击查看大图">
+                            <img src="/images/<?php echo !empty($this->studentData['photo_name'])?"student_photo/_thumb_".$this->studentData['photo_name']:"no_user.jpg"?>" id="img_student_photo"  alt="点击查看大图" width="130" height="150"/>
+                            </a>
+                            <div class="swfupload-control">
+                                <span id="spanButtonPlaceholder"></span>
+                                <div id="div_swfupload_message" style="display:block"></div>
+                                （限2MB图片大小）
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+          
+       	    <div style="font-weight:bold; border: 1px solid #dddddd; line-height:22px;">在园信息  <span id="span_school" onclick="Teacher.showhideByAdd('school','table_teacher_school');" value="1" style="cursor:pointer;" title="显示或隐藏">↑</span></div>
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_school">
+                <tbody>
+                	<tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td width="150"  style="text-align:right; width:150px;">所属班级：</td>
+                        <td width="300"  style="text-align:left;">
+                        <select name="class_id" size="1" id="class_id">
+                        <option value="0">请选择</option>
+                        <?php foreach($this->classData as $p):?>
+                        <option value="<?=$p['class_id']?>" 
+							<?php echo $this->studentData['sch_class_id']==$p['class_id']?"selected":"";?>><?=$p['class_name']?>
+                            [<?=$p['class_no']?>]
+                        </option>
+                        <?php endforeach;?>
+                        </select></td>
+                      <td width="150"  style="text-align:right;"><span style="text-align:right; width:150px;">学籍状态</span>：</td>
+                        <td width="300"  style="text-align:left;">
+                        <select name="school_status" id="school_status">
+                        <option value="0" <?php echo $this->studentData['school_status']==0?"selected":"";?>>在读</option>
+                        <option value="1" <?php echo $this->studentData['school_status']==1?"selected":"";?>>毕业</option>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td width="150"  style="text-align:right; width:150px;">入学日期：</td>
+                        <td  style="text-align:left;">
+                        <input type="text" name="entrance_date" id="entrance_date" class="Wdate" onclick="WdatePicker()" value="<?=$this->studentData['entrance_date']?>"/>
+                        <font color="red">*</font>
+                        </td>
+                   	  <td  style="text-align:right;">毕业日期：</td>
+                        <td  style="text-align:left;">
+                        <input type="text" name="graduate_date" id="graduate_date" class="Wdate" onclick="WdatePicker()" value="<?=$this->studentData['graduate_date']?>"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+          <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">家长信息  <span style="cursor:pointer;" id="span_base" onclick="Teacher.showhideByAdd('base','table_teacher_base');" value="1" title="显示或隐藏">↑</span></div>
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
+                <tbody>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td  style="text-align:left;">英文名</td>
+                      <td  style="text-align:left;">中文名</td>
+                      <td  style="text-align:left;">称谓</td>
+                      <td  style="text-align:left;">联系电话</td>
+                      <td  style="text-align:left;">联系手机</td>
+                      <td  style="text-align:left;">优先短信联系</td>
+                    </tr>
+                    <?php foreach($this->parentData as $k=>$p):?>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_en_name[<?=$p['parent_id']?>]" id="parent_en_name_<?=$p['parent_id']?>" size="15"  value="<?=$p['en_name']?>"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_cn_name[<?=$p['parent_id']?>]" id="parent_cn_name_<?=$p['parent_id']?>" size="15"  value="<?=$p['cn_name']?>"/></td>
+                      <td style="text-align:left;">
+                      <select name="parent_named[<?=$p['parent_id']?>]" id="parent_named_<?=$p['parent_id']?>">
+                        <option value="1" <?php echo $p['parent_named']==1?"selected":"";?>>爸爸</option>
+                        <option value="2" <?php echo $p['parent_named']==2?"selected":"";?>>妈妈</option>
+                        <option value="3" <?php echo $p['parent_named']==3?"selected":"";?>>爷爷</option>
+                        <option value="4" <?php echo $p['parent_named']==4?"selected":"";?>>奶奶</option>
+                        <option value="5" <?php echo $p['parent_named']==5?"selected":"";?>>外公</option>
+                        <option value="6" <?php echo $p['parent_named']==6?"selected":"";?>>外婆</option>
+                        <option value="7" <?php echo $p['parent_named']==7?"selected":"";?>>姑姑</option>
+                        <option value="8" <?php echo $p['parent_named']==8?"selected":"";?>>姑父</option>
+                      </select></td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_phone[<?=$p['parent_id']?>]" id="parent_phone_<?=$p['parent_id']?>" size="15" value="<?=$p['phone']?>"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <input type="text" name="parent_mobile_phone[<?=$p['parent_id']?>]" id="parent_mobile_phone_<?=$p['parent_id']?>" size="15" value="<?=$p['mobile_phone']?>"/>
+                      </td>
+                      <td style="text-align:left;">
+                      <select name="parent_is_message[<?=$p['parent_id']?>]" id="parent_is_message_<?=$p['parent_id']?>">
+                        <option value="0" <?php echo $p['is_message']==0?"selected":"";?>>否</option>
+                        <option value="1" <?php echo $p['is_message']==1?"selected":"";?>>是</option>
+                      </select>
+                      </td>
+                    </tr>
+                    <?php endforeach;?>
+                </tbody>
+            </table>
+            
+            
+            <div align="center">
+            <input type="submit" name="save" value="确定提交" />
+            &nbsp;&nbsp;
+            <input type="button" name="fanhui" value="返回学生列表" onclick="window.location='/student/list<?=urldecode(base64_decode($this->from))?>'" />
+          </div>
+        </div>
+        </form>
+        <!--body table content-->
+
+
+    </div>
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+    </div>
+</div>

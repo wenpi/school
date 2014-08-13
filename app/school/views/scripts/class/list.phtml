@@ -35,11 +35,11 @@
                         <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">班级名称</th>
                         <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">人数</th>
                         <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">状态</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">操作</th>
+                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:20%;">操作</th>
                     </tr>
                 </thead>
             </table>
-</div>
+		</div>
         <!--body table header-->
 
         <!--body table content-->
@@ -72,12 +72,11 @@
 									}
 								?>
                             </td>
-                            <td  style="text-align:center; width:10%;">
-                               	<?php if($v['property']==1):?>
-                                <a href="##" onclick="class.sign(<?=$v['class_id']?>)" 
-                                	title="特长班'<?=$v['class_name']?>'报名">报名</a> |
-                                <?php endif;?>
-                                删除
+                            <td  style="text-align:center; width:20%;">
+                            	<a href="##" onclick="Class.setStudent(<?=$v['class_id']?>,'<?=$this->from?>')">配置学生</a> | 
+                            	<a href="##" onclick="Class.view(<?=$v['class_id']?>,'<?=$this->from?>')">查看</a> | 
+                                <a href="##" onclick="Class.edit(<?=$v['class_id']?>,'<?=$this->from?>')">修改</a> | 
+                                <a href="/class/delete/class_id/<?=$v['class_id']?>/from/<?=$this->from?>">删除</a>
                             </td>
                         </tr>
                 <?php endforeach; ?>

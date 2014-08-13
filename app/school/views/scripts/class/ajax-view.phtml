@@ -14,72 +14,67 @@
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td  style="text-align:right;" width="100">属性：</td>
                        <td  style="text-align:left;">
-                       <select name="input_property" id="input_property" style="width:120px;" onchange="Class.showSpecial(this.value);">
-                         <option value="0">普通班</option>
-                         <option value="1">特长班</option>
-                       </select>
+                       <?php echo $this->classData['property']==0?"普通班":"特长班";?>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;" id="td_special">班主任：</td>
                        <td  style="text-align:left;">
-                       <select name="input_teacher_id" id="input_teacher_id" style="width:120px;">
-                       <option value="0">-请选择-</option>
-                       <?php if($this->teacherData):?>
-                       <?php foreach($this->teacherData as $p):?>
-                       <option value="<?=$p['teacher_id']?>"><?=$p['cn_name']?>[<?=$p['teacher_no']?>]</option>
-                       <?php endforeach;?>
-                       <?php endif;?>
-                       </select>
+                      <?php 
+					  	if($this->classData['sch_teacher_id']>0) { 
+							echo $this->classData['sch_teacher_name'] . "[" . $this->classData['sch_teacher_no'] . "]";
+						} else { 
+							echo "-";
+						}
+					  ?>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;">班级名称：</td>
                        <td  style="text-align:left;">
-                         <input type="text" name="input_class_name" id="input_class_name" />
-                         <font color="red">*</font>
+                         <?=$this->classData['class_name']?>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td  style="text-align:right;">人数：</td>
                        <td  style="text-align:left;">
-                       <input type="text" name="input_amount" id="input_amount" />
+                       <?=$this->classData['amount']?>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;">课时：</td>
                        <td style="text-align:left;">
-                         <input type="text" name="input_class_minute" id="input_class_minute" />（分）
-                         </td>
+                       <?=$this->classData['class_minute']?>
+                       </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;">上课地点：</td>
                        <td style="text-align:left;">
-                       <input type="text" name="input_class_address" id="input_class_address" />
+                       <?=$this->classData['class_address']?>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;">上课时间：</td>
                        <td style="text-align:left;">
-                         <input type="text" name="input_class_time" 
-                         	id="input_class_time" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/>
+                        <?=$this->classData['class_time']?>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;">开班日期：</td>
                        <td style="text-align:left;">
-                         <input type="text" name="input_open_date" id="input_open_date" class="Wdate" onclick="WdatePicker()" />
+                       <?=$this->classData['open_date']?>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td  style="text-align:right;">描述：</td>
                        <td  style="text-align:left;">
-                       <textarea name="input_comments" id="input_comments" cols="30" rows="3"></textarea>
+                       <?=$this->classData['comments']?>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td colspan="2"  style="text-align:center;">
-                       <input type="button" name="button" id="button" value="确定提交" onclick="Class.save();"/>			
+                       <input type="button" name="button" 
+                       	value="返回班级列表" onclick="window.location='/class/list<?=urldecode(base64_decode($this->from))?>'"/>			
                        </td>
                      </tr>
               </tbody>
