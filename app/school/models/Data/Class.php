@@ -46,7 +46,7 @@ class Data_Class extends Ccc_Base_Model {
     }
     
     public function getDataCount( $where ) {
-        $sql = "select count(*) from sch_classes where class_id>0 {$where} ";
+        $sql = "select count(*) from sch_classes where class_id>0 {$where} and is_delete=0 ";
         $count = (int) $this->_db->fetchOne($sql);
 
         return $count;
@@ -54,10 +54,42 @@ class Data_Class extends Ccc_Base_Model {
 
     public function getPageData($page , $pageSize, $where) {
         $startIndex = (int) ($page-1) * $pageSize;
-        $sql = "select * from sch_classes where class_id>0 {$where} "
+        $sql = "select * from sch_classes where class_id>0 {$where} and is_delete=0 "
                 . "order by class_id desc limit {$startIndex},{$pageSize}";
         $data = $this->_db->fetchAll($sql);
         
         return !empty($data) ? $data : array();
+    }
+    
+    public function getStudentDataBySpecial( $classId ) {
+        $sql = "SELECT student_id,cn_name,student_no FROM sch_students "
+                . "WHERE student_id IN ( SELECT sch_student_id FROM sch_specialclass_student "
+                . "WHERE sch_class_id={$classId} ) ";
+        $studentData = $this->_db->fetchAll($sql);
+        
+        return !empty($studentData) ? $studentData : array();
+    } 
+    
+    
+    public function getStudentDataByNotSpecial( $classId ) {
+        $sql = "SELECT student_id,cn_name,student_no FROM sch_students "
+                . "WHERE student_id NOT IN ( SELECT sch_student_id FROM "
+                . "sch_specialclass_student WHERE sch_class_id={$classId} ) ";
+        $studentData = $this->_db->fetchAll($sql);
+        
+        return !empty($studentData) ? $studentData : array();
+    }
+    
+    public function deleteStudentDataByClassId( $classId ) {
+        $this->_db->delete("sch_specialclass_student","sch_class_id=" . $classId);
+        
+        return 1;
+    }
+    
+    public function  addStudentDataBySpecial($where) {
+        $sql = "INSERT INTO sch_specialclass_student (`sch_class_id`,`sch_student_id`) VALUES{$where}";
+        $this->_db->query($sql);
+        
+        return 1;
     }
 }

@@ -1,0 +1,124 @@
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 35%;float: left">
+<div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title ?></span>
+		</div>
+		<!--body table title-->
+
+		<!--body table header-->
+
+		<!--body table header-->
+
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+		  <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
+		    <tbody>
+		      <tr>
+		        <td style="text-align:center"><strong>该班学生</strong></td>
+		        <td style="text-align:center"><strong>操作</strong></td>
+		        <td style="text-align:center"><strong>余下学生</strong></td>
+	          </tr>
+		      <tr>
+		        <td style="text-align:center">
+                <select name="left_select" style="height:260px;width:150px;" multiple="multiple" id="left_select">
+                <?php if($this->leftData):?>
+                <?php foreach($this->leftData as $left):?>
+                <option value="<?=$left['student_id']?>"><?=$left['cn_name']?>[<?=$left['student_no']?>]</option>
+                <?php endforeach;?>
+                <?php endif;?>
+		        </select>
+                </td>
+		        <td style="text-align:center">
+                  <p>
+		          	<input type="button" value="&gt;&gt;" onclick="rightMoveAll();" title="将左侧全部移至右侧" />
+		          </p>
+		          <p>
+		            <input type="button" value="&gt;" onclick="rightMove();" title="将左侧选中项移至右侧" />
+	              </p>
+		          <p>
+		            <input type="button" value="&lt;" onclick="leftMove();" title="将右侧选中项移至左侧" />
+	              </p>
+		          <p>
+		            <input type="button" value="&lt;&lt;" onclick="leftMoveAll();" title="将右侧全部移至左侧" />
+	              </p>
+                </td>
+		        <td style="text-align:center">
+                <select name="right_select" style="height:260px;width:150px;" multiple="multiple" id="right_select">
+                <?php if($this->rightData):?>
+                <?php foreach($this->rightData as $right):?>
+                <option value="<?=$right['student_id']?>"><?=$right['cn_name']?>[<?=$right['student_no']?>]</option>
+                <?php endforeach;?>
+                <?php endif;?>
+		        </select>
+                </td>
+	          </tr>
+	        </tbody>
+	      </table>
+		</div>
+		<!--body table content-->
+        <div style=" text-align:center">
+        	<input type="hidden" id="class_id" value="<?=$this->classId?>"  />
+            <input type="hidden" id="from" value="<?=urldecode(base64_decode($this->from))?>"  />
+            <input type="button" value="确定保存" class="button" onclick="saveSetStudent();" />
+        </div>
+  </div>
+
+	<!--带分页-->
+	<div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+	</div>
+
+</div>
+<script type="text/javascript">
+var leftSelect = document.getElementById("left_select");
+var rightSelect = document.getElementById("right_select");
+// 将左侧select移动至右侧select
+function rightMove() {
+	ListUtil.LeftMoveSelected(leftSelect,rightSelect);
+}
+
+// 将左侧所有移动至右侧select
+function rightMoveAll() {
+	ListUtil.LeftMoveAll(leftSelect,rightSelect);
+}
+
+// 将右侧移动至左侧selcet
+function leftMove() {
+	ListUtil.RightMoveSelected(rightSelect,leftSelect);
+}
+
+// 将右侧所有移动至左侧select
+function leftMoveAll() {
+	ListUtil.RightMoveAll(rightSelect,leftSelect);
+}
+
+// 检查并提交
+function saveSetStudent( ) {
+	var class_id = $("#class_id").val();
+	var from = $("#from").val();
+	var len = leftSelect.length;
+	var str = "";
+	for(var i=0; i<len;i++) {
+		 str += "|" + leftSelect.options[i].value;
+	}
+	// 更新且提交
+	$.ajax({
+		url:"/class/ajax.save.set.student",
+		type:"POST",
+		dataType:"json",
+		data:{
+			class_id:class_id,
+			student_ids:str,
+			j:1,
+			tt:Math.random()
+		},
+		success:function(resp){
+			if(resp==1) { 
+				alert("操作成功！");
+				window.location = "/class/list" + from;
+			}
+		}
+	});
+}
+</script>

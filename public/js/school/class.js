@@ -6,6 +6,28 @@
 
 
 var Class = {
+    
+    setStudent:function(class_id,from) {
+        jQuery.ajax({
+            type: "POST",
+            dataType: "html",
+            url: "/class/ajax.set.student",
+            data: {
+				class_id:class_id,
+				from:from,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+                if(resp ==-1) {
+                    alert("该班级不是特长班，请重试");
+                    return false;
+                }
+                $("#div_class").html(resp);
+            }
+        });
+    },
 	view:function(class_id,from) { 
 		jQuery.ajax({
             type: "POST",

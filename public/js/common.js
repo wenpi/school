@@ -1,8 +1,47 @@
 /**
  * 通用JS
  */
-// 公用
-String.prototype.trim= function(){return this.replace(/(^\s*)|(\s*$)/g, "");}
+
+function _checkAll(input_name,checkAll)
+{
+	var gmChks = document.getElementsByName(input_name);
+	for (var i=0; i<gmChks.length ; i++)
+	{
+	    gmChks[i].checked = checkAll;
+	}
+}
+
+function _checkThis(parent_str,str,id)
+{
+	var gmChk = document.getElementById(str + "_" + logId);
+	if (gmChk.checked) {
+		gmChk.checked = false;
+	} else {
+		gmChk.checked = true;
+		
+	}
+}
+function _checkDel(str)
+{
+	var rtn = false;
+	var gmChks = document.getElementsByName(str);
+	for (var i=0; i<gmChks.length ; i++)
+	{
+	    if (gmChks[i].checked)
+	    {
+			rtn = true;
+			break;
+	    }
+	}
+	if (rtn)
+	{
+	    return confirm('确定要删除所选中的记录吗？');
+	}
+	else
+	{
+	    return false;
+	}
+}
 
 
 // 公用对象形式

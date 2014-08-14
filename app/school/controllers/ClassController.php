@@ -198,13 +198,51 @@ class ClassController extends Ccc_Base_Controller {
     // 删除
     public function deleteAction() {
         $this->_helper->layout->disableLayout();
-        $subjectId = (int) $this->_getParam("subject_id");
-        $delete = SubjectModel::getInstance()->delete($subjectId);
+        $classId = (int) $this->_getParam("class_id");
+        $from = trim($this->_getParam("from"));
+        $from = urldecode( base64_decode( $from ) );
+        $delete = ClassModel::getInstance()->deleteData($classId);
         if ($delete > 0) {
-            Ccc_Helper_Com::alertMess("/subject/list", "操作成功");
+            Ccc_Helper_Com::alertMess("/class/list" . $from, "操作成功");
         } else {
-            Ccc_Helper_Com::alertMess("/subject/list", "操作失败");
+            Ccc_Helper_Com::alertMess("/class/list" . $from, "操作失败");
         }
     }
     
+    public function ajaxSetStudentAction() {
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "配置学生";
+        $classId = (int) $this->_getParam("class_id");
+        $classData = ClassModel::getInstance()->getRowData($classId);
+        if( $classData ) {
+            if($classData['property']==0) {
+                echo "-1";
+                exit;
+            }
+        }
+        $this->view->leftData = ClassModel::getInstance()->getStudentDataBySpecial( $classId );
+        $this->view->rightData = ClassModel::getInstance()->getStudentDataByNotSpecial( $classId );
+        $this->view->classId = $classId;
+        $this->view->from = trim($this->_getParam("from"));
+    }
+    
+    public function ajaxSaveSetStudentAction() {
+        $this->_helper->layout->disableLayout();
+        $classId = (int) $this->_getParam("class_id");
+        $studentIds = trim($this->_getParam("student_ids"));
+        $studentIdResult = @explode("|", $studentIds);
+        @array_shift($studentIdResult);
+        
+        $delete = ClassModel::getInstance()->deleteStudentDataByClassId($classId);
+        $save = 0;
+        if( !empty($studentIdResult) && $delete > 0 ) {
+            $save = ClassModel::getInstance()->addStudentDataBySpecial($classId, $studentIdResult);
+        }
+        if( empty($studentIdResult) && $delete > 0 ) {
+            $save = 1;
+        }
+        echo $save;
+        exit;
+        
+    }
 }

@@ -54,7 +54,41 @@ class ClassModel {
     }
 
     public function getPageData($page = 1, $pageSize = 20, $where = "") {
-        return $this->_class->getPageData( $page , $pageSize , $where );
+        return $this->_class->getPageData($page, $pageSize, $where);
+    }
+
+    public function getStudentDataBySpecial($classId) {
+        return $this->_class->getStudentDataBySpecial($classId);
+    }
+
+    public function getStudentDataByNotSpecial($classId) {
+        return $this->_class->getStudentDataByNotSpecial($classId);
+    }
+
+    public function deleteStudentDataByClassId($classId) {
+        return $this->_class->deleteStudentDataByClassId($classId);
+    }
+
+    public function addStudentDataBySpecial($classId, $studentIds) {
+        $where = "";
+        if (!empty($studentIds)) {
+            $or = "";
+            foreach ($studentIds as $p) {
+                $where .= "{$or}('{$classId}','{$p}')";
+                $or = ",";
+            }
+        }
+        if (!empty($where)) {
+
+            return $this->_class->addStudentDataBySpecial($where);
+        }
+
+        return 0;
+    }
+
+    public function deleteData($classId) {
+        $params = array("is_delete" => 1);
+        return $this->updateData($classId, $params);
     }
 
 }
