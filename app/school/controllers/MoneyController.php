@@ -28,56 +28,169 @@ class MoneyController extends Ccc_Base_Controller {
     }
 
     /**
-     * 列表
+     * 教师费用列表
+     */
+    public function listTeacherAction() {
+
+       
+        $this->view->title = "教工费用列表";
+    }
+
+   
+    
+    /**
+     * 学生费用列表
+     */
+    public function listStudentAction() {
+        $this->view->title = "学生费用列表";
+    }
+    
+    
+    /**
+     * 费用列表
      */
     public function listAction() {
-
-        // deal with the page.
-        $page = (int) $this->_getParam("page");
-        $page = $page < 1 ? 1 : $page;
-        $pageSize = isset($this->_conf->page_size) ? $this->_conf->page_size : 20;
-        // where
-        $where = " ";
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // 学期配置
+    public function listConfigTermAction() {
+        $this->view->title = "学期配置列表";
+        
+        $page = 1;
+        $pageSize = 20;
+        $where = "";
         $condition = "";
-        $className = trim($this->_getParam("class_name"));
-        if(!empty($className)) {
-            $where .= " and class_name  like '{$className}%' ";
-            $condition .= "/class_name/{$className}";
+        
+        $this->view->data = MoneyModel::getInstance()->getConfigTermPageData($page, $pageSize, $where);
+        $this->view->from = base64_encode( urlencode("/page/{$page}" . $condition) );
+    }
+    
+    public function ajaxAddConfigTermAction() {
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "添加学期配置信息";
+        
+        
+    }
+    
+    public function ajaxSaveConfigTermAction() {
+        
+    }
+    
+    public function ajaxViewConfigTermAction() {
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "查看学期配置信息"; 
+        
+        $termId = (int) $this->_getParam("term_id");
+        $this->view->configTermData = MoneyModel::getInstance()->getConfigTermRowData( $termId );
+        $this->view->from = trim($this->_getParam("from"));
+    }
+    
+    public function ajaxEditConfigTermAction() { 
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "编辑学期配置信息"; 
+        
+        $termId = (int) $this->_getParam("term_id");
+        $this->view->configTermData = MoneyModel::getInstance()->getConfigTermRowData( $termId );
+        $this->view->from = trim($this->_getParam("from"));
+    }
+    
+    public function ajaxUpdateConfigTermAction() {
+        
+        
+    }
+    
+    public function deleteConfigTermAction() {
+        $this->_helper->layout->disableLayout();
+        $termId = (int) $this->_getParam("term_id");
+        $from = trim($this->_getParam("from"));
+        $from = urldecode( base64_decode( $from ) );
+        $delete = MoneyModel::getInstance()->deleteConfigTermData($termId);
+        if ($delete > 0) {
+            Ccc_Helper_Com::alertMess("/money/list.config.term" . $from, "操作成功");
+        } else {
+            Ccc_Helper_Com::alertMess("/class/list.config.term" . $from, "操作失败");
         }
-
-        // compare the page data.
-        $dataCount = ClassModel::getInstance()->getDataCount($where);
-        $pageCount = ceil($dataCount / $pageSize);
-        $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
-        $page = $page < 1 ? 1 : $page;
-        // data.
-        $data = ClassModel::getInstance()->getPageData($page, $pageSize, $where);
-        $this->view->data = $data;
-        // view page
-        $this->view->pageData = array("page" => $page, "url" => "/class/list{$condition}",
-            "page_count" => $pageCount);
-
-        $this->view->title = "费用列表";
-    }
-
-    public function addAction() {
-        $this->view->title = "费用录入";
     }
     
-    public function saveAction() {
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // 费用项目配置
+    public function listConfigMoneyProjectAction() {
+        $this->view->title = "费用项目配置列表";
+        
+        $page = 1;
+        $pageSize = 20;
+        $where = "";
+        $condition = "";
+        
+        $this->view->data = MoneyModel::getInstance()->getConfigMoneyProjectPageData( $page, $pageSize , $where );
+        $this->view->from = base64_encode( urlencode("/page/{$page}" . $condition) );
+    }
+    
+    
+    public function ajaxAddConfigMoneyProjectAction() {
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "添加费用项目配置信息"; 
+    }
+    
+    public function ajaxViewConfigMoneyProjectAction() {
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "查看费用项目配置信息"; 
+        $mpId = (int) $this->_getParam("mp_id");
+        $this->view->configMoneyProjectData = MoneyModel::getInstance()->getConfigMoneyProjectRowData($mpId);
+        $this->view->from = trim($this->_getParam("from"));
+    }
+    
+    
+    
+    
+    
+    
+    
+    // 班级+学期+费用项目 =》 费用
+    public function listConfigMoneyAction() {
+        $this->view->title = "班级学期项目费用列表";
+    }
+    
+    public function addConfigMoneyAction() {
+        $this->view->title = "添加班级学期项目费用信息";
+    }
+    
+    public function saveConfigMoneyAction() {
         
     }
     
-    public function editAction() {
+    public function editConfigMoneyAction() {
         
     }
     
-    public function updateAction() {
+    public function updateConfigMoneyAction() {
         
     }
     
-    public function deleteAction() {
+    public function deleteConfigMoneyAction() {
         
     }
+    
+    
+        
     
 }

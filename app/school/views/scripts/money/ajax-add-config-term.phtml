@@ -1,0 +1,97 @@
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 35%;float: left">
+<div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title ?></span>
+		</div>
+		<!--body table title-->
+
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+		  <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+		    <tbody>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;" width="100">属性：</td>
+                       <td  style="text-align:left;">
+                       <select name="input_property" id="input_property" style="width:120px;" onchange="Class.showSpecial(this.value);">
+                         <option value="0">普通班</option>
+                         <option value="1">特长班</option>
+                       </select>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;" id="td_special">班主任：</td>
+                       <td  style="text-align:left;">
+                       <select name="input_teacher_id" id="input_teacher_id" style="width:120px;">
+                       <option value="0">-请选择-</option>
+                       <?php if($this->teacherData):?>
+                       <?php foreach($this->teacherData as $p):?>
+                       <option value="<?=$p['teacher_id']?>"><?=$p['cn_name']?>[<?=$p['teacher_no']?>]</option>
+                       <?php endforeach;?>
+                       <?php endif;?>
+                       </select>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">班级名称：</td>
+                       <td  style="text-align:left;">
+                         <input type="text" name="input_class_name" id="input_class_name" />
+                         <font color="red">*</font>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;">人数：</td>
+                       <td  style="text-align:left;">
+                       <input type="text" name="input_amount" id="input_amount" />
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">课时：</td>
+                       <td style="text-align:left;">
+                         <input type="text" name="input_class_minute" id="input_class_minute" />（分）
+                         </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">上课地点：</td>
+                       <td style="text-align:left;">
+                       <input type="text" name="input_class_address" id="input_class_address" />
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">上课时间：</td>
+                       <td style="text-align:left;">
+                         <input type="text" name="input_class_time" 
+                         	id="input_class_time" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"/>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">开班日期：</td>
+                       <td style="text-align:left;">
+                         <input type="text" name="input_open_date" id="input_open_date" class="Wdate" onclick="WdatePicker()" />
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;">描述：</td>
+                       <td  style="text-align:left;">
+                       <textarea name="input_comments" id="input_comments" cols="30" rows="3"></textarea>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td colspan="2"  style="text-align:center;">
+                       <input type="button" name="button" id="button" value="确定提交" onclick="Class.save();"/>			
+                       </td>
+                     </tr>
+              </tbody>
+		  </table>
+            
+	</div>
+	<!--body table content-->
+  	</div>
+    
+
+	<!--带分页-->
+	<div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+	</div>
+
+</div>

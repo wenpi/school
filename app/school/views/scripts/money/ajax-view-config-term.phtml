@@ -1,0 +1,86 @@
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 35%;float: left">
+<div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title ?></span>
+		</div>
+		<!--body table title-->
+
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+		  <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+		    <tbody>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;" width="100">学年：</td>
+                       <td  style="text-align:left;">
+                       <?=$this->configTermData['year']?>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;" id="td_special">学期名称：</td>
+                       <td  style="text-align:left;">
+                      <?=$this->configTermData['term_name']?>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">学期类型：</td>
+                       <td  style="text-align:left;">
+                         <?php 
+							switch($this->configTermData['type']) { 
+								case 1:
+									echo "春季学期";
+									break;
+								case 2:
+									echo "夏季学期";
+									break;
+								case 3:
+									echo "秋季学期";
+									break;
+								case 4:
+									echo "其他";
+									break;
+								default:
+									echo "无";
+									break;
+							}
+						   ?>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;">开始时间：</td>
+                       <td  style="text-align:left;">
+                       <?=$this->configTermData['start_date']?>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">结束时间：</td>
+                       <td style="text-align:left;">
+                       <?=$this->configTermData['end_date']?>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;">描述：</td>
+                       <td style="text-align:left;">
+                       <?=$this->configTermData['comments']?>
+                       </td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td colspan="2"  style="text-align:center;">
+                       <input type="button" name="button" 
+                       	value="返回学期配置列表" onclick="window.location='/money/list.config.term<?=urldecode(base64_decode($this->from))?>'"/>			
+                       </td>
+                     </tr>
+              </tbody>
+		  </table>
+            
+	</div>
+	<!--body table content-->
+  	</div>
+    
+
+	<!--带分页-->
+	<div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+	</div>
+
+</div>

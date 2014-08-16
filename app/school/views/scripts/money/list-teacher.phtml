@@ -1,0 +1,102 @@
+<?= $this->headTitle($this->title) ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/teacher.js' type='text/javascript'></script>
+<!--条件-->
+<form action="/student/list" method="post">
+    <div style="font-size: 11px;">
+        教工英文名：
+        <input type="text" name="en_name"  size="12" value="<?=$this->enName?>"  title="支持模糊"/>
+        教工中文名：
+        <input type="text" name="cn_name"  size="12" value="<?=$this->cnName?>"  title="支持模糊"/>
+        <button type="submit" id="submitButton" style="margin-left:30px;">
+            Search
+        </button>
+        <button type="button" onclick="window.location='/student/add'">
+            添加学生信息
+        </button>
+    </div>
+</form>
+
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table header-->
+        <div class="ui-state-default ui-jqgrid-hdiv" style="width: 100%;">
+            <table class="ui-jqgrid-htable" style="width:100%" cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                    <tr class="ui-jqgrid-labels">
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">编号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">学号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">英文名</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">中文名</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">性别</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">出生日期</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">入学日期</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">学籍状态</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:100px;">操作</th>
+                    </tr>
+                </thead>
+            </table>
+	  </div>
+        <!--body table header-->
+
+        <!--body table content-->
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+                <tbody>
+                    <?php foreach ($this->data as $k=>$v): ?>
+                    	<?php if($v['student_id']==$this->studentId):?>
+                        <tr class="ui-widget-content jqgrow ui-row-ltr" style="background:#FCE5E2">
+                        <?php else:?>
+                    	<?php if($k%2==0):?>
+                        <tr class="ui-widget-content jqgrow ui-row-ltr" style="background:#FBFCE2">
+                        <?php else:?>
+                        <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <?php endif;?>
+                        <?php endif;?>
+                            <td  style="text-align:center; width:60px;">
+							<a href="/student/view/student_id/<?=$v['student_id']?>/from/<?=$this->from?>"><?=$v['student_id']?></a>
+                            </td>
+                            <td  style="text-align:center;"><?=$v['student_no']?></td>
+                            <td  style="text-align:center;"><?php echo !empty($v['en_name'])?$v['en_name']:"-"?></td>
+                            <td  style="text-align:center;"><?=$v['cn_name']?></td>
+                            <td  style="text-align:center;"><?php echo $v['sex']==0?"无":($v['sex']==1?"男":"女")?></td>
+                            <td  style="text-align:center;"><?php echo $v['birthday']=="0000-00-00"?"-":$v['birthday']?></td>
+                            <td  style="text-align:center;"><?php echo $v['entrance_date']=="0000-00-00"?"-":$v['entrance_date']?></td>
+                            <td  style="text-align:center; width:60px;"><?php echo $v['school_status']==0?"在读":"毕业"?></td>
+                            <td  style="text-align:center; width:100px;">
+                            <a href="/student/view/student_id/<?=$v['student_id']?>/from/<?=$this->from?>">查看</a> | 
+                            <a href="/student/edit/student_id/<?=$v['student_id']?>/from/<?=$this->from?>">修改</a> | 
+                            <a href="/student/delete/student_id/<?=$v['student_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗？，则会删除其所有家长信息！')){return true;}else{return false;}">删除</a>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                </tbody>
+            </table>
+      </div>
+        <!--body table content-->
+
+    </div>
+
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+        <div class="ui-pager-control">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-pg-table" style="width:100%;table-layout:fixed;height:100%;">
+                <tbody>
+                    <tr>
+                        <td id="pager1_left" align="left"></td>
+                        <td id="pager1_center" align="center"
+                            style="white-space: pre;
+                            width: 228px;"><?= $this->render('page.phtml') ?></td>
+                        <td id="pager1_right" align="right"></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
