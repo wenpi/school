@@ -52,7 +52,7 @@ class StudentController extends Ccc_Base_Controller {
         $this->view->title = "学生管理";
         $this->view->data = $data;
         // view page
-        $this->view->pageData = array("page" => $page, "url" => "/student/list.action{$condition}",
+        $this->view->pageData = array("page" => $page, "url" => "/student/list{$condition}",
             "page_count" => $pageCount);
         $this->view->enName = $enName;
         $this->view->cnName = $cnName;
@@ -117,7 +117,6 @@ class StudentController extends Ccc_Base_Controller {
             "sch_class_id" => (int) $this->_getParam("class_id"),
             "school_status" => (int) $this->_getParam("school_status"),
             "entrance_date" => trim($this->_getParam("entrance_date")),
-            "graduate_date" => trim($this->_getParam("graduate_date")),
             "add_user_id" => (int)$this->_session->uid,
             "add_time_int" => time(),
         );
@@ -125,7 +124,7 @@ class StudentController extends Ccc_Base_Controller {
         $add = StudentModel::getInstance()->addData($result);
 //	$add = 1;
         if($add>0) {
-	    // 添加家长信息
+            // 添加家长信息
             $parentEnName = $this->_getParam("parent_en_name");
             $parentCnName = $this->_getParam("parent_cn_name");
             $parentNamed = $this->_getParam("parent_named");
@@ -158,6 +157,7 @@ class StudentController extends Ccc_Base_Controller {
         $studentData['birthday'] = $studentData['birthday']=="0000-00-00"?"":$studentData['birthday'];
         $studentData['entrance_date'] = $studentData['entrance_date']=="0000-00-00"?"":$studentData['entrance_date'];
         $studentData['graduate_date'] = $studentData['graduate_date']=="0000-00-00"?"":$studentData['graduate_date'];
+        $studentData['quit_date'] = $studentData['quit_date']=="0000-00-00"?"":$studentData['quit_date'];
         $this->view->studentData = $studentData;
         $config = new Zend_Config_Ini(PATH_ROOT . DS . $this->_conf->path->params_conf, "school");
         $swfData = array(
@@ -192,6 +192,7 @@ class StudentController extends Ccc_Base_Controller {
             "sch_class_id" => (int) $this->_getParam("class_id"),
             "entrance_date" => trim($this->_getParam("entrance_date")),
             "graduate_date" => trim($this->_getParam("graduate_date")),
+            "quit_date" => trim($this->_getParam("quit_date")),
             "school_status" => (int) $this->_getParam("school_status"),
             "update_user_id" => (int)$this->_session->uid,
             "update_time_int" => time(),

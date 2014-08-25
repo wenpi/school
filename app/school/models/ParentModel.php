@@ -55,6 +55,9 @@ class ParentModel {
         return $this->_parent->deleteDataByWhere( $where , $params );
     }
 
+    public function getParentDataBySms($studentId) {
+        return $this->_parent->getParentDataBySms($studentId);
+    }
 
 
 

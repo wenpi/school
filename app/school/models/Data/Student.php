@@ -48,14 +48,11 @@ class Data_Student extends Ccc_Base_Model {
 	}
 
 	public function getStudentDataByWhere( $where ) {
-		$sql = "select student_id,student_no,en_name,cn_name from sch_students where student_id>0 {$where} and is_delete=0";
+		$sql = "select * from sch_students where student_id>0 {$where} and is_delete=0";
 		$data = $this->_db->fetchAll($sql);
 
 		return !empty($data) ? $data : array();
 	}
 
-	public function checkData( $studentId , $typeId , $dealDate ) {
-		$sql = "select count(*) from ";
-	}
 
 }

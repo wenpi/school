@@ -64,14 +64,15 @@ class ClassController extends Ccc_Base_Controller {
     // 添加
     public function ajaxAddAction() {
         $this->_helper->layout->disableLayout();
-        $this->view->title1 = "添加班级信息";
-        $this->view->title2 = "添加特长班信息";
+        $this->view->title = "添加班级信息";
         $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere();
+        $this->view->classTypeData = ClassModel::getInstance()->getClassTypeData();
     }
 
     // 保存
     public function ajaxSaveAction() {
         $this->_helper->layout->disableLayout();
+        $classTypeId = (int) $this->_getParam("input_type");
         $property = (int) $this->_getParam("input_property");
         $teacherId = (int) $this->_getParam("input_teacher_id");
         $className = trim($this->_getParam("input_class_name"));
@@ -88,7 +89,10 @@ class ClassController extends Ccc_Base_Controller {
             exit;
         }
         $teacherData = TeacherModel::getInstance()->getRowData($teacherId);
+        $classTypeRowData = ClassModel::getInstance()->getClassTypeRowData($classTypeId);
         $params = array(
+            "sch_class_type_id" => $classTypeId,
+            "sch_class_type_name" => isset($classTypeRowData['class_type_name']) ? $classTypeRowData['class_type_name'] : "",
             "sch_teacher_id" => $teacherId,
             "sch_teacher_no" => isset($teacherData['teacher_no'])?$teacherData['teacher_no']:"",
             "sch_teacher_name" => isset($teacherData['cn_name'])?$teacherData['cn_name']:"",
@@ -106,9 +110,7 @@ class ClassController extends Ccc_Base_Controller {
         $add = ClassModel::getInstance()->addData($params);
         if ($add > 0) {
             // 更新班级班号/班级编码
-            $classNumber = $property . sprintf("%02d", $add);
             $updateParams = array(
-                "class_number" => $classNumber,
                 "class_no" => $add,
             );
             $update = ClassModel::getInstance()->updateData($add, $updateParams);
@@ -134,10 +136,18 @@ class ClassController extends Ccc_Base_Controller {
     public function ajaxEditAction() {
         $this->_helper->layout->disableLayout();
         $classId = (int) $this->_getParam("class_id");
-        $this->view->classData = ClassModel::getInstance()->getRowData($classId);
+        $classData = ClassModel::getInstance()->getRowData($classId);
+        $classData['amount'] = $classData['amount'] >0 ? $classData['amount'] : "";
+        $classData['class_minute'] = $classData['class_minute'] >0 ? $classData['class_minute'] : "";
+        $classData['class_time'] = !empty($classData['class_time']) 
+                                   && $classData['class_time']!="0000-00-00 00:00:00"? $classData['class_time'] : "";
+        $classData['open_date'] = !empty($classData['open_date']) 
+                                   && $classData['open_date']!="0000-00-00" ? $classData['open_date'] : "";
+        $this->view->classData  = $classData;
         $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere();
         $this->view->title = "编辑班级信息";
         $this->view->from = trim($this->_getParam("from"));
+        $this->view->classTypeData = ClassModel::getInstance()->getClassTypeData();
     }
 
     // 保存编辑
@@ -243,6 +253,136 @@ class ClassController extends Ccc_Base_Controller {
         }
         echo $save;
         exit;
+        
+    }
+    
+    public function ajaxCansleAction() {
+        $this->_helper->layout->disableLayout();
+        $classId = (int) $this->_getParam("class_id");
+        $from = trim($this->_getParam("from"));
+        
+        $params = array("status"=>3);
+        $update = ClassModel::getInstance()->updateData($classId, $params);
+        $result = array(
+            "error_code"=>0,
+            "msg"=>"",
+            "data"=>array("update"=>$update,"from"=> urldecode( base64_decode($from) ) ) );
+        echo Ccc_Third_Json::getInstance()->encode($result);
+        exit;
+    }
+    
+    public function ajaxUpgradeAction() {
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "升级班级信息";
+        $classId = (int) $this->_getParam("class_id");
+        $classRowData = ClassModel::getInstance()->getClassRowData($classId);
+        $classTypeId = isset($classRowData['sch_class_type_id']) ? $classRowData['sch_class_type_id'] : 0;
+        $this->view->classTypeRowData = $classTypeRowData = ClassModel::getInstance()->getClassTypeRowData($classTypeId);
+        $this->view->classTypeData = ClassModel::getInstance()->getClassTypeData(" and level>'{$classTypeRowData['level']}'");
+        $this->view->from = trim($this->_getParam("from"));
+        $this->view->classId = $classId;
+    }
+    
+    public function ajaxMergeAction() {
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "合并班级并构建新班级信息";
+        $this->view->classTypeData = ClassModel::getInstance()->getClassTypeData();
+        $classIds = trim($this->_getParam("class_ids"));
+        $classIdResult = @explode("|",$classIds);
+        array_shift($classIdResult);
+        $classIdString = !empty($classIdResult) ? implode(",",$classIdResult) : "";
+        $this->view->classIdString = $classIdString;
+        $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere();
+        $this->view->from = trim($this->_getParam("from"));
+    }
+    
+    public function ajaxSaveMergeAction() {
+        $this->_helper->layout->disableLayout();
+        $hiddenClassIds = trim($this->_getParam("hidden_class_ids"));
+        $classTypeId = (int) $this->_getParam("input_type");
+        $property = (int) $this->_getParam("input_property");
+        $teacherId = (int) $this->_getParam("input_teacher_id");
+        $className = trim($this->_getParam("input_class_name"));
+        $amount = (int) $this->_getParam("input_amount");
+        $classMinute = (int) $this->_getParam("input_class_minute");
+        $classAddress = trim($this->_getParam("input_class_address"));
+        $classTime = trim($this->_getParam("input_class_time"));
+        $openDate = trim($this->_getParam("input_open_date"));
+        $comments = trim($this->_getParam("input_comments"));
+        
+        // 合并,新增一个班级。去掉原合并班级编号。
+        $teacherData = TeacherModel::getInstance()->getRowData($teacherId);
+        $classTypeRowData = ClassModel::getInstance()->getClassTypeRowData($classTypeId);
+        $params = array(
+            "sch_class_type_id" => $classTypeId,
+            "sch_class_type_name" => isset($classTypeRowData['class_type_name']) ? $classTypeRowData['class_type_name'] : "",
+            "sch_teacher_id" => $teacherId,
+            "sch_teacher_no" => isset($teacherData['teacher_no'])?$teacherData['teacher_no']:"",
+            "sch_teacher_name" => isset($teacherData['cn_name'])?$teacherData['cn_name']:"",
+            "property" => $property,
+            "class_name" => $className,
+            "amount" => $amount,
+            "class_minute" => $classMinute,
+            "class_address" => $classAddress,
+            "class_time" => $classTime,
+            "open_date" => $openDate,
+            "merge_class_ids" => $hiddenClassIds,
+            "add_user_id" => $this->_session->uid,
+            "add_time_int" => time(),
+            "comments" => $comments,
+        );
+        $add = ClassModel::getInstance()->addData($params);
+        if($add>0) {
+            //去掉原班级编号
+            $classIdArr = @explode(",",$hiddenClassIds);
+            if(!empty($classIdArr)) {
+                foreach($classIdArr as $classId) {
+                    ClassModel::getInstance()->updateData($classId, array("status"=>2));
+                }
+            }
+            // 更新班级班号
+            $update = ClassModel::getInstance()->updateData($add, array("class_no" => $add));
+        }
+        if($add>0 && $update>0) {
+            echo "1";
+        } else {
+            echo "-1";
+        }
+        exit;
+    }
+    
+    public function ajaxSaveUpgradeAction() {
+        $this->_helper->layout->disableLayout();
+        $classId = (int) $this->_getParam("class_id");
+        $classTypeId = (int) $this->_getParam("input_type");
+        $from = trim($this->_getParam("from"));
+        
+        $classTypeRowData = ClassModel::getInstance()->getClassTypeRowData($classTypeId);
+        $params = array(
+            "sch_class_type_id" => $classTypeId,
+            "sch_class_type_name" => isset($classTypeRowData['class_type_name']) ? $classTypeRowData['class_type_name'] : "",
+        );
+        
+        $update = ClassModel::getInstance()->updateData($classId, $params);
+        $result = array(
+            "error_code"=>0,
+            "msg"=>"",
+            "data"=>array("update"=>$update,"from"=> urldecode( base64_decode($from) ) ) );
+        echo Ccc_Third_Json::getInstance()->encode($result);
+        exit;
+    }
+    
+    public function saveStudentMoneyDataAction() {
+        $this->_helper->layout->disableLayout();
+        $classId = (int) $this->_getParam("class_id");
+        $termId = (int) $this->_getParam("term_id");
+        $studentId = (int) $this->_getParam("student_id");
+        $moneyType = (int) $this->_getParam("money_type");
+        $moneyDate = trim($this->_getParam("money_date"));
+        $projectId = (int) $this->_getParam("project_id");
+        $name = trim($this->_getParam("name"));
+        $realyMoney = trim($this->_getParam("realy_money"));
+        $comments = trim($this->_getParams("comments"));
         
     }
 }

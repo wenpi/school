@@ -43,5 +43,13 @@ class Data_Parent extends Ccc_Base_Model {
 
         return 1;
     }
+    
+    public function getParentDataBySms($studentId) {
+        $sql = "select * from sch_parents where sch_student_id={$studentId} and is_message=1 "
+                . "and is_delete=0 limit 1";
+        $parentRowData = $this->_db->fetchRow($sql);
+        
+        return !empty($parentRowData) ? $parentRowData : array();
+    }
 
 }

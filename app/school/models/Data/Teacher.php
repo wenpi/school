@@ -27,15 +27,15 @@ class Data_Teacher extends Ccc_Base_Model {
         return !empty($data) ? $data : array();
     }
 
-    public function getTypeData() {
-        $sql = " select * from admin_user_type where is_delete=0 ";
+    public function getTypeData( $where ) {
+        $sql = " select * from admin_user_type where user_type_id>0 $where and is_delete=0 ";
         $data = $this->_db->fetchAll($sql);
 
         return !empty($data) ? $data : array();
     }
 
     public function getTeacherDataByWhere($where) {
-        $sql = "select teacher_id,cn_name,teacher_no from sch_teachers where teacher_id>0 {$where} "
+        $sql = "select * from sch_teachers where teacher_id>0 {$where} "
                 . "and is_delete=0 ORDER BY CONVERT(cn_name USING GBK) ASC ";
 //        echo $sql;
         $data = $this->_db->fetchAll($sql);

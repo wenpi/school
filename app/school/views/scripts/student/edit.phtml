@@ -167,24 +167,30 @@ $(function(){
                         <select name="school_status" id="school_status">
                         <option value="0" <?php echo $this->studentData['school_status']==0?"selected":"";?>>在读</option>
                         <option value="1" <?php echo $this->studentData['school_status']==1?"selected":"";?>>毕业</option>
+                        <option value="2" <?php echo $this->studentData['school_status']==2?"selected":"";?>>退学</option>
                         </select>
                         </td>
                     </tr>
+                	<tr class="ui-widget-content jqgrow ui-row-ltr">
+                	  <td  style="text-align:right; width:150px;">入学日期：</td>
+                	  <td  style="text-align:left;"><input type="text" name="entrance_date2" id="entrance_date2" class="Wdate" onclick="WdatePicker()" value="<?=$this->studentData['entrance_date']?>"/>
+                	    <font color="red">*</font></td>
+                	  <td  style="text-align:right;">毕业日期：</td>
+                	  <td  style="text-align:left;"><input type="text" name="graduate_date2" id="graduate_date2" class="Wdate" onclick="WdatePicker()" value="<?=$this->studentData['graduate_date']?>"/></td>
+              	  </tr>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
-                        <td width="150"  style="text-align:right; width:150px;">入学日期：</td>
-                        <td  style="text-align:left;">
-                        <input type="text" name="entrance_date" id="entrance_date" class="Wdate" onclick="WdatePicker()" value="<?=$this->studentData['entrance_date']?>"/>
-                        <font color="red">*</font>
-                        </td>
-                   	  <td  style="text-align:right;">毕业日期：</td>
-                        <td  style="text-align:left;">
-                        <input type="text" name="graduate_date" id="graduate_date" class="Wdate" onclick="WdatePicker()" value="<?=$this->studentData['graduate_date']?>"/>
-                        </td>
+                      <td  style="text-align:right; width:150px;">退学日期：</td>
+                      <td  style="text-align:left;">
+                      <input type="text" name="quit_date" id="quit_date" 
+                      		class="Wdate" onclick="WdatePicker()" value="<?=$this->studentData['quit_date']?>"/>
+                      </td>
+                      <td  style="text-align:right;">&nbsp;</td>
+                      <td  style="text-align:left;">&nbsp;</td>
                     </tr>
                 </tbody>
             </table>
             
-          <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">家长信息  <span style="cursor:pointer;" id="span_base" onclick="Teacher.showhideByAdd('base','table_teacher_base');" value="1" title="显示或隐藏">↑</span></div>
+    <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">家长信息  <span style="cursor:pointer;" id="span_base" onclick="Teacher.showhideByAdd('base','table_teacher_base');" value="1" title="显示或隐藏">↑</span></div>
             <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
                 <tbody>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">

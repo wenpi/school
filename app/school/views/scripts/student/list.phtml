@@ -30,15 +30,15 @@
             <table class="ui-jqgrid-htable" style="width:100%" cellspacing="0" cellpadding="0" border="0">
                 <thead>
                     <tr class="ui-jqgrid-labels">
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">编号</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">学号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">编号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:100px;">学号</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">英文名</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">中文名</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">性别</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">性别</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">出生日期</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">入学日期</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">学籍状态</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:100px;">操作</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:100px;">学籍状态</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:120px;">操作</th>
                     </tr>
                 </thead>
             </table>
@@ -59,17 +59,17 @@
                         <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <?php endif;?>
                         <?php endif;?>
-                            <td  style="text-align:center; width:60px;">
+                            <td  style="text-align:center; width:80px;">
 							<a href="/student/view/student_id/<?=$v['student_id']?>/from/<?=$this->from?>"><?=$v['student_id']?></a>
                             </td>
-                            <td  style="text-align:center;"><?=$v['student_no']?></td>
+                            <td  style="text-align:center; width:100px;"><?=$v['student_no']?></td>
                             <td  style="text-align:center;"><?php echo !empty($v['en_name'])?$v['en_name']:"-"?></td>
                             <td  style="text-align:center;"><?=$v['cn_name']?></td>
-                            <td  style="text-align:center;"><?php echo $v['sex']==0?"无":($v['sex']==1?"男":"女")?></td>
+                            <td  style="text-align:center; width:80px;"><?php echo $v['sex']==0?"无":($v['sex']==1?"男":"女")?></td>
                             <td  style="text-align:center;"><?php echo $v['birthday']=="0000-00-00"?"-":$v['birthday']?></td>
                             <td  style="text-align:center;"><?php echo $v['entrance_date']=="0000-00-00"?"-":$v['entrance_date']?></td>
-                            <td  style="text-align:center; width:60px;"><?php echo $v['school_status']==0?"在读":"毕业"?></td>
-                            <td  style="text-align:center; width:100px;">
+                            <td  style="text-align:center; width:100px;"><?php echo $v['school_status']==0?"在读":"毕业"?></td>
+                            <td  style="text-align:center; width:120px;">
                             <a href="/student/view/student_id/<?=$v['student_id']?>/from/<?=$this->from?>">查看</a> | 
                             <a href="/student/edit/student_id/<?=$v['student_id']?>/from/<?=$this->from?>">修改</a> | 
                             <a href="/student/delete/student_id/<?=$v['student_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗？，则会删除其所有家长信息！')){return true;}else{return false;}">删除</a>

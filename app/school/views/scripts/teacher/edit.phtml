@@ -85,7 +85,6 @@ $(function(){
                         <td  style="text-align:right; width:150px;">性别：</td>
                         <td  style="text-align:left;">
                         <select name="sex" id="sex">
-                          <option value="0" <?php $this->teacherData['sex']==0?"selected":"";?>>无</option>
                           <option value="1" <?php $this->teacherData['sex']==1?"selected":"";?>>男</option>
                           <option value="2" <?php $this->teacherData['sex']==2?"selected":"";?>>女</option>
                         </select>
@@ -158,15 +157,15 @@ $(function(){
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td  style="text-align:right; width:150px;">最高学历：</td>
                       <td colspan="3"  style="text-align:left;">
-                      <select name="max_educatio"  id="max_educatio">
-                        <option value="0" <?php $this->teacherData['sex']==0?"selected":"";?>>无</option>
-                        <option value="1" <?php $this->teacherData['sex']==1?"selected":"";?>>大专</option>
-                        <option value="2" <?php $this->teacherData['sex']==2?"selected":"";?>>本科</option>
-                        <option value="3" <?php $this->teacherData['sex']==3?"selected":"";?>>重点</option>
-                        <option value="4" <?php $this->teacherData['sex']==4?"selected":"";?>>研究生</option>
-                        <option value="5" <?php $this->teacherData['sex']==5?"selected":"";?>>硕士</option>
-                        <option value="6" <?php $this->teacherData['sex']==6?"selected":"";?>>博士</option>
-                        <option value="7" <?php $this->teacherData['sex']==7?"selected":"";?>>博士后</option>
+                      <select name="max_education"  id="max_education">
+                        <option value="0" <?php $this->teacherData['max_education']==0?"selected":"";?>>无</option>
+                        <option value="1" <?php $this->teacherData['max_education']==1?"selected":"";?>>大专</option>
+                        <option value="2" <?php $this->teacherData['max_education']==2?"selected":"";?>>本科</option>
+                        <option value="3" <?php $this->teacherData['max_education']==3?"selected":"";?>>重点</option>
+                        <option value="4" <?php $this->teacherData['max_education']==4?"selected":"";?>>研究生</option>
+                        <option value="5" <?php $this->teacherData['max_education']==5?"selected":"";?>>硕士</option>
+                        <option value="6" <?php $this->teacherData['max_education']==6?"selected":"";?>>博士</option>
+                        <option value="7" <?php $this->teacherData['max_education']==7?"selected":"";?>>博士后</option>
                       </select>
                       </td>
                     </tr>
@@ -200,17 +199,17 @@ $(function(){
                         <td width="150"  style="text-align:right; width:150px;">所属班级：</td>
                         <td width="300"  style="text-align:left;">
                         <select name="class_id" size="1" id="class_id">
-                        <option value="0" <?php echo $this->teacherData['school_class_id']==0?"selected":"";?>>请选择</option>
+                        <option value="0" <?php echo $this->teacherData['sch_class_id']==0?"selected":"";?>>-请选择-</option>
                         <?php foreach($this->classData as $p):?>
-                        <option value="<?=$p['class_id']?>" <?php echo $p['class_id']==$this->teacherData['school_class_id']?"selected":"";?>><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
+                        <option value="<?=$p['class_id']?>" <?php echo $p['class_id']==$this->teacherData['sch_class_id']?"selected":"";?>><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
                         <?php endforeach;?>
                         </select></td>
                       <td width="150"  style="text-align:right;"><span style="text-align:right; width:150px;">教工类别</span>：</td>
                         <td width="300"  style="text-align:left;">
                         <select name="teacher_type_id" size="1" id="teacher_type_id">
-                        <option value="0" <?php echo $this->teacherData['school_teacher_type_id']==0?"selected":"";?>>请选择</option>
+                        <option value="0" <?php echo $this->teacherData['ad_user_type_id']==0?"selected":"";?>>-请选择-</option>
                         <?php foreach($this->teacherTypeData as $k=>$p):?>
-                        <option value="<?=$k?>" <?php echo $this->teacherData['school_teacher_type_id']==$k?"selected":"";?>><?=$p?></option>
+                        <option value="<?=$k?>" <?php echo $this->teacherData['ad_user_type_id']==$k?"selected":"";?>><?=$p?></option>
                         <?php endforeach;?>
                         </select>
                         </td>
@@ -219,9 +218,9 @@ $(function(){
                         <td width="150"  style="text-align:right; width:150px;"><span style="text-align:right;">岗位信息</span>：</td>
                         <td width="300"  style="text-align:left;">
                         <select name="job_id" size="1" id="job_id">
-                        <option value="0" <?php echo $this->teacherData['school_job_id']==0?"selected":"";?>>请选择</option>
+                        <option value="0" <?php echo $this->teacherData['sch_job_id']==0?"selected":"";?>>-请选择-</option>
                         <?php foreach($this->jobData as $p):?>
-                        <option value="<?=$p['job_id']?>" <?php echo $this->teacherData['school_job_id']==$p['job_id']?"selected":"";?>><?=$p['job_name']?></option>
+                        <option value="<?=$p['job_id']?>" <?php echo $this->teacherData['sch_job_id']==$p['job_id']?"selected":"";?>><?=$p['job_name']?></option>
                         <?php endforeach;?>
                      	</select>
                         <font color="red">*</font>

@@ -57,6 +57,19 @@ class ClassModel {
         return $this->_class->getPageData($page, $pageSize, $where);
     }
 
+    public function getClassDataByWhere($where = "") {
+        $classData = $this->getClassData($where);
+        $classResult = array();
+        if ($classData) {
+            foreach ($classData as $p) {
+                $classResult['name'][$p['class_id']] = $p['class_name'];
+                $classResult['no'][$p['class_id']] = $p['class_no'];
+            }
+        }
+
+        return $classResult;
+    }
+
     public function getStudentDataBySpecial($classId) {
         return $this->_class->getStudentDataBySpecial($classId);
     }
@@ -89,6 +102,18 @@ class ClassModel {
     public function deleteData($classId) {
         $params = array("is_delete" => 1);
         return $this->updateData($classId, $params);
+    }
+
+    public function getClassTypeData($where = "") {
+        return $this->_class->getClassTypeData($where);
+    }
+
+    public function getClassTypeRowData($classId) {
+        return $this->_class->getClassTypeRowData($classId);
+    }
+
+    public function getClassRowData($classId) {
+        return $this->_class->getClassRowData($classId);
     }
 
 }

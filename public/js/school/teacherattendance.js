@@ -38,6 +38,12 @@ var TeacherAttendance = {
 			alert("请选择打卡日期");
 			return false;
 		}
+		if( jQuery.trim(input_come_time) =="" 
+			&& jQuery.trim(input_leave_time) == "" ) { 
+			alert("到校时间或离校时间不能为空");
+			
+			return false;
+		}
 		jQuery.ajax({
             type: "POST",
             dataType: "json",

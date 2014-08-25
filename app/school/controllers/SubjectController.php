@@ -49,7 +49,7 @@ class SubjectController extends Ccc_Base_Controller {
         $data = SubjectModel::getInstance()->getPageData($page, $pageSize, $where);
         $this->view->data = $data;
         // view page
-        $this->view->pageData = array("page" => $page, "url" => "/job/list{$condition}",
+        $this->view->pageData = array("page" => $page, "url" => "/subject/list{$condition}",
             "page_count" => $pageCount);
 
         $this->view->title = "科目列表";

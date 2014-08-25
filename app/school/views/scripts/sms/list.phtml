@@ -1,0 +1,86 @@
+<?= $this->headTitle($this->title) ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/teacher.js' type='text/javascript'></script>
+<!--条件-->
+<form action="/sms/list" method="post">
+    <div style="font-size: 11px;">
+        标题：
+        <input type="text" name="keywords"  size="12" value="<?=$this->keywords?>"  title="支持模糊"/>
+        <button type="submit" id="submitButton" style="margin-left:30px;">
+            Search
+        </button>
+        <button type="button" onclick="window.location='/sms/send'">
+            发送短信
+        </button>
+    </div>
+</form>
+
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table header-->
+        <div class="ui-state-default ui-jqgrid-hdiv" style="width: 100%;">
+            <table class="ui-jqgrid-htable" style="width:100%" cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                    <tr class="ui-jqgrid-labels">
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">编号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:100px;">用户类型</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">标题</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:120px;">发送人</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:100px;">发送类型</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:160px;">定时发送时间</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:100px;">发送结果</th>
+                    </tr>
+                </thead>
+            </table>
+  </div>
+        <!--body table header-->
+
+        <!--body table content-->
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+                <tbody>
+                    <?php foreach ($this->data as $k=>$v): ?>
+                        <tr class="ui-widget-content jqgrow ui-row-ltr">
+                            <td  style="text-align:center; width:80px;">
+							<a href="/sms/view/message_send_id/<?=$v['message_send_id']?>/from/<?=$this->from?>"><?=$v['message_send_id']?></a>
+                            </td>
+                            <td  style="text-align:center; width:100px;"><?php echo $v['type']==1?"学生":"教工";?></td>
+                            <td  style="text-align:center;" title="<?=$v['title']?>">
+							<?php echo !empty($v['title'])?Ccc_Helper_Com::msubstr($v['title'], 0, 20). "...":"-"?>
+                            </td>
+                            <td  style="text-align:center; width:120px;"><?=$v['send_user_name']?></td>
+                            <td  style="text-align:center; width:100px;"><?php echo $v['send_time_type']==0?"立即发送":"定时发送"?></td>
+                            <td  style="text-align:center; width:160px;"><?php echo $v['send_time_int']>0?date("Y-m-d H:i:s",$v['send_time_int']):"-";?></td>
+                            <td  style="text-align:center; width:100px;"><?php echo $v['send_result']==0?"未发送":"已发送"?></td>
+                        </tr>
+                    <?php endforeach;?>
+                </tbody>
+            </table>
+  </div>
+        <!--body table content-->
+
+    </div>
+
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+        <div class="ui-pager-control">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-pg-table" style="width:100%;table-layout:fixed;height:100%;">
+                <tbody>
+                    <tr>
+                        <td id="pager1_left" align="left"></td>
+                        <td id="pager1_center" align="center"
+                            style="white-space: pre;
+                            width: 228px;"><?= $this->render('page.phtml') ?></td>
+                        <td id="pager1_right" align="right"></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

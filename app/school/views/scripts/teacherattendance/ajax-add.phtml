@@ -23,6 +23,7 @@
                            <?php endforeach;?>
                            <?php endif;?>
                            </select>
+                           <font color="red">*</font>
                            </td>
                          </tr>
                      <?php else:?>
@@ -30,7 +31,11 @@
                      <?php endif;?>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td width="100px;" style="text-align:right;">打卡日期：</td>
-                       <td  style="text-align:left;"><input name="input_attendance_date" type="text" id="input_attendance_date" size="20" class="Wdate" onclick="WdatePicker()"/></td>
+                       <td  style="text-align:left;">
+                       <input name="input_attendance_date" type="text" 
+                       		id="input_attendance_date" size="20" class="Wdate" onclick="WdatePicker()"/>
+                       <font color="red">*</font>
+                       </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td  style="text-align:right;">到校时间：</td>

@@ -13,35 +13,15 @@
 
         <!--body table content-->
         <form action="/sms/send.ok" method="post">
+        <input type="hidden" name="url" value="<?=$this->url?>"  />
         <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
             <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
                 <tbody>
-                    <tr class="ui-widget-content jqgrow ui-row-ltr">
-                        <td  style="text-align:right; width:150px;">接收类型：</td>
-                        <td  style="text-align:left;">
-                            <select name="receive_type" size="1" id="receive_type" onchange="Sms.showReceiveType(this.value);" style="width:100px;">
-                             <option value="0">单体</option>
-                             <option value="1">班级</option>
-                            </select>
-                            <span id="span_receive_type" style="display:none">
-                            <select name="receive_class_id" size="1" id="receive_class_id" style="width:100px;">
-                              <option value="0">-请选择班级-</option>
-                              <?php if($this->classData):?>
-                              <?php foreach($this->classData as $p):?>
-                              <option value="<?=$p['class_id']?>"><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
-                              <?php endforeach?>
-                              <?php endif;?>
-                            </select>
-                            <font color="red">*</font>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                	<tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td style="text-align:right; width:150px;">用户类型：</td>
                       <td style="text-align:left;">
-                      <select name="type" size="1" id="type" onchange="Sms.showUserData(this.value)">
-                          <option value="0">系统</option>
-                          <option value="1">学生(家长)</option>
+                      <select name="type" size="1" id="type">
+                          <option value="1">学生</option>
                           <option value="2">教工</option>
                       </select>
                       </td>
@@ -49,8 +29,21 @@
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td  style="text-align:right; width:150px;">接收人：</td>
                         <td  style="text-align:left;">
-                        <div id="div_receive_user_ids" style="height:80px; width:550px; border:1px dashed #111;">
-                        <span id="sdfsdf">sss(*)</span><span id="sdfsdf">sss(*)</span><span id="sdfsdf">sss(*)</span>
+                             <select name="receive_class_id" id="receive_class_id" onchange="Sms.showUserData(this.value);">
+                              <option value="0">-请选择-</option>
+                              <?php if($this->classData):?>
+                              <?php foreach($this->classData as $p):?>
+                              <option value="<?=$p['class_id']?>"><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
+                              <?php endforeach?>
+                              <?php endif;?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">&nbsp;</td>
+                        <td  style="text-align:left;">
+                        <div style="height:80px; width:550px; border:1px dashed #111; overflow:scroll; word-wrap: break-word; word-break: normal;">
+                        <div id="div_receive_user_ids"></div>
                         </div>
                         </td>
                     </tr>
@@ -91,7 +84,7 @@
        	    <div align="center">
             <input type="submit" name="save" value="确定提交" />
             &nbsp;&nbsp;
-            <input type="button" name="fanhui" value="返回教工列表" onclick="window.location='/teacher/list'" />
+            <input type="button" name="fanhui" value="返回短信列表" onclick="window.location='/sms/list'" />
             </div>
         </div>
         </form>

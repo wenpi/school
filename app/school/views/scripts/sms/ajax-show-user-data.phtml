@@ -1,6 +1,6 @@
 <!--body-->
 <div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 100%; height:100%;float: left">
-<div class="ui-jqgrid-view" style="width: 100%;">
+	<div class="ui-jqgrid-view" style="width: 100%;">
 		<!--body table title-->
 		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
 			<span class="ui-jqgrid-title"><?= $this->title ?></span>
@@ -12,22 +12,29 @@
 		  <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
 		    <tbody>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
-                       <td  style="text-align:right;" width="100">选择</td>
+                       <td  style="text-align:right;" width="100">
+                       <input type="checkbox" id="parent_user_id" onclick="_checkAll('user_id[]',this.checked)"/>
+                       </td>
                        <td width="120"  style="text-align:left;">用户</td>
                        <td width="179"  style="text-align:left;">手机</td>
                      </tr>
+                     <?php if($this->userData):?>
+                     <?php foreach($this->userData as $k=>$p):?>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
-                       <td style="text-align:right;"><input type="checkbox" name="checkbox2" id="checkbox2" /></td>
-                       <td  style="text-align:left;">dsfasdf</td>
-                       <td  style="text-align:left;">s123123</td>
+                       <td style="text-align:right;">
+                       <input type="checkbox" name="user_id[]" id="user_id_<?=$k?>" onclick="_checkThis('parent_user_id','user_id[]','user_id',<?=$k?>)" value="<?=$p['user_id']?>"/>
+                       <input type="hidden" id="user_no_<?=$k?>" value="<?=$p['user_no']?>" />
+                       <input type="hidden" id="user_name_<?=$k?>" value="<?=$p['user_name']?>" />
+                       <input type="hidden" id="user_phone_<?=$k?>" value="<?=$p['user_phone']?>" />
+                       </td>
+                       <td  style="text-align:left;">[<?=$p['user_no']?>]<?=$p['user_name']?></td>
+                       <td  style="text-align:left;"><?=$p['user_phone']?></td>
                      </tr>
+                     <?php endforeach;?>
+                     <?php endif;?>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
-                       <td style="text-align:right;"><input type="checkbox" name="checkbox" id="checkbox" /></td>
-                       <td  style="text-align:left;">sdfasdss</td>
-                       <td  style="text-align:left;">123123</td>
-                     </tr>
-                     <tr class="ui-widget-content jqgrow ui-row-ltr">
-                       <td colspan="3"  style="text-align:center;">
+                       <td colspan="3" style="text-align:center;">
+                       <input name="add" type="button" value="确定"  onclick="Sms.addUserData();"/>
                        </td>
                      </tr>
               </tbody>
@@ -35,7 +42,7 @@
             
 		</div>
 		<!--body table content-->
-  </div>
+	</div>
     
 
 	<!--带分页-->
@@ -43,3 +50,4 @@
 	</div>
 
 </div>
+<div id="div_receive_user_idsss""></div>

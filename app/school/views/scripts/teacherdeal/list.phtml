@@ -42,11 +42,11 @@
 			<tr class="ui-jqgrid-labels">
 			<th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">编号</th>
 			<th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">教工</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">处理日期</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">处理类型</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:20%;">处理名称</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">处理人</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">操作</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">处理日期</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">处理类型</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:20%;">处理名称</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">处理人</th>
+            <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">操作</th>
 			</tr>
 			</thead>
 			</table>
@@ -62,7 +62,7 @@
                         <td  style="text-align:center; width:10%;">
                         <a href="##" onclick="TeacherDeal.edit(<?=$v['teacher_deal_data_id']?>,1)"><?=$v['teacher_deal_data_id']?></a>
                         </td>
-			<td  style="text-align:center; width:15%;"><?=$v['teacher_name']?>[<?=$v['teacher_no']?>]</td>
+						<td  style="text-align:center; width:15%;"><?=$v['teacher_name']?>[<?=$v['teacher_no']?>]</td>
                         <td  style="text-align:center; width:15%;">
                             <?php echo !empty($v['deal_date'])?$v['deal_date']:"-";?>
                         </td>

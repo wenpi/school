@@ -1,0 +1,138 @@
+<?= $this->headTitle($this->title) ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/teacher.js' type='text/javascript'></script>
+<script type="text/javascript" src="/js/my97datepicker/WdatePicker.js" ></script>
+<div class="ui-state-default ui-jqgrid-hdiv" style="font-size: 11px;">
+<table cellspacing="1" cellpadding="0" border="1">
+<tbody>
+    <tr>
+        <td><a href="/money/list.money.data">费用总表</a></td>
+        <td><a href="/money/list.teacher.money.data">教工费用表</a></td>
+        <td bgcolor="#FFFFFF"><a href="/money/list.student.money.data">学生费用表</a></td>
+    </tr>
+</tbody>
+</table>
+</div>
+<br />
+<!--条件-->
+<form action="/money/list.student.money.data" method="post">
+    <div style="font-size: 11px;">
+        费用日期：
+        <input type="text" name="money_date"  size="12" value="<?=$this->moneyDate?>"  class="Wdate" onclick="WdatePicker()" />
+        费用类型：
+        <select name="money_type" id="money_type">
+            <option value="0" <?php echo $this->moneyType==0?"selected":""; ?>>收入</option>
+            <option value="1" <?php echo $this->moneyType==1?"selected":""; ?>>支出</option>
+        </select>
+        费用项目：
+        <select name="money_project" id="money_project">
+        	<option value="0">-请选择-</option>
+            <?php foreach($this->projectData as $p):?>
+            <option value="<?=$p['money_project_id']?>" 
+				<?php echo $this->moneyProject==$p['money_project_id']?"selected":""; ?>>
+				<?=$p['money_project_name']?>
+            </option>
+            <?php endforeach;?>
+        </select>
+        学生名称：
+        <select name="student_id" id="student_id">
+        	<option value="0">-请选择-</option>
+            <?php foreach($this->studentData as $p):?>
+            <option value="<?=$p['student_id']?>" 
+				<?php echo $this->studentId==$p['student_id']?"selected":""; ?>>
+				<?=$p['cn_name']?>[<?=$p['student_no']?>]
+            </option>
+            <?php endforeach;?>
+        </select>
+        费用单号：
+        <input type="text" name="money_number"  size="12" value="<?=$this->moneyNumber?>"  title="支持模糊"/>
+        <button type="submit" id="submitButton" style="margin-left:30px;">
+            Search
+        </button>
+        <button type="button" onclick="window.location='/money/add.student.money.data'">
+            添加学生费用信息
+        </button>
+    </div>
+</form>
+
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table header-->
+        <div class="ui-state-default ui-jqgrid-hdiv" style="width: 100%;">
+            <table class="ui-jqgrid-htable" style="width:100%" cellspacing="0" cellpadding="0" border="0">
+                <thead>
+                    <tr class="ui-jqgrid-labels">
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">编号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">学生名称</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">费用单号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">费用日期</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">费用类型</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">费用项目</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">费用名称</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">应交金额</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">实交金额</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:120px;">操作</th>
+                    </tr>
+                </thead>
+            </table>
+	  </div>
+        <!--body table header-->
+
+        <!--body table content-->
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+                <tbody>
+                    <?php foreach ($this->data as $k=>$v): ?>
+                        <tr class="ui-widget-content jqgrow ui-row-ltr">
+                            <td  style="text-align:center; width:60px;">
+							<a href="/money/view.student.money.data/smd_id/<?=$v['student_money_data_id']?>/from/<?=$this->from?>">
+							<?=$v['student_money_data_id']?>
+                            </a>
+                            </td>
+                            <td  style="text-align:center;"><?=$v['sch_student_name']?>[<?=$v['sch_student_no']?>]</td>
+                            <td  style="text-align:center;"><?=$v['money_number']?></td>
+                            <td  style="text-align:center;"><?=$v['money_date']?></td>
+                            <td  style="text-align:center;"><?php echo $v['type']==0?"收入":"支出";?></td>
+                            <td  style="text-align:center;"><?=$v['sch_money_project_name']?></td>
+                            <td  style="text-align:center;"><?=$v['money_name']?></td>
+                            <td  style="text-align:center;"><?=$v['money']?></td>
+                            <td  style="text-align:center;"><?=$v['realy_money']?></td>
+                            <td  style="text-align:center; width:120px;">
+                            <a href="/sms/send" target="_blank">发短信</a> | 
+                            <a href="/money/view.student.money.data/smd_id/<?=$v['student_money_data_id']?>/from/<?=$this->from?>">查看</a> | 
+                            <a href="/money/edit.student.money.data/smd_id/<?=$v['student_money_data_id']?>/from/<?=$this->from?>">修改</a> | 
+                            <a href="/money/delete.student.money.data/smd_id/<?=$v['student_money_data_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗？')){return true;}else{return false;}">删除</a>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                </tbody>
+            </table>
+      </div>
+        <!--body table content-->
+
+    </div>
+
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+        <div class="ui-pager-control">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-pg-table" 
+            	style="width:100%;table-layout:fixed;height:100%;">
+                <tbody>
+                    <tr>
+                        <td id="pager1_left" align="left"></td>
+                        <td id="pager1_center" align="center"
+                            style="white-space: pre;
+                            width: 228px;"><?= $this->render('page.phtml') ?></td>
+                        <td id="pager1_right" align="right"></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

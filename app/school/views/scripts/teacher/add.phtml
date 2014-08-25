@@ -30,7 +30,6 @@
                         <td  style="text-align:right; width:150px;">性别：</td>
                         <td  style="text-align:left;">
                         <select name="sex" size="1" id="sex">
-                          <option value="0">无</option>
                           <option value="1">男</option>
                           <option value="2">女</option>
                         </select>
@@ -117,7 +116,7 @@
                         <td width="150"  style="text-align:right; width:150px;">所属班级：</td>
                         <td width="300"  style="text-align:left;">
                         <select name="class_id" size="1" id="class_id">
-                        <option value="0">请选择</option>
+                        <option value="0">-请选择-</option>
                         <?php foreach($this->classData as $p):?>
                         <option value="<?=$p['class_id']?>"><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
                         <?php endforeach;?>
@@ -125,7 +124,7 @@
                       <td width="150"  style="text-align:right;"><span style="text-align:right; width:150px;">教工类别</span>：</td>
                         <td width="300"  style="text-align:left;">
                         <select name="teacher_type_id" size="1" id="teacher_type_id">
-                        <option value="0">请选择</option>
+                        <option value="0">-请选择-</option>
                         <?php foreach($this->teacherTypeData as $k=>$p):?>
                         <option value="<?=$k?>"><?=$p?></option>
                         <?php endforeach;?>
@@ -136,7 +135,7 @@
                         <td width="150"  style="text-align:right; width:150px;"><span style="text-align:right;">岗位信息</span>：</td>
                         <td width="300"  style="text-align:left;">
                         <select name="job_id" size="1" id="job_id">
-                        <option value="0">请选择</option>
+                        <option value="0">-请选择-</option>
                         <?php foreach($this->jobData as $p):?>
                         <option value="<?=$p['job_id']?>"><?=$p['job_name']?></option>
                         <?php endforeach;?>

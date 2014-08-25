@@ -31,15 +31,16 @@
             <table class="ui-jqgrid-htable" style="width:100%" cellspacing="0" cellpadding="0" border="0">
                 <thead>
                     <tr class="ui-jqgrid-labels">
-                      <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:5%;">
-                      <input name="check_parent" type="checkbox" value="1" onclick="_checkAll('class_id[]',this.checked)" /></th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:5%;">编号</th>
-                      	<th class="ui-state-default ui-th-column ui-th-ltr" style=" width:20%;">班主任/授课教师</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">属性</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">班级名称</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">人数</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">状态</th>
-                        <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:25%;">操作</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:5%;">
+                      <input id="parent_class_id" type="checkbox" value="1" onclick="_checkAll('class_id[]',this.checked)" />
+                    </th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:8%;">编号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">类型</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:8%;">属性</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:15%;">班级名称</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">人数</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:10%;">状态</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style=" width:25%;">操作</th>
                     </tr>
                 </thead>
             </table>
@@ -50,21 +51,22 @@
         <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
             <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
                 <tbody>
-                    	<?php foreach ($this->data as $v): ?>
+                    	<?php foreach ($this->data as $k=>$v): ?>
                         <tr class="ui-widget-content jqgrow ui-row-ltr">
-                          <td  style="text-align:center; width:5%;"><input name="class_id[]" type="checkbox" 
-                          	value="<?=$v['class_id']?>"  onclick="_checkThis('class_id',this.checked)" id="class_id_<?=$v['class_id']?>"/></td>
-                          <td  style="text-align:center; width:5%;"><?=$v['class_id']?></td>
-                            <td  style="text-align:center; width:20%;">
-                             	<?= $v['sch_teacher_name'] ?>[<?=$v['sch_teacher_no']?>]
+                          	<td  style="text-align:center;width:5%;">
+                            <input name="class_id[]" type="checkbox" value="<?=$v['class_id']?>"  onclick="_checkThis('parent_class_id','class_id[]','class_id',<?=$k?>)" id="class_id_<?=$k?>"/>
                             </td>
-                            <td  style="text-align:center; width:10%;">
-                            	<?php echo $v['property']==0?"普通班":"特长班";?>
+                   	    	<td  style="text-align:center;width:8%;">
+							<a href="##" onclick="Class.view(<?=$v['class_id']?>,'<?=$this->from?>')">
+							<?=$v['class_id']?>
+                            </a>
                             </td>
-                            <td  style="text-align:center; width:15%;"><?=$v['class_name']?></td>
-                            <td  style="text-align:center; width:10%;"><?=$v['amount']?></td>
-                            <td  style="text-align:center; width:10%;">
-                               	<?php
+                            <td  style="text-align:center;width:10%;"><?=$v['sch_class_type_name']?></td>
+                            <td  style="text-align:center;width:8%;"><?php echo $v['property']==0?"普通班":"特长班";?></td>
+                            <td  style="text-align:center;width:15%;"><?=$v['class_name']?>[<?=$v['class_no']?>]</td>
+                            <td  style="text-align:center;width:10%;"><?=$v['amount']?></td>
+                            <td  style="text-align:center;width:10%;">
+                            	<?php
                                 	if($v['status']==0) { 
 										echo "未激活";
 									} elseif($v['status']==1) { 
@@ -78,26 +80,40 @@
 									}
 								?>
                             </td>
-                            <td  style="text-align:center; width:25%;">
-                              撤销 | 
-                              升级 | 
+                            <td  style="text-align:center;width:25%;">
+                              <?php 
+							  if($v['status']!=3):
+							  ?>
+                              <a href="##" onclick="if(window.confirm('确定撤销吗?')){Class.cansle(<?=$v['class_id']?>,'<?=$this->from?>');return true;}else{return false;}">撤销</a> | 
+                              <a href="##" onclick="Class.upgrade(<?=$v['class_id']?>,'<?=$this->from?>')">升级</a> | 
                               <?php if($v['property']==1):?>
                            	  <a href="##" onclick="Class.setStudent(<?=$v['class_id']?>,'<?=$this->from?>')">配置学生</a> | 
                               <?php endif;?>
-                           	  <a href="##" onclick="Class.view(<?=$v['class_id']?>,'<?=$this->from?>')">查看</a> | 
-                                <a href="##" onclick="Class.edit(<?=$v['class_id']?>,'<?=$this->from?>')">修改</a> | 
-                                <a href="/class/delete/class_id/<?=$v['class_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗?')){return true;}else{return false;}">删除</a>
+                              <a href="##" onclick="Class.edit(<?=$v['class_id']?>,'<?=$this->from?>')">修改</a> | 
+                              <?php 
+							  endif;
+							  ?>
+                              <a href="/class/delete/class_id/<?=$v['class_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗?')){return true;}else{return false;}">删除</a>
                             </td>
                         </tr>
                 		<?php endforeach; ?>
+                </tbody>
+            </table>
+            
+		</div>
+        <!--body table content-->
+        
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+                <tbody>
                         <tr class="ui-widget-content jqgrow ui-row-ltr">
-                          <td colspan="8"  style="text-align:left;">
-                          <input name="button_merge"  value="合并" type="submit" /></td>
+                          	<td  style="text-align:left;">
+                            <input type="button" name="merge" value="合并"  onclick="Class.merge('<?=$this->from?>')" />
+                            </td>
                         </tr>
                 </tbody>
             </table>
 		</div>
-        <!--body table content-->
 		
   </div>
 

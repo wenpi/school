@@ -36,8 +36,8 @@ class TeacherModel {
         return $this->_teacher->getPageData($page, $pageSize, $where);
     }
 
-    public function getTypeData() {
-        $typeData = $this->_teacher->getTypeData();
+    public function getTypeData( $where= "" ) {
+        $typeData = $this->_teacher->getTypeData( $where );
         $arr = array();
         if ($typeData) {
             foreach ($typeData as $p) {

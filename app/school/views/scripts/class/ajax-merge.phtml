@@ -12,6 +12,10 @@
 		  <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
 		    <tbody>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;" width="100">合并编号：</td>
+                       <td  style="text-align:left;"><?=$this->classIdString?></td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td  style="text-align:right;" width="100">类型：</td>
                        <td  style="text-align:left;">
                        <select name="input_type" id="input_type">
@@ -90,7 +94,9 @@
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td colspan="2"  style="text-align:center;">
-                       <input type="button" name="button" id="button" value="确定提交" onclick="Class.save();"/>			
+                       <input type="hidden" id="hidden_class_ids" value="<?=$this->classIdString?>"  /> 
+                       <input type="button" name="button" id="button" value="确定提交" 
+                       		onclick="Class.saveMerge('<?=urldecode(base64_decode($this->from))?>');"/>			
                        </td>
                      </tr>
               </tbody>

@@ -30,20 +30,19 @@
             <table class="ui-jqgrid-htable" style="width:100%" cellspacing="0" cellpadding="0" border="0">
                 <thead>
                     <tr class="ui-jqgrid-labels">
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">编号</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">类别</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">编号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">类别</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">岗位</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">教工编码</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">工号</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">英文名</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">中文名</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">手机</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:60px;">状态</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">状态</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">操作</th>
                     </tr>
                 </thead>
             </table>
-	  </div>
+    </div>
         <!--body table header-->
 
         <!--body table content-->
@@ -60,15 +59,14 @@
                         <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <?php endif;?>
                         <?php endif;?>
-                            <td  style="text-align:center; width:60px;"><?=$v['teacher_id']?></td>
-                            <td  style="text-align:center; width:60px;"><?=$v['teacher_type_name']?></td>
+                            <td  style="text-align:center; width:80px;"><?=$v['teacher_id']?></td>
+                            <td  style="text-align:center; width:80px;"><?=$v['teacher_type_name']?></td>
                             <td  style="text-align:center;"><?=$v['job_name']?></td>
-                            <td  style="text-align:center;"><?=$v['teacher_number']?></td>
                             <td  style="text-align:center;"><?=$v['teacher_no']?></td>
                             <td  style="text-align:center;"><?php echo !empty($v['en_name'])?$v['en_name']:"-"?></td>
                             <td  style="text-align:center;"><?=$v['cn_name']?></td>
                             <td  style="text-align:center;"><?=$v['mobile_phone']?></td>
-                            <td  style="text-align:center; width:60px;">
+                            <td  style="text-align:center; width:80px;">
                             	<?php 
                                         if($v['status']==0) { 
                                                 echo "<font color='gray'>未激活</font>";

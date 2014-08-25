@@ -55,14 +55,14 @@ class TeacherController extends Ccc_Base_Controller {
         $schoolJobData = SchoolModel::getInstance()->getJobData();
         if ($data) {
             foreach ($data as & $p) {
-                $p['teacher_type_name'] = $p['school_teacher_type_id'] > 0 ? $teahcerTypeData[$p['school_teacher_type_id']] : "-";
-                $p['job_name'] = $p['school_job_id'] > 0 ? $schoolJobData[$p['school_job_id']] : "-";
+                $p['teacher_type_name'] = $p['ad_user_type_id'] > 0 ? $teahcerTypeData[$p['ad_user_type_id']] : "-";
+                $p['job_name'] = $p['sch_job_id'] > 0 ? $schoolJobData[$p['sch_job_id']] : "-";
             }
         }
         $this->view->title = "教工管理";
         $this->view->data = $data;
         // view page
-        $this->view->pageData = array("page" => $page, "url" => "/teacher/list.action{$condition}",
+        $this->view->pageData = array("page" => $page, "url" => "/teacher/list{$condition}",
             "page_count" => $pageCount);
         $this->view->enName = $enName;
         $this->view->cnName = $cnName;
@@ -74,7 +74,7 @@ class TeacherController extends Ccc_Base_Controller {
     public function addAction() {
         $this->view->title = "添加教工信息";
         $this->view->classData = ClassModel::getInstance()->getClassData();
-        $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData();
+        $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData(" and type=1 ");
         $this->view->jobData = JobModel::getInstance()->getJobData();
     }
 
@@ -133,9 +133,9 @@ class TeacherController extends Ccc_Base_Controller {
             "max_education" => (int) $this->_getParam("max_education"),
         );
         $addSchoolParams = array(
-            "school_class_id" => (int) $this->_getParam("class_id"),
-            "school_teacher_type_id" => (int) $this->_getParam("teacher_type_id"),
-            "school_job_id" => (int) $this->_getParam("job_id"),
+            "sch_class_id" => (int) $this->_getParam("class_id"),
+            "ad_user_type_id" => (int) $this->_getParam("teacher_type_id"),
+            "sch_job_id" => (int) $this->_getParam("job_id"),
             "job_date" => trim($this->_getParam("job_date")),
             "bargain_start_date" => trim($this->_getParam("bargain_start_date")),
             "bargain_end_date" => trim($this->_getParam("bargain_end_date")),
@@ -148,15 +148,8 @@ class TeacherController extends Ccc_Base_Controller {
         $result = array_merge($addBaseParams,$addSchoolParams);
         $add = TeacherModel::getInstance()->addData($result);
         if($add>0) {
-            $classId = (int) $this->_getParam("class_id");
-            $classRowData = ClassModel::getInstance()->getRowData($classId);
-            $classNumber = isset($classRowData['class_number'])?$classRowData['class_number']:"000000";     // 班级编码
-            $typeNumber = (int) $this->_getParam("teacher_type_id");
             $leaveData = trim($this->_getParam("leave_date"));
-            $maxNumber = !empty($add) ? sprintf( "%03d" , $add ) : "000";
-            $teacherNumber = $classNumber . $typeNumber . $maxNumber;
             $updateParams = array(
-                "teacher_number" => $teacherNumber,
                 "teacher_no" => $add,
                 "status" => !empty($leaveData)?2:1,
             );
@@ -172,7 +165,7 @@ class TeacherController extends Ccc_Base_Controller {
 
     public function editAction() {
         $this->view->classData = ClassModel::getInstance()->getClassData();
-        $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData();
+        $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData(" and type=1 ");
         $this->view->jobData = JobModel::getInstance()->getJobData();
         $this->view->title = "编辑教工信息";
         $teacherId = (int) $this->_getParam("teacher_id");
@@ -221,9 +214,9 @@ class TeacherController extends Ccc_Base_Controller {
         );
         $leaveData = trim($this->_getParam("leave_date"));
         $addSchoolParams = array(
-            "school_class_id" => (int) $this->_getParam("class_id"),
-            "school_teacher_type_id" => (int) $this->_getParam("teacher_type_id"),
-            "school_job_id" => (int) $this->_getParam("job_id"),
+            "sch_class_id" => (int) $this->_getParam("class_id"),
+            "ad_user_type_id" => (int) $this->_getParam("teacher_type_id"),
+            "sch_job_id" => (int) $this->_getParam("job_id"),
             "job_date" => trim($this->_getParam("job_date")),
             "bargain_start_date" => trim($this->_getParam("bargain_start_date")),
             "bargain_end_date" => trim($this->_getParam("bargain_end_date")),
@@ -257,8 +250,4 @@ class TeacherController extends Ccc_Base_Controller {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作失败");
         }
     }
-
-
-
-
 }

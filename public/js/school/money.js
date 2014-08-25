@@ -89,6 +89,36 @@ var Money = {
                 $("#div_config").html(resp);
             }
         });
+	},
+	getMoneyByWhere:function() { 
+		var money_date = $("#money_date").val();
+		var class_id = $("#class_id").val();
+		var term_id = $("#term_id").val();
+		var project_id = $("#project_id").val();
+		if(class_id==0 || term_id==0 || project_id==0) { 
+			return false;
+		}
+		jQuery.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/money/ajax.get.money.by.where",
+            data: {
+				money_date:money_date,
+				class_id:class_id,
+				term_id:term_id,
+				project_id:project_id,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+				$("#td_money").html(resp);
+				$("#hidden_money").val(resp);
+            }
+        });
+		
 	}
+	
+	
 	
 }

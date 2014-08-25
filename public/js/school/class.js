@@ -6,7 +6,46 @@
 
 
 var Class = {
-    
+	// 升级
+	upgrade:function(class_id,from) { 
+		jQuery.ajax({
+            type: "POST",
+            dataType: "html",
+            url: "/class/ajax.upgrade",
+            data: {
+				class_id:class_id,
+				from:from,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+				$("#div_class").html(resp);
+            }
+        });
+	},
+	// 撤销
+    cansle:function(class_id,from) {
+        jQuery.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/class/ajax.cansle",
+            data: {
+				class_id:class_id,
+				from:from,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+                if(resp.data.update>0) { 
+					alert("撤销成功");
+					window.location = "/class/list" + resp.data.from;
+				}
+            }
+        });
+    },
+	
     setStudent:function(class_id,from) {
         jQuery.ajax({
             type: "POST",
@@ -66,8 +105,9 @@ var Class = {
             }
         });
     },
-    // 保存科目
+    // 保存班级
     save: function() {
+		var input_type = $("#input_type").val();
         var input_property = $("#input_property").val();
         var input_teacher_id = $("#input_teacher_id").val();
         var input_class_name = $("#input_class_name").val();
@@ -86,6 +126,7 @@ var Class = {
             dataType: "json",
             url: "/class/ajax.save",
             data: {
+				input_type: input_type,
                 input_property: input_property,
                 input_teacher_id: input_teacher_id,
                 input_class_name: input_class_name,
@@ -131,6 +172,7 @@ var Class = {
     },
     // 更新
     update:function(class_id) {
+		var input_type = $("#input_type").val();
         var input_property = $("#input_property").val();
         var input_teacher_id = $("#input_teacher_id").val();
         var input_class_name = $("#input_class_name").val();
@@ -153,6 +195,7 @@ var Class = {
             dataType: "json",
             url: "/class/ajax.update",
             data: {
+				input_type: input_type,
                 input_property: input_property,
                 input_teacher_id: input_teacher_id,
                 input_class_name: input_class_name,
@@ -182,6 +225,107 @@ var Class = {
                 }
             }
         });
-    }
+    },
+	merge:function(from) { 
+		var gmChks = document.getElementsByName("class_id[]");	
+		var checkVal = "";	
+		var cCount = 0;
+		for (var i=0; i<gmChks.length ; i++)
+		{
+			if(gmChks[i].checked) { 
+				var cVal = $("#class_id_" + i).val();
+				checkVal +=  "|" + cVal ;
+				cCount +=1;
+			}
+		}
+		if(cCount<2) { 
+			alert("合并至少需要两个班级才能进行，请重试");
+			return false;
+		}
+		jQuery.ajax({
+            type: "POST",
+            dataType: "html",
+            url: "/class/ajax.merge",
+            data: {
+                class_ids:checkVal,
+				from:from,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+                $("#div_class").html(resp);
+            }
+        });
+		
+	},
+	// 保存合并
+	saveMerge:function( from ) { 
+		var hidden_class_ids = $("#hidden_class_ids").val();
+		var input_type = $("#input_type").val();
+        var input_property = $("#input_property").val();
+        var input_teacher_id = $("#input_teacher_id").val();
+        var input_class_name = $("#input_class_name").val();
+        var input_amount = $("#input_amount").val();
+		var input_class_minute = $("#input_class_minute").val();
+		var input_class_address = $("#input_class_address").val();
+		var input_class_time = $("#input_class_time").val();
+		var input_open_date = $("#input_open_date").val();
+		var input_comments = $("#input_comments").val();
+        if( jQuery.trim(input_class_name) == "" ) {
+            alert("班级名称不能为空");
+            return false;
+        }
+        jQuery.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/class/ajax.save.merge",
+            data: {
+				hidden_class_ids: hidden_class_ids,
+				input_type: input_type,
+                input_property: input_property,
+                input_teacher_id: input_teacher_id,
+                input_class_name: input_class_name,
+                input_amount: input_amount,
+				input_class_minute: input_class_minute,
+				input_class_address: input_class_address,
+				input_class_time: input_class_time,
+				input_open_date: input_open_date,
+				input_comments: input_comments,
+				j:1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+				if(resp ==1) { 
+					alert("合并成功");
+					window.location = "/class/list" + from ;
+				}
+            }
+        });
+	},
+	// 保存升级
+	saveUpgrade:function(class_id,from) { 
+		var input_type = $("#input_type").val();
+		jQuery.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/class/ajax.save.upgrade",
+            data: {
+                class_id: class_id,
+				input_type: input_type,
+				from: from,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+                if(resp.data.update>0) { 
+					alert("升级成功");
+					window.location = "/class/list" + resp.data.from;
+				}
+            }
+        });
+	} 
 
 }

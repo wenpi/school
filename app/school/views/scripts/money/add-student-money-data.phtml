@@ -1,0 +1,129 @@
+<?= $this->headTitle($this->title) ?>
+<script src='/js/<?= $GLOBALS['module'] ?>/money.js' type='text/javascript'></script>
+<script type="text/javascript" src="/js/my97datepicker/WdatePicker.js" ></script>
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
+    <div class="ui-jqgrid-view" style="width: 100%;">
+        <!--body table title-->
+        <div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+            <span class="ui-jqgrid-title"><?= $this->title ?></span>
+        </div>
+        <!--body table title-->
+
+        <!--body table content-->
+        <form action="/money/save.student.money.data" method="post" onsubmit="return Money.checkStudentMoneyData();">
+        <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+            <table cellspacing="0" cellpadding="0" border="0" 
+            	class="ui-jqgrid-btable" style="width: 100%;">
+                  <tr class="ui-widget-content jqgrow ui-row-ltr">
+                    <td  style="text-align:right; width:150px;">选择班级：</td>
+                    <td  style="text-align:left;">
+                    <select name="class_id" id="class_id" onchange="Money.getMoneyByWhere();">
+                      <option value="0">-请选择-</option>
+                      <?php foreach($this->classData as $p):?>
+                      <option value="<?=$p['class_id']?>"><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
+                      <?php endforeach;?>
+                    </select>
+                    <font color="red">*</font>
+                    </td>
+                  </tr>
+                <tbody>
+                	<tr class="ui-widget-content jqgrow ui-row-ltr">
+                	  <td  style="text-align:right; width:150px;">选择学期：</td>
+                	  <td  style="text-align:left;">
+                      <select name="term_id" id="term_id" onchange="Money.getMoneyByWhere();">
+                	    <option value="0">-请选择-</option>
+                	    <?php foreach($this->termData as $p):?>
+                	    <option value="<?=$p['term_id']?>">
+                	      <?=$p['term_name']?>
+               	        </option>
+                	    <?php endforeach;?>
+              	    </select>
+                    <font color="red">*</font>
+                    </td>
+              	  </tr>
+                	<tr class="ui-widget-content jqgrow ui-row-ltr">
+                	  <td  style="text-align:right; width:150px;">选择学生：</td>
+                	  <td  style="text-align:left;">
+                      <select name="student_id" id="student_id">
+                	    <option value="0">-请选择-</option>
+                	    <?php foreach($this->studentData as $p):?>
+                	    <option value="<?=$p['student_id']?>">
+                	      <?=$p['cn_name']?>[<?=$p['student_no']?>]
+                        </option>
+                	    <?php endforeach;?>
+              	    </select>
+               	    <font color="red">*</font>
+                    </td>
+              	  </tr>
+                	<tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td  style="text-align:right; width:150px;">费用类型：</td>
+                      <td  style="text-align:left;">
+                      <select name="money_type" id="money_type">
+                        <option value="0">收入</option>
+                        <option value="1">支出</option>
+                      </select>
+                      <font color="red">*</font>
+                      </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td width="150"  style="text-align:right; width:150px;">费用日期：</td>
+                        <td style="text-align:left;">
+                        <input type="text" name="money_date" id="money_date" class="Wdate" 
+                        	onclick="WdatePicker()" onblur="Money.getMoneyByWhere();"/>
+                        <font color="red">*</font>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td  style="text-align:right; width:150px;">费用项目：</td>
+                      <td  style="text-align:left;">
+                      <select name="project_id" id="project_id" onchange="Money.getMoneyByWhere();">
+                        <option value="0">-请选择-</option>
+                        <?php foreach($this->projectData as $p):?>
+                        <option value="<?=$p['money_project_id']?>">
+                          <?=$p['money_project_name']?>
+                        </option>
+                        <?php endforeach;?>
+                      </select>
+                      <font color="red">*</font>
+                      </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                        <td  style="text-align:right; width:150px;">费用名称：</td>
+                        <td  style="text-align:left;"><input name="name" type="text" id="name" size="30" />                          <font color="red">*</font>
+                        </td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td  style="text-align:right; width:150px;">应交金额：</td>
+                      <td  style="text-align:left;" id="td_money">0.00</td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td  style="text-align:right; width:150px;">实交金额：</td>
+                      <td  style="text-align:left;"><input name="realy_money" type="text" id="realy_money" size="30" />
+                      <font color="red">*</font></td>
+                    </tr>
+                    <tr class="ui-widget-content jqgrow ui-row-ltr">
+                      <td  style="text-align:right; width:150px;">说明：</td>
+                      <td  style="text-align:left;">
+                      <textarea name="comments" id="comments" cols="45" rows="5"></textarea>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+          <div align="center">
+          	<input type="hidden" name="hidden_money" id="hidden_money" value="0.00" />
+            <input type="submit" name="save" value="确定提交" />
+            &nbsp;&nbsp;
+            <input type="button" name="fanhui" value="返回学生费用列表" 
+            	onclick="window.location='/money/list.student.money.data'" />
+          </div>
+        </div>
+        </form>
+        <!--body table content-->
+
+
+    </div>
+    <!--带分页-->
+    <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+    </div>
+</div>

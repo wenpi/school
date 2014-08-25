@@ -88,23 +88,19 @@
                         <td width="300"  style="text-align:left;">
                         <select name="school_status" id="school_status">
                         <option value="0">在读</option>
-                        <option value="1">毕业</option>
                         </select>
                         </td>
                     </tr>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td width="150"  style="text-align:right; width:150px;">入学日期：</td>
-                        <td  style="text-align:left;">
+                        <td colspan="3"  style="text-align:left;">
                         <input type="text" name="entrance_date" id="entrance_date" class="Wdate" onclick="WdatePicker()"/>
-                        <font color="red">*</font>
-                        </td>
-                   	  <td  style="text-align:right;">毕业日期：</td>
-                        <td  style="text-align:left;"><input type="text" name="graduate_date" id="graduate_date" class="Wdate" onclick="WdatePicker()"/></td>
-                    </tr>
+                        <font color="red">*</font></td>
+               	    </tr>
                 </tbody>
             </table>
             
-          <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">家长信息  <span style="cursor:pointer;" id="span_base" onclick="Teacher.showhideByAdd('base','table_teacher_base');" value="1" title="显示或隐藏">↑</span></div>
+    <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">家长信息  <span style="cursor:pointer;" id="span_base" onclick="Teacher.showhideByAdd('base','table_teacher_base');" value="1" title="显示或隐藏">↑</span></div>
             <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
                 <tbody>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">

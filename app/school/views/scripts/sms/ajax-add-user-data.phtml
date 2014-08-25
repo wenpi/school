@@ -1,0 +1,9 @@
+<?php if($this->divUserIdResult):?>
+<?php foreach($this->divUserIdResult as $k=>$v):?>
+<font id="font_user_id_<?=$v?>"><?=$this->divUserNameResult[$k]?>[<?=$this->divUserNoResult[$k]?>](<?=$this->divUserPhoneResult[$k]?>)<font style="cursor:pointer;color:red" onclick="Sms.removeUserId(<?=$v?>)" title="移除">[X]</font>
+<input type="hidden" name="hidden_user_id[]" value="<?=$v?>" />
+<input type="hidden" name="hidden_user_no[]" value="<?=$this->divUserNoResult[$k]?>" />
+<input type="hidden" name="hidden_user_name[]" value="<?=$this->divUserNameResult[$k]?>" />
+<input type="hidden" name="hidden_user_phone[]" value="<?=$this->divUserPhoneResult[$k]?>" />&nbsp;</font>
+<?php endforeach;?>
+<?php endif;?>

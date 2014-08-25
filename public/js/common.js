@@ -11,20 +11,26 @@ function _checkAll(input_name,checkAll)
 	}
 }
 
-function _checkThis(parent_str,str,id)
+function _checkThis(parent_id,id_name,id_key,id)
 {
-	var gmChk = document.getElementById(str + "_" + logId);
-	if (gmChk.checked) {
-		gmChk.checked = false;
-	} else {
-		gmChk.checked = true;
-		
+	var gmChks = document.getElementsByName(id_name);
+	var p = 0;
+	for (var i=0; i<gmChks.length ; i++)
+	{
+	    if(gmChks[i].checked) { 
+			document.getElementById(parent_id).checked = true;
+		} else { 
+			p++;
+		}
+	}
+	if( gmChks.length == p ) { 
+		document.getElementById(parent_id).checked = false;
 	}
 }
-function _checkDel(str)
+function _checkDel(id_name)
 {
 	var rtn = false;
-	var gmChks = document.getElementsByName(str);
+	var gmChks = document.getElementsByName(id_name);
 	for (var i=0; i<gmChks.length ; i++)
 	{
 	    if (gmChks[i].checked)

@@ -1,0 +1,66 @@
+<!--body-->
+<div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" style="width: 35%;float: left">
+<div class="ui-jqgrid-view" style="width: 100%;">
+		<!--body table title-->
+		<div class="ui-jqgrid-titlebar ui-widget-header ui-corner-top ui-helper-clearfix">
+			<span class="ui-jqgrid-title"><?= $this->title ?></span>
+		</div>
+		<!--body table title-->
+
+		<!--body table content-->
+		<div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
+		  <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;">
+		    <tbody>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td  style="text-align:right;" width="100">原类型：</td>
+                       <td  style="text-align:left;"><?=$this->classTypeRowData['class_type_name']?></td>
+                     </tr>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;" id="td_special2">等级：</td>
+                       <td  style="text-align:left;"><?=$this->classTypeRowData['level']?></td>
+                     </tr>
+                     
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td style="text-align:right;" id="td_special">新类型：</td>
+                       <td  style="text-align:left;">
+                       <?php if($this->classTypeData):?>
+                       <select name="input_type" id="input_type">
+                         <?php foreach($this->classTypeData as $p):?>
+                         <option value="<?=$p['class_type_id']?>">
+                           <?=$p['class_type_name']?>[等级：<?=$p['level']?>]
+                         </option>
+                         <?php endforeach;?>
+                       </select>
+                       <?php else:?>
+                       无法升级，已为最高级类型。
+                       <?php endif;?>
+                       </td>
+                     </tr>
+                     <?php if($this->classTypeData):?>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td colspan="2"  style="text-align:center;">
+                       <input type="button" name="button" id="button" value="确定提交" 
+                       		onclick="Class.saveUpgrade(<?=$this->classId?>,'<?=$this->from?>');"/>			
+                       </td>
+                     </tr>
+                     <?php else:?>
+                     <tr class="ui-widget-content jqgrow ui-row-ltr">
+                       <td colspan="2"  style="text-align:center;">
+                       <input type="button" name="button" id="button" value="返回班级列表" 
+                       		onclick="window.location='/class/list<?=urldecode(base64_decode($this->from))?>'"/>			
+                       </td>
+                     </tr>
+                     <?php endif;?>
+              </tbody>
+		  </table>
+            
+	</div>
+	<!--body table content-->
+  	</div>
+    
+
+	<!--带分页-->
+	<div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
+	</div>
+
+</div>
