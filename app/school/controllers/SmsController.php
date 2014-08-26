@@ -65,7 +65,7 @@ class SmsController extends Ccc_Base_Controller {
 
     public function sendAction() {
         $this->view->title = "发送短信";
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
     }
 
     public function sendOkAction() {

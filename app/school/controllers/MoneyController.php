@@ -29,7 +29,7 @@ class MoneyController extends Ccc_Base_Controller {
 
     public function addMoneyDataAction() {
         $this->view->title = "添加费用总表信息";
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->projectData = MoneyModel::getInstance()->getConfigMoneyProjectData();
         $this->view->termData = MoneyModel::getInstance()->getConfigTermData();
     }
@@ -165,8 +165,7 @@ class MoneyController extends Ccc_Base_Controller {
 
     public function addStudentMoneyDataAction() {
         $this->view->title = "添加学生费用信息";
-        
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->projectData = MoneyModel::getInstance()->getConfigMoneyProjectData();
         $this->view->termData = MoneyModel::getInstance()->getConfigTermData();
         $this->view->studentData = StudentModel::getInstance()->getStudentDataByWhere();
@@ -209,7 +208,7 @@ class MoneyController extends Ccc_Base_Controller {
             "type" => $moneyType,
             "money_name" => $name,
             "sch_money_project_id" => $projectId,
-            "sch_money_project_name" => isset($projectRowData['money_project_name']) ? $projectRowData['money_project_name'] : "",
+            "sch_money_project_name" => isset($projectRowData['money_project_name'])?$projectRowData['money_project_name']:"",
             "money" => $money,
             "realy_money" => $realyMoney,
             "comments" => $commnets,
@@ -252,8 +251,7 @@ class MoneyController extends Ccc_Base_Controller {
         $smdId = (int) $this->_getParam("smd_id");
         $this->view->studentMoneyRowData = MoneyModel::getInstance()->getStudentMoneyRowData($smdId);
         $this->view->from = trim($this->_getParam("from"));
-        
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->projectData = MoneyModel::getInstance()->getConfigMoneyProjectData();
         $this->view->termData = MoneyModel::getInstance()->getConfigTermData();
         $this->view->studentData = StudentModel::getInstance()->getStudentDataByWhere();
@@ -366,7 +364,7 @@ class MoneyController extends Ccc_Base_Controller {
         $moneyRowData = MoneyModel::getInstance()->getMoneyRowData($mdId);
         $this->view->moneyRowData = $moneyRowData;
         $this->view->from = $from;
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->projectData = MoneyModel::getInstance()->getConfigMoneyProjectData();
         $this->view->termData = MoneyModel::getInstance()->getConfigTermData();
     }
@@ -545,7 +543,7 @@ class MoneyController extends Ccc_Base_Controller {
 
     public function addConfigMoneyAction() {
         $this->view->title = "添加班级学期项目费用信息";
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->termData = MoneyModel::getInstance()->getConfigTermData();
         $this->view->projectData = MoneyModel::getInstance()->getConfigMoneyProjectData();
     }
@@ -608,7 +606,7 @@ class MoneyController extends Ccc_Base_Controller {
         $from = trim($this->_getParam("from"));
         $configMoneyData = MoneyModel::getInstance()->getConfigMoneyRowData($mcId);
         $this->view->configMoneyData = $configMoneyData;
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->termData = MoneyModel::getInstance()->getConfigTermData();
         $this->view->projectData = MoneyModel::getInstance()->getConfigMoneyProjectData();
         $this->view->from = $from;

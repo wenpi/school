@@ -1,10 +1,10 @@
 <?= $this->headTitle($this->title) ?>
 <script src='/js/<?= $GLOBALS['module'] ?>/subject.js' type='text/javascript'></script>
 <!--条件-->
-<form action="/job/list" method="post">
+<form action="/subject/list" method="post">
     <div style="font-size: 11px;">
-        岗位名称：
-        <input type="text" id="job_name" name="job_name" value="<?= $this->jobName ?>" style="width:80px;"/>
+        科目名称：
+        <input type="text" id="subject_name" name="subject_name" value="<?= $this->subjectName ?>" style="width:80px;"/>
         <button type="submit" id="submitButton" style="margin-left:10px;">
             Search
         </button>
@@ -45,11 +45,14 @@
                     <?php foreach ($this->data as $v): ?>
                         <tr class="ui-widget-content jqgrow ui-row-ltr">
                             <td  style="text-align:center; width:10%;">
-                                <a href="##" onclick="Subject.edit(<?= $v['subject_id'] ?>)"><?= $v['subject_id'] ?></a>
+                            <a href="##" onclick="Subject.edit(<?= $v['subject_id'] ?>)"><?= $v['subject_id'] ?></a>
                             </td>
-                            <td  style="text-align:center; width:15%;"><?= $v['class_name'] ?></td>
+                            <td  style="text-align:center; width:15%;">
+							<?= $v['sch_class_name'] ?>[<?=$v['sch_class_no']?>]
+                            </td>
                             <td  style="text-align:center; width:15%;"><?=$v['subject_name']?></td>
                             <td  style="text-align:center; width:10%;">
+                            	<a href="##" onclick="Subject.edit(<?= $v['subject_id'] ?>)">修改</a> | 
                                 <a href="/subject/delete/subject_id/<?= $v['subject_id'] ?>" onclick="if (window.confirm('确定删除吗?')) {return true;}else{return false;}">删除</a>
                             </td>
                         </tr>

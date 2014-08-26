@@ -68,12 +68,11 @@ class TeacherController extends Ccc_Base_Controller {
         $this->view->cnName = $cnName;
         $this->view->teacherId = $teacherId;
         $this->view->from = base64_encode("/page/{$page}" . $condition);
-
     }
 
     public function addAction() {
         $this->view->title = "添加教工信息";
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData(" and type=1 ");
         $this->view->jobData = JobModel::getInstance()->getJobData();
     }
@@ -164,7 +163,7 @@ class TeacherController extends Ccc_Base_Controller {
     }
 
     public function editAction() {
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->teacherTypeData = TeacherModel::getInstance()->getTypeData(" and type=1 ");
         $this->view->jobData = JobModel::getInstance()->getJobData();
         $this->view->title = "编辑教工信息";

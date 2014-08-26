@@ -63,7 +63,7 @@ class StudentController extends Ccc_Base_Controller {
 
     public function addAction() {
         $this->view->title = "添加学生信息";
-        $this->view->classData = ClassModel::getInstance()->getClassData();
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
     }
 
     /**
@@ -122,7 +122,7 @@ class StudentController extends Ccc_Base_Controller {
         );
         $result = array_merge($addBaseParams,$addSchoolParams);
         $add = StudentModel::getInstance()->addData($result);
-//	$add = 1;
+        //	$add = 1;
         if($add>0) {
             // 添加家长信息
             $parentEnName = $this->_getParam("parent_en_name");
@@ -169,7 +169,7 @@ class StudentController extends Ccc_Base_Controller {
         );
         $this->view->swfData = $swfData;
         $this->view->from = $from;
-		$this->view->classData = ClassModel::getInstance()->getClassData();
+		$this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
         $this->view->title = "编辑学生信息";
 		$this->view->parentData = ParentModel::getInstance()->getParentDataByWhere( " and sch_student_id={$studentId}" );
     }

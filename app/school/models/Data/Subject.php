@@ -20,14 +20,16 @@ class Data_Subject extends Ccc_Base_Model {
 
     public function getPageData($page, $pageSize, $where) {
         $startIndex = ($page - 1) * $pageSize;
-        $sql = "select * from sch_subjects where subject_id >0 {$where} and is_delete=0 limit {$startIndex},{$pageSize}";
+        $sql = "select * from sch_subjects where subject_id >0 {$where} "
+                . "and is_delete=0 limit {$startIndex},{$pageSize}";
         $data = $this->_db->fetchAll($sql);
 
         return !empty($data) ? $data : array();
     }
 
     public function checkData($classId, $subjectName) {
-        $sql = "select count(*) from sch_subjects where class_id={$classId} and subject_name='{$subjectName}' and is_delete=0";
+        $sql = "select count(*) from sch_subjects where sch_class_id={$classId} "
+                . "and subject_name='{$subjectName}' and is_delete=0";
         $count = $this->_db->fetchOne($sql);
 
         return $count;

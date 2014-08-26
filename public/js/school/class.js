@@ -260,7 +260,7 @@ var Class = {
 		
 	},
 	// 保存合并
-	saveMerge:function( from ) { 
+	saveMerge:function( from ) {
 		var hidden_class_ids = $("#hidden_class_ids").val();
 		var input_type = $("#input_type").val();
         var input_property = $("#input_property").val();

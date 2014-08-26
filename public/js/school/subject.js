@@ -86,7 +86,7 @@ var Subject = {
         var input_comments = $("#input_comments").val();
         
         var hidden_class_id = $("#hidden_class_id").val();
-        var hidden_subject_name = $("hidden_subject_name").val();
+        var hidden_subject_name = $("#hidden_subject_name").val();
         if( jQuery.trim(input_subject_name) == "" ) {
             alert("科目名称不能为空");
             return false;

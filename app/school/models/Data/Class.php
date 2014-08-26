@@ -95,6 +95,7 @@ class Data_Class extends Ccc_Base_Model {
     
     public function getClassTypeData($where) {
         $sql = "select * from sch_class_type where class_type_id>0 {$where} and is_delete=0";
+//        echo $sql;exit;
         $data = $this->_db->fetchAll($sql);
         
         return !empty($data) ? $data : array();

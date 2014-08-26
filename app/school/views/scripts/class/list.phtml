@@ -61,7 +61,9 @@
 							<?=$v['class_id']?>
                             </a>
                             </td>
-                            <td  style="text-align:center;width:10%;"><?=$v['sch_class_type_name']?></td>
+                            <td  style="text-align:center;width:10%;">
+							<?php echo $v['sch_class_type_id']>0?$v['sch_class_type_name']:"-";?>
+                            </td>
                             <td  style="text-align:center;width:8%;"><?php echo $v['property']==0?"普通班":"特长班";?></td>
                             <td  style="text-align:center;width:15%;"><?=$v['class_name']?>[<?=$v['class_no']?>]</td>
                             <td  style="text-align:center;width:10%;"><?=$v['amount']?></td>
