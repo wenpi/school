@@ -262,6 +262,12 @@ class ClassController extends Ccc_Base_Controller {
         $from = trim($this->_getParam("from"));
         
         $params = array("status"=>3);
+        // 撤销前判断该班级下是否有学生。如果有则不能操作
+        $isHasStudent = ClassModel::getInstance()->checkStuentByClassId($classId);
+        if($isHasStudent>0) {
+            echo "-1";
+            exit;
+        }
         $update = ClassModel::getInstance()->updateData($classId, $params);
         $result = array(
             "error_code"=>0,
@@ -292,6 +298,23 @@ class ClassController extends Ccc_Base_Controller {
         array_shift($classIdResult);
         $classIdString = !empty($classIdResult) ? implode(",",$classIdResult) : "";
         $this->view->classIdString = $classIdString;
+        $this->view->classIdResult = $classIdResult;
+        $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere();
+        $this->view->from = trim($this->_getParam("from"));
+    }
+    
+    public function ajaxShowMergeTableAction() {
+        $this->_helper->layout->disableLayout();
+        $classId = (int) $this->_getParam("class_id");
+        $classData = ClassModel::getInstance()->getRowData($classId);
+        $classData['amount'] = $classData['amount'] >0 ? $classData['amount'] : "";
+        $classData['class_minute'] = $classData['class_minute'] >0 ? $classData['class_minute'] : "";
+        $classData['class_time'] = !empty($classData['class_time']) 
+                                   && $classData['class_time']!="0000-00-00 00:00:00"? $classData['class_time'] : "";
+        $classData['open_date'] = !empty($classData['open_date']) 
+                                   && $classData['open_date']!="0000-00-00" ? $classData['open_date'] : "";
+        $this->view->classData  = $classData;
+        $this->view->classTypeData = ClassModel::getInstance()->getClassTypeData();
         $this->view->teacherData = TeacherModel::getInstance()->getTeacherDataByWhere();
         $this->view->from = trim($this->_getParam("from"));
     }
@@ -338,6 +361,8 @@ class ClassController extends Ccc_Base_Controller {
             if(!empty($classIdArr)) {
                 foreach($classIdArr as $classId) {
                     ClassModel::getInstance()->updateData($classId, array("status"=>2));
+                    StudentModel::getInstance()->updateClassData($classId, array("sch_class_id"=>$add));
+                    TeacherModel::getInstance()->updateClassData($classId,array("sch_class_id"=>$add));
                 }
             }
             // 更新班级班号
@@ -372,17 +397,4 @@ class ClassController extends Ccc_Base_Controller {
         exit;
     }
     
-    public function saveStudentMoneyDataAction() {
-        $this->_helper->layout->disableLayout();
-        $classId = (int) $this->_getParam("class_id");
-        $termId = (int) $this->_getParam("term_id");
-        $studentId = (int) $this->_getParam("student_id");
-        $moneyType = (int) $this->_getParam("money_type");
-        $moneyDate = trim($this->_getParam("money_date"));
-        $projectId = (int) $this->_getParam("project_id");
-        $name = trim($this->_getParam("name"));
-        $realyMoney = trim($this->_getParam("realy_money"));
-        $comments = trim($this->_getParams("comments"));
-        
-    }
 }

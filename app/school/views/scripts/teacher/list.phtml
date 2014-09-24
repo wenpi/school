@@ -3,10 +3,9 @@
 <!--条件-->
 <form action="/teacher/list" method="post">
     <div style="font-size: 11px;">
-        教工英文名：
-        <input type="text" name="en_name"  size="12" value="<?=$this->enName?>"  title="支持模糊"/>
-        教工中文名：
+        教工中文名称：
         <input type="text" name="cn_name"  size="12" value="<?=$this->cnName?>"  title="支持模糊"/>
+        
         <button type="submit" id="submitButton" style="margin-left:30px;">
             Search
         </button>
@@ -32,13 +31,15 @@
                     <tr class="ui-jqgrid-labels">
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">编号</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">类别</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">岗位</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">所属班级</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">岗位信息</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">工号</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">英文名</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">中文名</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">中文名称</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">手机</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">出生日期</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">入职日期</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">状态</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">操作</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr" style="width:120px;">操作</th>
                     </tr>
                 </thead>
             </table>
@@ -59,25 +60,32 @@
                         <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <?php endif;?>
                         <?php endif;?>
-                            <td  style="text-align:center; width:80px;"><?=$v['teacher_id']?></td>
+                            <td  style="text-align:center; width:80px;">
+							<a href="/teacher/view/teacher_id/<?=$v['teacher_id']?>/from/<?=$this->from?>"><?=$v['teacher_id']?></a>
+                            </td>
                             <td  style="text-align:center; width:80px;"><?=$v['teacher_type_name']?></td>
+                            <td  style="text-align:center;">
+							<?=$v['sch_class_name']?><?php echo isset($v['sch_class_no'])?"[".$v['sch_class_no']."]":""?>
+                            </td>
                             <td  style="text-align:center;"><?=$v['job_name']?></td>
                             <td  style="text-align:center;"><?=$v['teacher_no']?></td>
-                            <td  style="text-align:center;"><?php echo !empty($v['en_name'])?$v['en_name']:"-"?></td>
                             <td  style="text-align:center;"><?=$v['cn_name']?></td>
                             <td  style="text-align:center;"><?=$v['mobile_phone']?></td>
+                            <td  style="text-align:center;"><?=$v['birthday']?></td>
+                            <td  style="text-align:center;"><?=$v['job_date']?></td>
                             <td  style="text-align:center; width:80px;">
                             	<?php 
-                                        if($v['status']==0) { 
-                                                echo "<font color='gray'>未激活</font>";
-                                        } elseif($v['status']==1) { 
-                                                echo "<font color='green'>激活</font>";
-                                        } elseif($v['status']==2) { 
-                                                echo "<font color='red'>离职</font>";
-                                        }
+									if($v['status']==0) { 
+											echo "<font color='gray'>未激活</font>";
+									} elseif($v['status']==1) { 
+											echo "<font color='green'>激活</font>";
+									} elseif($v['status']==2) { 
+											echo "<font color='red'>离职</font>";
+									}
                                 ?>
                             </td>
-                            <td  style="text-align:center; width:80px;">
+                            <td  style="text-align:center; width:120px;">
+                            <a href="/teacher/view/teacher_id/<?=$v['teacher_id']?>/from/<?=$this->from?>">查看</a> | 
                             <a href="/teacher/edit/teacher_id/<?=$v['teacher_id']?>/from/<?=$this->from?>">修改</a> | 
                             <a href="/teacher/delete/teacher_id/<?=$v['teacher_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗?')){return true;}else{return false;}">删除</a>
                             </td>

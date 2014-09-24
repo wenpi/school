@@ -1,5 +1,5 @@
 <?= $this->headTitle($this->title) ?>
-<script src='/js/<?= $GLOBALS['module'] ?>/student.js' type='text/javascript'></script>
+<script src='/js/<?= $GLOBALS['module'] ?>/money.js' type='text/javascript'></script>
 <script type="text/javascript" src="/js/my97datepicker/WdatePicker.js" ></script>
 <script type="text/javascript" src="/js/swfupload/swfupload.js"></script>
 <script type="text/javascript" src="/js/swfupload/jquery.swfupload.js"></script>
@@ -13,7 +13,7 @@
         <!--body table title-->
 
         <!--body table content-->
-        <form action="/money/update.config.money" method="post" onsubmit="return Money.check();">
+        <form action="/money/update.config.money" method="post" onsubmit="return Money.checkConfigMoney();">
         <input type="hidden"  name="hidden_mc_id" id="hidden_mc_id" value="<?=$this->configMoneyData['money_config_id']?>"/>
         <input type="hidden"  name="from" id="from" value="<?=$this->from?>"/>
         <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">

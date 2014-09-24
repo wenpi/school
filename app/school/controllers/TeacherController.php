@@ -15,8 +15,8 @@ class TeacherController extends Ccc_Base_Controller {
      */
     function init() {
         parent::init();
-        $this->checkAuth() ;
-        $this->checkLog() ;
+        $this->checkAuth();
+        $this->checkLog();
         $this->_helper->layout()->setLayout("ccc");
     }
 
@@ -53,10 +53,13 @@ class TeacherController extends Ccc_Base_Controller {
         // teacher type data
         $teahcerTypeData = TeacherModel::getInstance()->getTypeData();
         $schoolJobData = SchoolModel::getInstance()->getJobData();
+        $classData = ClassModel::getInstance()->getClassDataByWhere();
         if ($data) {
             foreach ($data as & $p) {
                 $p['teacher_type_name'] = $p['ad_user_type_id'] > 0 ? $teahcerTypeData[$p['ad_user_type_id']] : "-";
                 $p['job_name'] = $p['sch_job_id'] > 0 ? $schoolJobData[$p['sch_job_id']] : "-";
+                $p['sch_class_name'] = $p['sch_class_id'] > 0 ? $classData['name'][$p['sch_class_id']] : "";
+                $p['sch_class_no'] = $p['sch_class_id'] >0 ? $classData['no'][$p['sch_class_id']] : "";
             }
         }
         $this->view->title = "教工管理";
@@ -67,7 +70,7 @@ class TeacherController extends Ccc_Base_Controller {
         $this->view->enName = $enName;
         $this->view->cnName = $cnName;
         $this->view->teacherId = $teacherId;
-        $this->view->from = base64_encode("/page/{$page}" . $condition);
+        $this->view->from = base64_encode(urlencode("/page/{$page}" . $condition));
     }
 
     public function addAction() {
@@ -83,9 +86,7 @@ class TeacherController extends Ccc_Base_Controller {
     public function ajaxUploadPhotoAction() {
         $this->_helper->layout->disableLayout();
         $config = new Zend_Config_Ini(PATH_ROOT . DS . $this->_conf->path->params_conf, "school");
-        if (!isset($_FILES["user_photo"])
-                || !is_uploaded_file($_FILES["user_photo"]["tmp_name"])
-                || $_FILES["user_photo"]["error"] != 0) {
+        if (!isset($_FILES["user_photo"]) || !is_uploaded_file($_FILES["user_photo"]["tmp_name"]) || $_FILES["user_photo"]["error"] != 0) {
             die(0);
         }
         // get the paramter.
@@ -141,21 +142,21 @@ class TeacherController extends Ccc_Base_Controller {
             "bargain_count" => (int) $this->_getParam("bargain_count"),
             "leave_date" => trim($this->_getParam("leave_date")),
             "leave_reason" => trim($this->_getParam("leave_reason")),
-            "add_user_id" => (int)$this->_session->uid,
+            "add_user_id" => (int) $this->_session->uid,
             "add_time_int" => time(),
         );
-        $result = array_merge($addBaseParams,$addSchoolParams);
+        $result = array_merge($addBaseParams, $addSchoolParams);
         $add = TeacherModel::getInstance()->addData($result);
-        if($add>0) {
+        if ($add > 0) {
             $leaveData = trim($this->_getParam("leave_date"));
             $updateParams = array(
                 "teacher_no" => $add,
-                "status" => !empty($leaveData)?2:1,
+                "status" => !empty($leaveData) ? 2 : 1,
             );
-            $update = TeacherModel::getInstance()->updateData($add,$updateParams);
+            $update = TeacherModel::getInstance()->updateData($add, $updateParams);
         }
 
-        if($add>0 && $update>0) {
+        if ($add > 0 && $update > 0) {
             Ccc_Helper_Com::alertMess("/teacher/list", "添加成功");
         } else {
             Ccc_Helper_Com::alertMess("/teacher/list", "添加失败");
@@ -170,12 +171,12 @@ class TeacherController extends Ccc_Base_Controller {
         $teacherId = (int) $this->_getParam("teacher_id");
         $from = trim($this->_getParam("from"));
         $teacherData = TeacherModel::getInstance()->getRowData($teacherId);
-        $teacherData['birthday'] = $teacherData['birthday']=="0000-00-00"?"":$teacherData['birthday'];
-        $teacherData['job_date'] = $teacherData['job_date']=="0000-00-00"?"":$teacherData['job_date'];
-        $teacherData['bargain_start_date'] = $teacherData['bargain_start_date']=="0000-00-00"?"":$teacherData['bargain_start_date'];
-        $teacherData['bargain_end_date'] = $teacherData['bargain_end_date']=="0000-00-00"?"":$teacherData['bargain_end_date'];
-        $teacherData['graduate_date'] = $teacherData['graduate_date']=="0000-00-00"?"":$teacherData['graduate_date'];
-        $teacherData['leave_date'] = $teacherData['leave_date']=="0000-00-00"?"":$teacherData['leave_date'];
+        $teacherData['birthday'] = $teacherData['birthday'] == "0000-00-00" ? "" : $teacherData['birthday'];
+        $teacherData['job_date'] = $teacherData['job_date'] == "0000-00-00" ? "" : $teacherData['job_date'];
+        $teacherData['bargain_start_date'] = $teacherData['bargain_start_date'] == "0000-00-00" ? "" : $teacherData['bargain_start_date'];
+        $teacherData['bargain_end_date'] = $teacherData['bargain_end_date'] == "0000-00-00" ? "" : $teacherData['bargain_end_date'];
+        $teacherData['graduate_date'] = $teacherData['graduate_date'] == "0000-00-00" ? "" : $teacherData['graduate_date'];
+        $teacherData['leave_date'] = $teacherData['leave_date'] == "0000-00-00" ? "" : $teacherData['leave_date'];
         $this->view->teacherData = $teacherData;
         $config = new Zend_Config_Ini(PATH_ROOT . DS . $this->_conf->path->params_conf, "school");
         $swfData = array(
@@ -222,19 +223,44 @@ class TeacherController extends Ccc_Base_Controller {
             "bargain_count" => (int) $this->_getParam("bargain_count"),
             "leave_date" => trim($this->_getParam("leave_date")),
             "leave_reason" => trim($this->_getParam("leave_reason")),
-            "status" => !empty($leaveData)?2:1,
-            "update_user_id" => (int)$this->_session->uid,
+            "status" => !empty($leaveData) ? 2 : 1,
+            "update_user_id" => (int) $this->_session->uid,
             "update_time_int" => time(),
         );
-        $result = array_merge($addBaseParams,$addSchoolParams);
+        $result = array_merge($addBaseParams, $addSchoolParams);
         $update = TeacherModel::getInstance()->updateData($hiddenTeacherId, $result);
-        $where =!empty($from)?base64_decode($from):"";
+        $where = !empty($from) ? urldecode( base64_decode($from) ) : "";
         $where = $where . "/teacher_id/{$hiddenTeacherId}";
-        if($update>0) {
+        if ($update > 0) {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作成功");
         } else {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作失败");
         }
+    }
+
+    public function viewAction() {
+        $this->view->title = "查看教工信息";
+        $teacherId = (int) $this->_getParam("teacher_id");
+        $from = trim($this->_getParam("from"));
+        
+        $userTypeOneData = TeacherModel::getInstance()->getTypeData(" and type=1 ");
+        $classOneData = ClassModel::getInstance()->getClassDataByWhere();
+        $jobOneData = JobModel::getInstance()->getJobDataByWhere( );
+        
+        $teacherData = TeacherModel::getInstance()->getRowData($teacherId);
+        $teacherData['birthday'] = $teacherData['birthday'] == "0000-00-00" ? "" : $teacherData['birthday'];
+        $teacherData['job_date'] = $teacherData['job_date'] == "0000-00-00" ? "" : $teacherData['job_date'];
+        $teacherData['bargain_start_date'] = $teacherData['bargain_start_date'] == "0000-00-00" ? "" : $teacherData['bargain_start_date'];
+        $teacherData['bargain_end_date'] = $teacherData['bargain_end_date'] == "0000-00-00" ? "" : $teacherData['bargain_end_date'];
+        $teacherData['graduate_date'] = $teacherData['graduate_date'] == "0000-00-00" ? "" : $teacherData['graduate_date'];
+        $teacherData['leave_date'] = $teacherData['leave_date'] == "0000-00-00" ? "" : $teacherData['leave_date'];
+        $teacherData['ad_user_type_name'] = $teacherData['ad_user_type_id']>0?$userTypeOneData[$teacherData['ad_user_type_id']]:"";
+        $teacherData['sch_class_name'] = $teacherData['sch_class_id']>0?$classOneData['name'][$teacherData['sch_class_id']]:"";
+        $teacherData['sch_class_no'] = $teacherData['sch_class_id']>0?$classOneData['no'][$teacherData['sch_class_id']]:"";
+        $teacherData['sch_job_name'] = $teacherData['sch_job_id']>0?$jobOneData[$teacherData['sch_job_id']]:"";
+      
+        $this->view->from = $from;
+        $this->view->teacherData = $teacherData;
     }
 
     public function deleteAction() {
@@ -242,11 +268,12 @@ class TeacherController extends Ccc_Base_Controller {
         $teacherId = (int) $this->_getParam("teacher_id");
         $delete = TeacherModel::getInstance()->deleteData($teacherId);
         $from = trim($this->_getParam("from"));
-        $where =!empty($from)?base64_decode($from):"";
-        if($delete>0) {
+        $where = !empty($from) ? urldecode(base64_decode($from)) : "";
+        if ($delete > 0) {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作成功");
         } else {
             Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作失败");
         }
     }
+
 }

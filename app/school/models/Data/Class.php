@@ -115,4 +115,18 @@ class Data_Class extends Ccc_Base_Model {
         
         return !empty($classRowData) ? $classRowData : array();
     }
+    
+    public function checkStuentByClassId($classId) {
+        $sql = "select count(*) from sch_students where sch_class_id={$classId} and is_delete=0";
+        $count = $this->_db->fetchOne($sql);
+        
+        return $count;
+    }
+    
+    public function checkStudentBySpecialCassId($classId) {
+        $sql = "select count(*) from sch_specialclass_student where sch_class_id={$classId}";
+        $count = $this->_db->fetchOne($sql);
+        
+        return $count;
+    }
 }

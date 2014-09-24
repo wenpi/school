@@ -14,7 +14,7 @@ class Data_TeacherDeal extends Ccc_Base_Model {
     public function getDataCount($where) {
         $sql = "select count(*) from sch_teacher_deal_data "
                 . "where teacher_deal_data_id>0 {$where}  and is_delete=0";
-//        echo $sql;
+//        echo $sql;exit;
         $count = $this->_db->fetchOne($sql);
 
         return $count;

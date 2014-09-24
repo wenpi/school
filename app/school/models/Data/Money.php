@@ -33,6 +33,23 @@ class Data_Money extends Ccc_Base_Model {
 
         return !empty($data) ? $data : array();
     }
+    
+    public function checkConfigTermData($year,$type,$termName) {
+        $sql = "select count(*) from sch_term_config where year={$year} and type={$type} 
+            and term_name='{$termName}' and is_delete=0";
+            
+        $count = $this->_db->fetchOne($sql);
+        
+        return $count;
+    }
+    
+    public function addConfigTermData($params) {
+        $this->_db->insert("sch_term_config", $params);
+        
+        $add = $this->_db->lastInsertId();
+        
+        return $add;
+    }
 
     /**
      * 查看学期配置一条信息
@@ -55,10 +72,10 @@ class Data_Money extends Ccc_Base_Model {
     public function getConfigMoneyProjectDataCount($where) {
         $sql = "select count(*) from sch_money_projects where money_project_id>0 {$where} and is_delete=0";
         $count = $this->_db->fetchOne($sql);
-        
+
         return $count;
     }
-    
+
     public function getConfigMoneyProjectPageData($page, $pageSize, $where) {
         $startIndex = (int) ($page - 1) * $pageSize;
         $sql = "select * from sch_money_projects where money_project_id>0 {$where} "
@@ -87,6 +104,29 @@ class Data_Money extends Ccc_Base_Model {
         $data = $this->_db->fetchAll($sql);
 
         return !empty($data) ? $data : array();
+    }
+
+    public function checkConfigMoneyProjectData($projectName) {
+        $sql = "select count(*) from sch_money_projects where money_project_name='{$projectName}' and is_delete=0";
+
+        $count = $this->_db->fetchOne($sql);
+
+        return $count;
+    }
+
+    public function addConfigMoneyProjectData($params) {
+
+        $this->_db->insert("sch_money_projects", $params);
+
+        $add = $this->_db->lastInsertId();
+
+        return $add;
+    }
+
+    public function updateConfigMoneyProjectData($projectId, $params) {
+        $this->_db->update("sch_money_projects", $params, "money_project_id=" . $projectId);
+
+        return 1;
     }
 
     public function checkData($classId, $termId, $month, $projectId) {

@@ -3,57 +3,7 @@
 <script type="text/javascript" src="/js/my97datepicker/WdatePicker.js" ></script>
 <script type="text/javascript" src="/js/swfupload/swfupload.js"></script>
 <script type="text/javascript" src="/js/swfupload/jquery.swfupload.js"></script>
-<script type="text/javascript">
-$(function(){
-    $('.swfupload-control').swfupload({
-        // Backend Settings
-        // // Relative to the SWF file (or you can use absolute paths)
-        upload_url: "http://<?=$_SERVER['HTTP_HOST']?><?=$this->swfData['upload_url']?>",
-	//upload_url: "http://school.a2.example.com/teacher/ajax.upload.photo",
-        post_params:{"PHPSESSID":"<?=Zend_Session::getId()?>","teacher_id":"<?=$this->teacherData['teacher_id']?>"},
-        // File Upload Settings
-	file_post_name: '<?=$this->swfData['upload_name']?>',	// input name.
-        file_size_limit : "<?=$this->swfData['maxsize_user_photo']?>", // 500kb
-        file_types : "<?=$this->swfData['type_user_photo']?>",
-        file_types_description : "Image files",
 
-        // Button Settings
-        button_image_url : "/js/swfupload/XPButtonUploadText_61x22.png", // Relative to the SWF file
-        button_placeholder_id : "spanButtonPlaceholder",
-        button_width: 61,
-        button_height: 22,
-
-        // Flash Settings
-        flash_url : "/js/swfupload/swfupload.swf",
-
-    });
-
-
-    // assign our event handlers
-    $('.swfupload-control')
-        .bind('fileQueued', function(event, file){
-            // start the upload once a file is queued
-            $(this).swfupload('startUpload');
-        })
-        .bind('uploadComplete', function(event, file){
-            // start the upload (if more queued) once an upload is complete
-            $(this).swfupload('startUpload');
-        })
-		.bind('uploadSuccess', function(event, file, serverData){
-			if( serverData == -1 ) {
-				alert("Session Lost");
-				return false;
-			}
-			if( serverData ==0 ) {
-				alert("上传文件不存在");
-				return false;
-			}
-			$("#div_swfupload_message").html("<font color='red'>上传成功！再次上传覆盖上一次图像</font>");
-			$("#img_teacher_photo").attr("src","/images/teacher_photo/_thumb_"+serverData+"?tt="+Math.random());
-			$("#href_teacher_photo").attr("href","/images/teacher_photo/"+serverData+"?tt="+Math.random());
-		})
-});
-</script>
 <div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
     <div class="ui-jqgrid-view" style="width: 100%;">
         <!--body table title-->
@@ -265,7 +215,8 @@ $(function(){
             <div align="center">
             <input type="submit" name="save" value="确定提交" />
             &nbsp;&nbsp;
-            <input type="button" name="fanhui" value="返回教工列表" onclick="window.location='/teacher/list<?=base64_decode($this->from)?>'" />
+            <input type="button" name="fanhui" value="返回教工列表" 
+            	onclick="window.location='/teacher/list<?=urldecode(base64_decode($this->from))?>'" />
             </div>
         </div>
         </form>
@@ -277,3 +228,54 @@ $(function(){
     <div class="ui-state-default ui-jqgrid-pager ui-corner-bottom" style="width: 100%;">
     </div>
 </div>
+<script type="text/javascript">
+$(function(){
+    $('.swfupload-control').swfupload({
+        // Backend Settings
+        // // Relative to the SWF file (or you can use absolute paths)
+        upload_url: "http://<?=$_SERVER['HTTP_HOST']?><?=$this->swfData['upload_url']?>",
+		//upload_url: "http://school.a2.example.com/teacher/ajax.upload.photo",
+        post_params:{"PHPSESSID":"<?=Zend_Session::getId()?>","teacher_id":"<?=$this->teacherData['teacher_id']?>"},
+        // File Upload Settings
+		file_post_name: '<?=$this->swfData['upload_name']?>',	// input name.
+        file_size_limit : "<?=$this->swfData['maxsize_user_photo']?>", // 500kb
+        file_types : "<?=$this->swfData['type_user_photo']?>",
+        file_types_description : "Image files",
+
+        // Button Settings
+        button_image_url : "/js/swfupload/XPButtonUploadText_61x22.png", // Relative to the SWF file
+        button_placeholder_id : "spanButtonPlaceholder",
+        button_width: 61,
+        button_height: 22,
+
+        // Flash Settings
+        flash_url : "/js/swfupload/swfupload.swf",
+
+    });
+
+
+    // assign our event handlers
+    $('.swfupload-control')
+        .bind('fileQueued', function(event, file){
+            // start the upload once a file is queued
+            $(this).swfupload('startUpload');
+        })
+        .bind('uploadComplete', function(event, file){
+            // start the upload (if more queued) once an upload is complete
+            $(this).swfupload('startUpload');
+        })
+		.bind('uploadSuccess', function(event, file, serverData){
+			if( serverData == -1 ) {
+				alert("Session Lost");
+				return false;
+			}
+			if( serverData ==0 ) {
+				alert("上传文件不存在");
+				return false;
+			}
+			$("#div_swfupload_message").html("<font color='red'>上传成功！再次上传覆盖上一次图像</font>");
+			$("#img_teacher_photo").attr("src","/images/teacher_photo/_thumb_"+serverData+"?tt="+Math.random());
+			$("#href_teacher_photo").attr("href","/images/teacher_photo/"+serverData+"?tt="+Math.random());
+		})
+});
+</script>

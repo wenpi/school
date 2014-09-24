@@ -151,50 +151,14 @@ CleverTabs.prototype.add = function(options) {
 };
 //为Tab安装右键菜单
 CleverTabs.prototype.setupContextMenu = function() {
-	var self = this;
-	var contextMenu;
-	if (!self.options.contextMenu) {
-		contextMenu = {
-			element: $('<ul id="cleverTabsContextMenu">'
-//					+ '<li id="mnuEnabl" ><a href="#enabled"><span class="ui-icon ui-icon-pencil" style="float: left; margin-right: 5px;"></span>Enable</a></li>'
-//					+ '<li id="mnuDisalb"><a href="#disable"><span class="ui-icon ui-icon-cancel" style="float: left; margin-right: 5px;"></span>Disable</a></li>'
-//					+ '<li id="mnuLock" ><a href="#lock"><span class="ui-icon ui-icon-locked" style="float: left; margin-right: 5px;"></span>Lock</a></li>'
-//					+ '<li id="mnuUnlock"><a href="#unlock"><span class="ui-icon ui-icon-unlocked" style="float: left; margin-right: 5px;"></span>Unlock</a></li>'
-					+ '<li id="mnuRefresh" ><a href="##" desc="refresh"><span class="ui-icon ui-icon-refresh" style="float: left; margin-right: 5px;"></span>Refresh</a></li>'
-					+ '<li id="mnuCloseThisItem"><a href="##" desc="close"><span class="ui-icon ui-icon-closethick" style="float: left; margin-right: 5px;"></span>Close This Item</a></li>'
-					+ '<li id="mnuCloseAll"><a href="##" desc="clear"><span class="ui-icon ui-icon-closethick" style="float: left; margin-right: 5px;"></span>Close All</a></li>'
-					+ '</ul>'),
-			handler: function(action, el, pos) {
-				var tab = self.getCurrentTab();
-				switch (action) {
-					case 'enabled':
-						tab.setDisable(false);
-						break;
-					case 'disable':
-						tab.setDisable(true);
-						break;
-					case 'lock':
-						tab.setLock(true);
-						break;
-					case 'unlock':
-						tab.setLock(false);
-						break;
-					case 'refresh':
-						tab.refresh();
-						break;
-					case 'clear':
-						tabs.clear();
-						break;
-					case 'close':
-						tab.kill();
-						break;
-				}
-			}
-		};
-	}
-	var menu = contextMenu.element;
-	self.wrapper.parent().append(menu);
-	self.element.contextMenu({menu: menu.attr('id')}, contextMenu.handler);
+//	var self = this;
+//	var contextMenu;
+//	if (!self.options.contextMenu) {
+//		contextMenu = {
+//			element: $(),
+//			handler: function(action, el, pos) {}
+//		};
+//	}
 }
 //获取当前选中的Tab的唯一Id
 CleverTabs.prototype.getCurrentUniqueId = function() {

@@ -60,4 +60,16 @@ class JobModel {
         return $this->_job->getJobData( $where );
     }
 
+    
+    public function getJobDataByWhere($where = "") {
+        $jobData = $this->getJobData($where);
+        $arr = array();
+        if ($jobData) {
+            foreach ($jobData as $p) {
+                $arr[$p['job_id']] = $p['job_name'];
+            }
+        }
+
+        return $arr;
+    }
 }

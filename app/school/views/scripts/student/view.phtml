@@ -1,8 +1,5 @@
 <?= $this->headTitle($this->title) ?>
 <script src='/js/<?= $GLOBALS['module'] ?>/student.js' type='text/javascript'></script>
-<script type="text/javascript" src="/js/my97datepicker/WdatePicker.js" ></script>
-<script type="text/javascript" src="/js/swfupload/swfupload.js"></script>
-<script type="text/javascript" src="/js/swfupload/jquery.swfupload.js"></script>
 <div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all">
     <div class="ui-jqgrid-view" style="width: 100%;">
         <!--body table title-->
@@ -150,7 +147,8 @@
             
             
             <div align="center">&nbsp;&nbsp;
-            <input type="button" name="fanhui" value="返回学生列表" onclick="window.location='/student/list'" />
+            <input type="button" name="fanhui" value="返回学生列表" 
+            	onclick="window.location='/student/list<?=urldecode(base64_decode($this->from))?>'" />
           </div>
         </div>
         </form>

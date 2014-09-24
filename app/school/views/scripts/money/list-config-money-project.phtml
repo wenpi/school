@@ -50,8 +50,7 @@
                             <td  style="text-align:center; width:20%;"><?= $v['money_project_name'] ?></td>
                             <td  style="text-align:center; width:10%;">
                            	  	<a href="#" onclick="Money.viewConfigMoneyProject(<?=$v['money_project_id']?>,'<?=$this->from?>')">查看</a> | 
-                                <a href="#" onclick="Money.editConfigMoneyProject(<?=$v['money_project_id']?>,'<?=$this->from?>')">修改</a> | 
-                                <a href="/money/delete.config.money.project/class_id/<?=$v['money_project_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗?')){return true;}else{return false;}">删除</a>
+                                <a href="/money/delete.config.money.project/project_id/<?=$v['money_project_id']?>/from/<?=$this->from?>" onclick="if(window.confirm('确定删除吗?')){return true;}else{return false;}">删除</a>
                             </td>
                         </tr>
                 		<?php endforeach; ?>

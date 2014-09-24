@@ -6,6 +6,24 @@
 
 
 var Class = {
+	// 合并选择以谁为主
+	showMergeTable:function(class_id,from) { 
+		jQuery.ajax({
+            type: "POST",
+            dataType: "html",
+            url: "/class/ajax.show.merge.table",
+            data: {
+				class_id:class_id,
+				from:from,
+                j: 1,
+                tt: Math.random()
+            },
+            success: function(resp) {
+                $.validRight(resp);
+				$("#div_merge").html(resp);
+            }
+        });
+	},
 	// 升级
 	upgrade:function(class_id,from) { 
 		jQuery.ajax({
@@ -38,10 +56,18 @@ var Class = {
             },
             success: function(resp) {
                 $.validRight(resp);
+               
+               if(resp ==-1) {
+                    alert("该班级有幼儿数据，请先删除其下幼儿数据再重试");
+                    return false;
+                }
+                
                 if(resp.data.update>0) { 
 					alert("撤销成功");
 					window.location = "/class/list" + resp.data.from;
 				}
+                
+                
             }
         });
     },

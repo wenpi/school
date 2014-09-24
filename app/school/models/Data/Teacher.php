@@ -21,13 +21,13 @@ class Data_Teacher extends Ccc_Base_Model {
     public function getPageData($page, $pageSize, $where) {
         $startIndex = (int) ($page - 1) * $pageSize;
         $sql = "select * from sch_teachers where teacher_id >0 {$where} and is_delete=0 "
-                . "order by teacher_id limit {$startIndex},{$pageSize}";
+            . "order by teacher_id limit {$startIndex},{$pageSize}";
         $data = $this->_db->fetchAll($sql);
 
         return !empty($data) ? $data : array();
     }
 
-    public function getTypeData( $where ) {
+    public function getTypeData($where) {
         $sql = " select * from admin_user_type where user_type_id>0 $where and is_delete=0 ";
         $data = $this->_db->fetchAll($sql);
 
@@ -36,8 +36,7 @@ class Data_Teacher extends Ccc_Base_Model {
 
     public function getTeacherDataByWhere($where) {
         $sql = "select * from sch_teachers where teacher_id>0 {$where} "
-                . "and is_delete=0 ORDER BY CONVERT(cn_name USING GBK) ASC ";
-//        echo $sql;
+            . "and is_delete=0 ORDER BY CONVERT(cn_name USING GBK) ASC ";
         $data = $this->_db->fetchAll($sql);
 
         return !empty($data) ? $data : array();
@@ -74,8 +73,8 @@ class Data_Teacher extends Ccc_Base_Model {
         return $count;
     }
 
-    public function addData($params ) {
-        $this->_db->insert("sch_teachers",$params);
+    public function addData($params) {
+        $this->_db->insert("sch_teachers", $params);
         $add = $this->_db->lastInsertId();
 
         return $add;
@@ -92,6 +91,12 @@ class Data_Teacher extends Ccc_Base_Model {
         $data = $this->_db->fetchAll($sql);
 
         return !empty($data) ? $data : array();
+    }
+
+    public function updateClassData($classId, $params) {
+        $this->_db->update("sch_teachers", $params, "sch_class_id=" . $classId);
+
+        return 1;
     }
 
 }

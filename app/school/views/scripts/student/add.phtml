@@ -12,10 +12,10 @@
         <!--body table title-->
 
         <!--body table content-->
-        <form action="/student/save" method="post" onsubmit="return Teacher.check();">
+        <form action="/student/save" method="post" onsubmit="return Student.check();">
         <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
-   	  	  <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">基本信息  <span style="cursor:pointer;" id="span_base" onclick="Teacher.showhideByAdd('base','table_teacher_base');" value="1" title="显示或隐藏">↑</span></div>
-            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
+   	  	  <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">基本信息  <span style="cursor:pointer;" id="span_base" onclick="Student.showhideByAdd('base','table_base');" value="1" title="显示或隐藏">↑</span></div>
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_base">
                 <tbody>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td width="150"  style="text-align:right; width:150px;">英文名：</td>
@@ -30,7 +30,6 @@
                         <td  style="text-align:right; width:150px;">性别：</td>
                         <td  style="text-align:left;">
                         <select name="sex" size="1" id="sex">
-                          <option value="0">无</option>
                           <option value="1">男</option>
                           <option value="2">女</option>
                         </select>
@@ -72,8 +71,8 @@
             </table>
             
           
-       	    <div style="font-weight:bold; border: 1px solid #dddddd; line-height:22px;">在园信息  <span id="span_school" onclick="Teacher.showhideByAdd('school','table_teacher_school');" value="1" style="cursor:pointer;" title="显示或隐藏">↑</span></div>
-            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_school">
+       	    <div style="font-weight:bold; border: 1px solid #dddddd; line-height:22px;">在园信息  <span id="span_school" onclick="Student.showhideByAdd('school','table_school');" value="1" style="cursor:pointer;" title="显示或隐藏">↑</span></div>
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_school">
                 <tbody>
                 	<tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td width="150"  style="text-align:right; width:150px;">所属班级：</td>
@@ -83,7 +82,10 @@
                         <?php foreach($this->classData as $p):?>
                         <option value="<?=$p['class_id']?>"><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
                         <?php endforeach;?>
-                        </select></td>
+                        </select>
+                        <font color="red">*</font>
+                        （选择班级只能选择普通班）
+                        </td>
                       <td width="150"  style="text-align:right;"><span style="text-align:right; width:150px;">学籍状态</span>：</td>
                         <td width="300"  style="text-align:left;">
                         <select name="school_status" id="school_status">
@@ -100,8 +102,8 @@
                 </tbody>
             </table>
             
-    <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">家长信息  <span style="cursor:pointer;" id="span_base" onclick="Teacher.showhideByAdd('base','table_teacher_base');" value="1" title="显示或隐藏">↑</span></div>
-            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
+    <div style="font-weight:bold;border: 1px solid #dddddd; line-height:22px;">家长信息  <span style="cursor:pointer;" id="span_parent" onclick="Student.showhideByAdd('parent','table_parent');" value="1" title="显示或隐藏">↑</span>（以下信息必须填写至少一条信息）</div>
+            <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_parent">
                 <tbody>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td  style="text-align:left;">英文名</td>
@@ -113,12 +115,12 @@
                     </tr>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td style="text-align:left;">
-                      <input type="text" name="parent_en_name[1]" id="parent_en_name_1" size="15" />
+                      <input type="text" name="parent_en_name[1]" id="parent_en_name_0" size="15" />
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_cn_name[1]" id="parent_cn_name_1" size="15"  /></td>
+                      <input type="text" name="parent_cn_name[1]" id="parent_cn_name_0" size="15"  /></td>
                       <td style="text-align:left;">
-                      <select name="parent_named[1]" id="parent_named_1">
+                      <select name="parent_named[1]" id="parent_named_0">
                         <option value="1">爸爸</option>
                         <option value="2">妈妈</option>
                         <option value="3">爷爷</option>
@@ -129,13 +131,13 @@
                         <option value="8">姑父</option>
                       </select></td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_phone[1]" id="parent_phone_1" size="15"/>
+                      <input type="text" name="parent_phone[1]" id="parent_phone_0" size="15"/>
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_mobile_phone[1]" id="parent_mobile_phone_1" size="15"/>
+                      <input type="text" name="parent_mobile_phone[1]" id="parent_mobile_phone_0" size="15"/>
                       </td>
                       <td style="text-align:left;">
-                      <select name="parent_is_message[1]" id="parent_is_message_1">
+                      <select name="parent_is_message[1]" id="parent_is_message_0">
                         <option value="0">否</option>
                         <option value="1">是</option>
                       </select>
@@ -143,12 +145,12 @@
                     </tr>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td style="text-align:left;">
-                      <input type="text" name="parent_en_name[2]" id="parent_en_name_2" size="15" />
+                      <input type="text" name="parent_en_name[2]" id="parent_en_name_1" size="15" />
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_cn_name[2]" id="parent_cn_name_2" size="15"  /></td>
+                      <input type="text" name="parent_cn_name[2]" id="parent_cn_name_1" size="15"  /></td>
                       <td style="text-align:left;">
-                      <select name="parent_named[2]" id="parent_named_2">
+                      <select name="parent_named[2]" id="parent_named_1">
                         <option value="1">爸爸</option>
                         <option value="2">妈妈</option>
                         <option value="3">爷爷</option>
@@ -159,13 +161,13 @@
                         <option value="8">姑父</option>
                       </select></td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_phone[2]" id="parent_phone_2" size="15"/>
+                      <input type="text" name="parent_phone[2]" id="parent_phone_1" size="15"/>
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_mobile_phone[2]" id="parent_mobile_phone_2" size="15"/>
+                      <input type="text" name="parent_mobile_phone[2]" id="parent_mobile_phone_1" size="15"/>
                       </td>
                       <td style="text-align:left;">
-                      <select name="parent_is_message[2]" id="parent_is_message_2">
+                      <select name="parent_is_message[2]" id="parent_is_message_1">
                         <option value="0">否</option>
                         <option value="1">是</option>
                       </select>
@@ -173,12 +175,12 @@
                     </tr>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td style="text-align:left;">
-                      <input type="text" name="parent_en_name[3]" id="parent_en_name_3" size="15" />
+                      <input type="text" name="parent_en_name[3]" id="parent_en_name_2" size="15" />
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_cn_name[3]" id="parent_cn_name_3" size="15"  /></td>
+                      <input type="text" name="parent_cn_name[3]" id="parent_cn_name_2" size="15"  /></td>
                       <td style="text-align:left;">
-                      <select name="parent_named[3]" id="parent_named_3">
+                      <select name="parent_named[3]" id="parent_named_2">
                         <option value="1">爸爸</option>
                         <option value="2">妈妈</option>
                         <option value="3">爷爷</option>
@@ -189,13 +191,13 @@
                         <option value="8">姑父</option>
                       </select></td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_phone[3]" id="parent_phone_3" size="15"/>
+                      <input type="text" name="parent_phone[3]" id="parent_phone_2" size="15"/>
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_mobile_phone[3]" id="parent_mobile_phone_3" size="15"/>
+                      <input type="text" name="parent_mobile_phone[3]" id="parent_mobile_phone_2" size="15"/>
                       </td>
                       <td style="text-align:left;">
-                      <select name="parent_is_message[3]" id="parent_is_message_3">
+                      <select name="parent_is_message[3]" id="parent_is_message_2">
                         <option value="0">否</option>
                         <option value="1">是</option>
                       </select>
@@ -203,12 +205,12 @@
                     </tr>
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td style="text-align:left;">
-                      <input type="text" name="parent_en_name[4]" id="parent_en_name_4" size="15" />
+                      <input type="text" name="parent_en_name[4]" id="parent_en_name_3" size="15" />
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_cn_name[4]" id="parent_cn_name_4" size="15"  /></td>
+                      <input type="text" name="parent_cn_name[4]" id="parent_cn_name_3" size="15"  /></td>
                       <td style="text-align:left;">
-                      <select name="parent_named[4]" id="parent_named_4">
+                      <select name="parent_named[4]" id="parent_named_3">
                         <option value="1">爸爸</option>
                         <option value="2">妈妈</option>
                         <option value="3">爷爷</option>
@@ -219,13 +221,13 @@
                         <option value="8">姑父</option>
                       </select></td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_phone[4]" id="parent_phone_4" size="15"/>
+                      <input type="text" name="parent_phone[4]" id="parent_phone_3" size="15"/>
                       </td>
                       <td style="text-align:left;">
-                      <input type="text" name="parent_mobile_phone[4]" id="parent_mobile_phone_4" size="15"/>
+                      <input type="text" name="parent_mobile_phone[4]" id="parent_mobile_phone_3" size="15"/>
                       </td>
                       <td style="text-align:left;">
-                      <select name="parent_is_message[4]" id="parent_is_message_4">
+                      <select name="parent_is_message[4]" id="parent_is_message_3">
                         <option value="0">否</option>
                         <option value="1">是</option>
                       </select>

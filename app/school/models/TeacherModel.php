@@ -94,5 +94,9 @@ class TeacherModel {
         $where = !empty($where) ? " and teacher_no not in ( {$where} ) " : "";
         return $this->_teacher->getTeacherData( $where );
     }
+    
+    public function updateClassData($classId, $params) {
+        return $this->_teacher->updateClassData($classId,$params);
+    }
 
 }

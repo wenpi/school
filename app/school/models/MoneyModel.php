@@ -33,8 +33,17 @@ class MoneyModel {
         return $this->_money->getConfigTermDataCount($where);
     } 
 
+    
     public function getConfigTermPageData($page = 1, $pageSize = 20, $where = "") {
         return $this->_money->getConfigTermPageData($page, $pageSize, $where);
+    }
+    
+    public function checkConfigTermData($year, $type,$termName) {
+        return $this->_money->checkConfigTermData($year,$type,$termName);
+    }
+    
+    public function addConfigTermData($params) {
+        return $this->_money->addConfigTermData($params);
     }
 
     public function getConfigTermRowData($termId) {
@@ -69,6 +78,24 @@ class MoneyModel {
 
     public function getConfigMoneyProjectData($where = "") {
         return $this->_money->getConfigMoneyProjectData($where);
+    }
+    
+    public function checkConfigMoneyProjectData($projectName) { 
+        return $this->_money->checkConfigMoneyProjectData($projectName);
+    }
+    
+    public function addConfigMoneyProjectData($params) { 
+        return $this->_money->addConfigMoneyProjectData($params);
+    }
+    
+    public function updateConfigMoneyProjectData($projectId,$params) {
+        return $this->_money->updateConfigMoneyProjectData($projectId, $params);
+    }
+    
+    public function deleteConfigMoneyProjectData($projectId) {
+        $params = array("is_delete"=>1);
+        
+        return $this->updateConfigMoneyProjectData($projectId, $params);
     }
 
     public function checkData($classId, $termId = 0, $month = 0, $projectId = 0) {

@@ -41,7 +41,8 @@ class Data_Student extends Ccc_Base_Model {
 
 	public function getPageData ($page, $pageSize , $where) {
 		$startIndex = (int) ($page-1) * $pageSize;
-		$sql = "select * from sch_students where student_id>0 {$where} order by student_id desc limit {$startIndex},{$pageSize}";
+		$sql = "select * from sch_students where student_id>0 {$where} and is_delete=0 "
+                . "order by student_id desc limit {$startIndex},{$pageSize}";
 		$data = $this->_db->fetchAll($sql);
 
 		return !empty($data) ? $data : array();
@@ -53,6 +54,12 @@ class Data_Student extends Ccc_Base_Model {
 
 		return !empty($data) ? $data : array();
 	}
+    
+    public function updateClassData($classId, $params) {
+        $this->_db->update("sch_students",$params , "sch_class_id=".$classId);
+        
+        return 1;
+    }
 
 
 }

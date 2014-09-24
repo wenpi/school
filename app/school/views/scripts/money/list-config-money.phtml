@@ -3,7 +3,7 @@
 
 
 <!--条件-->
-<form action="/student/list" method="post">
+<form action="/money/list.config.money" method="post">
     <div style="font-size: 11px;">
         班级：
         <input type="text" name="en_name"  size="12" value="<?=$this->enName?>"  title="支持模糊"/>
@@ -54,7 +54,7 @@
                     <?php foreach ($this->data as $k=>$v): ?>
                         <tr class="ui-widget-content jqgrow ui-row-ltr">
                             <td  style="text-align:center; width:100px;">
-							<a href="/student/view/student_id/<?=$v['money_config_id']?>/from/<?=$this->from?>">
+							<a href="/money/view.config.money/mc_id/<?=$v['money_config_id']?>/from/<?=$this->from?>">
 							<?=$v['money_config_id']?>
                             </a>
                             </td>

@@ -30,7 +30,7 @@ class StudentController extends Ccc_Base_Controller {
     public function listAction() {
 
         $studentId = (int) $this->_getParam("student_id");
-        $enName = trim($this->_getParam("en_name"));
+        $classId = trim($this->_getParam("class_id"));
         $cnName = trim($this->_getParam("cn_name"));
 
         $page = (int) $this->_getParam("page");
@@ -38,8 +38,8 @@ class StudentController extends Ccc_Base_Controller {
         $where = "";
         $condition = "";
 
-        $where .=!empty($enName) ? " and en_name like '{$enName}%' " : "";
-        $condition .=!empty($enName) ? "/en_name/{$enName}" : "";
+        $where .=$classId>0 ? " and sch_class_id={$classId} " : "";
+        $condition .=!empty($classId) ? "/class_id/{$classId}" : "";
         $where .=!empty($cnName) ? " and cn_name like '{$cnName}%' " : "";
         $condition .=!empty($cnName) ? "/cn_name/{$cnName}" : "";
 
@@ -49,21 +49,29 @@ class StudentController extends Ccc_Base_Controller {
         $page = ($page >= $pageCount) ? $pageCount : ($page = ($page < 1) ? 1 : $page);
         $page = $page < 1 ? 1 : $page;
         $data = StudentModel::getInstance()->getPageData($page, $pageSize, $where);
-        $this->view->title = "学生管理";
+        $classData = ClassModel::getInstance()->getClassDataByWhere();
+        if($data) {
+            foreach($data as & $p) {
+                @$p['sch_class_name'] = $p['sch_class_id'] > 0 ? $classData['name'][$p['sch_class_id']] : "";
+                @$p['sch_class_no'] = $p['sch_class_id'] > 0 ? $classData['no'][$p['sch_class_id']] : "";
+            }
+        }
         $this->view->data = $data;
         // view page
         $this->view->pageData = array("page" => $page, "url" => "/student/list{$condition}",
             "page_count" => $pageCount);
-        $this->view->enName = $enName;
+        $this->view->classId = $classId;
         $this->view->cnName = $cnName;
         $this->view->studentId = $studentId;
         $this->view->from = base64_encode( urlencode("/page/{$page}" . $condition) );
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
+        $this->view->title = "学生管理";
 
     }
 
     public function addAction() {
         $this->view->title = "添加学生信息";
-        $this->view->classData = ClassModel::getInstance()->getClassData(" and status in (1,4) ");
+        $this->view->classData = ClassModel::getInstance()->getClassData(" and property=0 and status in (1,4) ");
     }
 
     /**
@@ -234,9 +242,9 @@ class StudentController extends Ccc_Base_Controller {
         $from = trim($this->_getParam("from"));
         $where = !empty($from) ? urldecode( base64_decode($from) ) : "";
         if($delete>0) {
-            Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作成功");
+            Ccc_Helper_Com::alertMess("/student/list{$where}", "操作成功");
         } else {
-            Ccc_Helper_Com::alertMess("/teacher/list{$where}", "操作失败");
+            Ccc_Helper_Com::alertMess("/student/list{$where}", "操作失败");
         }
     }
 
@@ -249,6 +257,7 @@ class StudentController extends Ccc_Base_Controller {
 		}
 		$this->view->studentRowData = $studentRowData ;
 		$this->view->title = "查看学生信息";
+        $this->view->from = $from;
 	}
 
 }

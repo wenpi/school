@@ -38,6 +38,12 @@ class JobController extends Ccc_Base_Controller {
         // where
         $where = " ";
         $condition = "";
+        
+        $jobName = trim($this->_getParam("job_name"));
+        if(!empty($jobName)) {
+            $where .= " and job_name like '%{$jobName}%'";
+            $condition .= "/job_name/{$jobName}";
+        }
 
         // compare the page data.
         $dataCount = JobModel::getInstance()->getDataCount($where);
@@ -51,7 +57,8 @@ class JobController extends Ccc_Base_Controller {
         $this->view->pageData = array("page" => $page, "url" => "/job/list{$condition}",
             "page_count" => $pageCount);
         $this->view->title = "岗位管理";
-        $this->view->from = base64_encode("/page/{$page}" . $condition);
+        $this->view->from = base64_encode( urlencode("/page/{$page}" . $condition) );
+        $this->view->jobName = $jobName;
     }
 
     // 添加

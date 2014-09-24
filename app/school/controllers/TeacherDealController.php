@@ -140,7 +140,7 @@ class TeacherDealController extends Ccc_Base_Controller {
         $page = (int) $this->_getParam("page");
         $page = $page < 1 ? 1 : $page;
         $pageSize = isset($this->_conf->page_size) ? $this->_conf->page_size : 20;
-        $where = " and teacher_no = '{$this->_session->uname} ";
+        $where = " and teacher_no = '{$this->_session->uname}' ";
         $condition = "";
 
         if ($teacherId > 0) {

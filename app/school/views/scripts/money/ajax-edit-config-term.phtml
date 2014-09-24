@@ -14,53 +14,59 @@
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td  style="text-align:right;" width="100">学年：</td>
                        <td  style="text-align:left;">
-                       <select name="input_property" id="input_property" style="width:120px;" onchange="Class.showSpecial(this.value);">
-                         <option value="0">普通班</option>
-                         <option value="1">特长班</option>
+                       <select name="input_year" id="input_year" disabled>
+                       	 <?php foreach($this->year as $v):?>
+                         <option value="<?=$v?>" 
+						 	<?php echo $v==$this->configTermData['year']?"selected":"";?>><?=$v?></option>
+                         <?php endforeach;?>
                        </select>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;" id="td_special">学期名称：</td>
                        <td  style="text-align:left;">
-                       <select name="input_teacher_id" id="input_teacher_id" style="width:120px;">
-                       <option value="0">-请选择-</option>
-                       <?php if($this->teacherData):?>
-                       <?php foreach($this->teacherData as $p):?>
-                       <option value="<?=$p['teacher_id']?>"><?=$p['cn_name']?>[<?=$p['teacher_no']?>]</option>
-                       <?php endforeach;?>
-                       <?php endif;?>
-                       </select>
+                       <input type="text" name="input_term_name" id="input_term_name" 
+                       		value="<?=$this->configTermData['term_name']?>" disabled/>
+                       <font color="red">*</font>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;">学期类型：</td>
                        <td  style="text-align:left;">
-                         <input type="text" name="input_class_name" id="input_class_name" />
-                         <font color="red">*</font>
+                       <select name="input_type" id="input_type" disabled>
+                         <option value="1" <?php echo 1==$this->configTermData['type']?"selected":"";?>>春季学期</option>
+                         <option value="2" <?php echo 2==$this->configTermData['type']?"selected":"";?>>夏季学期</option>
+                         <option value="3" <?php echo 3==$this->configTermData['type']?"selected":"";?>>秋季学期</option>
+                         <option value="4" <?php echo 4==$this->configTermData['type']?"selected":"";?>>爱他</option>
+                       </select>
+                       
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td  style="text-align:right;">开始时间：</td>
                        <td  style="text-align:left;">
-                       <input type="text" name="input_amount" id="input_amount" />
+                       <input type="text" name="input_start_date" id="input_start_date"
+                       		value="<?=$this->configTermData['start_date']?>"/>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td style="text-align:right;">结束时间：</td>
                        <td style="text-align:left;">
-                         <input type="text" name="input_class_minute" id="input_class_minute" />（分）
-                         </td>
+                       <input type="text" name="input_end_date" id="input_end_date" 
+                         	value="<?=$this->configTermData['end_date']?>"/>
+                       </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td  style="text-align:right;">描述：</td>
                        <td  style="text-align:left;">
-                       <textarea name="input_comments" id="input_comments" cols="30" rows="3"></textarea>
+                       <textarea name="input_comments" id="input_comments" 
+                       		cols="30" rows="3"><?=$this->configTermData['comments']?></textarea>
                        </td>
                      </tr>
                      <tr class="ui-widget-content jqgrow ui-row-ltr">
                        <td colspan="2"  style="text-align:center;">
-                       <input type="button" name="button" id="button" value="确定提交" onclick="Class.save();"/>			
+                       <input type="button" name="button" id="button" value="确定提交"
+                              onclick="Money.updateConfigTerm(<?=$this->configTermData['term_id']?>,'<?=$this->from?>');"/>			
                        </td>
                      </tr>
               </tbody>

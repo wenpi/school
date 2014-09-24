@@ -6,6 +6,9 @@
 
 
 var Sms = {
+	showReceiveUserId:function() { 
+		$("#receive_user_id").val("0");
+	},
 	showSendTimeType: function(type) {
 		if (type == 1) {
 			$("#span_send_time_type").show();
@@ -79,11 +82,34 @@ var Sms = {
                 $.validRight(resp);
 				$("#div_show_user_data").dialog('close');
 				$(resp).insertBefore("#div_receive_user_ids");
+				$("#div_receive_user_ids").html(1);
             }
         });
 		
 	},
 	removeUserId:function(uid) { 
 		$("#font_user_id_" + uid).remove();
+	},
+	checkSend:function() { 
+		var user_ids = $("#div_receive_user_ids").html();
+		var send_time_type = $("#send_time_type").val();
+		var send_time = $("#send_time").val();
+		var title = $("#title").val();
+		var content = $("#content").val();
+		
+		if(jQuery.trim(user_ids) ==0) { 
+			alert("接收人不能为空");
+			return false;
+		}
+		if(send_time_type==1) { 
+			if(jQuery.trim(send_time) == "") { 
+				alert("定时时间不能为空");
+				return false;
+			}
+		}
+		if(jQuery.trim(title) == "" || jQuery.trim(content) == "" ) { 
+			alert("标题或内容不能为空");
+			return false;
+		}
 	}
 }

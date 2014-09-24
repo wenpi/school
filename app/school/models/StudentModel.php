@@ -109,6 +109,10 @@ class StudentModel
 		return $this->_student->checkData( $studentId , $typeId , $dealDate ) ;
 	}
 
+    
+    public function updateClassData($classId, $params) {
+        return $this->_student->updateClassData($classId,$params);
+    }
 
 
 }

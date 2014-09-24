@@ -1,11 +1,17 @@
 <?= $this->headTitle($this->title) ?>
-<script src='/js/<?= $GLOBALS['module'] ?>/teacher.js' type='text/javascript'></script>
+<script src='/js/<?= $GLOBALS['module'] ?>/student.js' type='text/javascript'></script>
 <!--条件-->
 <form action="/student/list" method="post">
     <div style="font-size: 11px;">
-        教工英文名：
-        <input type="text" name="en_name"  size="12" value="<?=$this->enName?>"  title="支持模糊"/>
-        教工中文名：
+    	所属班级：
+        <select name="class_id" size="1" id="class_id">
+        <option value="0">-请选择-</option>
+        <?php foreach($this->classData as $p):?>
+        <option value="<?=$p['class_id']?>" 
+			<?php echo $this->classId==$p['class_id']?"selected":""?>><?=$p['class_name']?>[<?=$p['class_no']?>]</option>
+        <?php endforeach;?>
+        </select>
+        学生中文名称：
         <input type="text" name="cn_name"  size="12" value="<?=$this->cnName?>"  title="支持模糊"/>
         <button type="submit" id="submitButton" style="margin-left:30px;">
             Search
@@ -31,8 +37,8 @@
                 <thead>
                     <tr class="ui-jqgrid-labels">
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">编号</th>
+                    <th class="ui-state-default ui-th-column ui-th-ltr">所属班级</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:100px;">学号</th>
-                    <th class="ui-state-default ui-th-column ui-th-ltr">英文名</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">中文名</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr" style="width:80px;">性别</th>
                     <th class="ui-state-default ui-th-column ui-th-ltr">出生日期</th>
@@ -62,8 +68,10 @@
                             <td  style="text-align:center; width:80px;">
 							<a href="/student/view/student_id/<?=$v['student_id']?>/from/<?=$this->from?>"><?=$v['student_id']?></a>
                             </td>
+                            <td  style="text-align:center;">
+							<?=$v['sch_class_name']?><?php echo isset($v['sch_class_no'])?"[".$v['sch_class_no']."]":""?>
+                            </td>
                             <td  style="text-align:center; width:100px;"><?=$v['student_no']?></td>
-                            <td  style="text-align:center;"><?php echo !empty($v['en_name'])?$v['en_name']:"-"?></td>
                             <td  style="text-align:center;"><?=$v['cn_name']?></td>
                             <td  style="text-align:center; width:80px;"><?php echo $v['sex']==0?"无":($v['sex']==1?"男":"女")?></td>
                             <td  style="text-align:center;"><?php echo $v['birthday']=="0000-00-00"?"-":$v['birthday']?></td>

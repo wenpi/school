@@ -12,7 +12,7 @@
         <!--body table title-->
 
         <!--body table content-->
-        <form action="/sms/send.ok" method="post">
+        <form action="/sms/send.ok" method="post" onsubmit="return Sms.checkSend();">
         <input type="hidden" name="url" value="<?=$this->url?>"  />
         <div class="ui-jqgrid-bdiv" style="height: 100%; width: 100%;">
             <table cellspacing="0" cellpadding="0" border="0" class="ui-jqgrid-btable" style="width: 100%;" id="table_teacher_base">
@@ -20,7 +20,7 @@
                 	<tr class="ui-widget-content jqgrow ui-row-ltr">
                       <td style="text-align:right; width:150px;">用户类型：</td>
                       <td style="text-align:left;">
-                      <select name="type" size="1" id="type">
+                      <select name="type" size="1" id="type" onchange="Sms.showReceiveUserId()">
                           <option value="1">学生</option>
                           <option value="2">教工</option>
                       </select>
@@ -29,7 +29,7 @@
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td  style="text-align:right; width:150px;">接收人：</td>
                         <td  style="text-align:left;">
-                             <select name="receive_class_id" id="receive_class_id" onchange="Sms.showUserData(this.value);">
+                             <select name="receive_user_id" id="receive_user_id" onchange="Sms.showUserData(this.value);">
                               <option value="0">-请选择-</option>
                               <?php if($this->classData):?>
                               <?php foreach($this->classData as $p):?>
@@ -42,8 +42,9 @@
                     <tr class="ui-widget-content jqgrow ui-row-ltr">
                         <td  style="text-align:right; width:150px;">&nbsp;</td>
                         <td  style="text-align:left;">
-                        <div style="height:80px; width:550px; border:1px dashed #111; overflow:scroll; word-wrap: break-word; word-break: normal;">
-                        <div id="div_receive_user_ids"></div>
+                        <div style="height:80px; width:550px; border:1px dashed #111; 
+                        	overflow:scroll; word-wrap: break-word; word-break: normal;">
+                        <div id="div_receive_user_ids" style="display:none">0</div>
                         </div>
                         </td>
                     </tr>

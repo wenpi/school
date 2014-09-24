@@ -425,11 +425,40 @@ class MoneyController extends Ccc_Base_Controller {
 
     public function ajaxAddConfigTermAction() {
         $this->_helper->layout->disableLayout();
+        $year = date("Y");
+        $this->view->year = array(($year-2),($year-1),$year,($year+1),($year+2));
         $this->view->title = "添加学期配置信息";
     }
 
     public function ajaxSaveConfigTermAction() {
+        $this->_helper->layout->disableLayout();
+        // 学年+学期类型
+        $year = (int) $this->_getParam("input_year");
+        $termName = trim($this->_getParam("input_term_name"));
+        $type = (int) $this->_getParam("input_type");
+        $startDate = trim($this->_getParam("input_start_date"));
+        $endDate = trim($this->_getParam("input_end_date"));
+        $comments = trim($this->_getParam("input_comments"));
         
+        $has = MoneyModel::getInstance()->checkConfigTermData($year,$type,$termName);
+        if($has>0) { 
+            echo "-1";
+            exit;
+        }
+        
+        $params = array(
+            "year" => $year,
+            "term_name" => $termName,
+            "type" => $type,
+            "start_date" => $startDate,
+            "end_date" => $endDate,
+            "comments" => $comments,
+        );
+        
+        $add = MoneyModel::getInstance()->addConfigTermData($params);
+        
+        echo $add;
+        exit;
     }
 
     public function ajaxViewConfigTermAction() {
@@ -444,13 +473,31 @@ class MoneyController extends Ccc_Base_Controller {
     public function ajaxEditConfigTermAction() {
         $this->_helper->layout->disableLayout();
         $this->view->title = "编辑学期配置信息";
-
+        $year = date("Y");
+        $this->view->year = array(($year-2),($year-1),$year,($year+1),($year+2));
         $termId = (int) $this->_getParam("term_id");
         $this->view->configTermData = MoneyModel::getInstance()->getConfigTermRowData($termId);
         $this->view->from = trim($this->_getParam("from"));
     }
 
     public function ajaxUpdateConfigTermAction() {
+        $this->_helper->layout->disableLayout();
+        
+        $termId = (int) $this->_getParam("term_id");
+        $startDate = trim($this->_getParam("input_start_date"));
+        $endDate = trim($this->_getParam("input_end_date"));
+        $comments = trim($this->_getParam("input_comments"));
+        
+        $params = array(
+            "start_date" => $startDate,
+            "end_date" => $endDate,
+            "comments" => $comments,
+        );
+        
+        $update = MoneyModel::getInstance()->updateConfigTermData($termId, $params);
+        
+        echo $update;
+        exit;
         
     }
 
@@ -500,6 +547,25 @@ class MoneyController extends Ccc_Base_Controller {
         $this->_helper->layout->disableLayout();
         $this->view->title = "添加费用项目配置信息";
     }
+    
+    public function ajaxSaveConfigMoneyProjectAction() {
+        $this->_helper->layout->disableLayout();
+        $projectName = trim($this->_getParam("input_project_name"));
+        $comments = trim($this->_getParam("input_comments"));
+        
+        $isHas = MoneyModel::getInstance()->checkConfigMoneyProjectData($projectName);
+        if($isHas>0) {
+            echo "-1";
+            exit;
+        }
+        $params = array(
+            "money_project_name" => $projectName,
+            "comments" => $comments,
+        );
+        $add = MoneyModel::getInstance()->addConfigMoneyProjectData($params);
+        echo $add;
+        exit;
+    }
 
     public function ajaxViewConfigMoneyProjectAction() {
         $this->_helper->layout->disableLayout();
@@ -507,6 +573,28 @@ class MoneyController extends Ccc_Base_Controller {
         $mpId = (int) $this->_getParam("mp_id");
         $this->view->configMoneyProjectData = MoneyModel::getInstance()->getConfigMoneyProjectRowData($mpId);
         $this->view->from = trim($this->_getParam("from"));
+    }
+    
+    public function ajaxEditConfigMoneyProjetAction() { 
+        $this->_helper->layout->disableLayout();
+        $this->view->title = "编辑费用项目配置信息";
+        $projectId = (int) $this->_getParam("project_id");
+        $from = trim($this->_getParam("from"));
+        $this->view->configMoneyProjectData = MoneyModel::getInstance()->getConfigMoneyProjectRowData($projectId);
+        $this->view->from = $from;
+    }
+    
+    public function deleteConfigMoneyProjectAction() {
+        $this->_helper->layout->disableLayout();
+        $projectId = (int) $this->_getParam("project_id");
+        $from = trim($this->_getParam("from"));
+        $from = urldecode(base64_decode($from));
+        $delete = MoneyModel::getInstance()->deleteConfigMoneyProjectData($projectId);
+        if ($delete > 0) {
+            Ccc_Helper_Com::alertMess("/money/list.config.money.project" . $from, "操作成功");
+        } else {
+            Ccc_Helper_Com::alertMess("/class/list.config.money.project" . $from, "操作失败");
+        }
     }
 
     // 班级+学期+费用项目 =》 费用

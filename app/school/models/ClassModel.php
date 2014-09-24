@@ -29,6 +29,11 @@ class ClassModel {
         return self::$_singletonObject [$className];
     }
 
+    /**
+     * 获取某条件下所有班级信息且为二维数组
+     * @param type $where
+     * @return type
+     */
     public function getClassData($where = "") {
         return $this->_class->getClassData($where);
     }
@@ -114,6 +119,17 @@ class ClassModel {
 
     public function getClassRowData($classId) {
         return $this->_class->getClassRowData($classId);
+    }
+
+    public function checkStuentByClassId($classId) {
+        return $this->_class->checkStuentByClassId($classId);
+    }
+
+    public function checkSubjectByClassId($classId) {
+        $check1 = $this->_class->checkSubjectByClassId($classId);
+        $check2 = $this->_class->checkStudentBySpecialCassId($classId);
+        
+        return $check1<1 && $check2<1 ? 0 : 1;
     }
 
 }
